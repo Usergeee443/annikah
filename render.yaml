@@ -1,0 +1,37 @@
+# Render Blueprint: repo ulanganda Web Service + PostgreSQL
+# https://render.com/docs/blueprint-spec
+# Keyin Dashboardda qo‘lda qo‘ying: AUTH_SESSION_SECRET, NEXT_PUBLIC_APP_URL, TELEGRAM_*
+
+databases:
+  - name: annikah-db
+    plan: free
+    databaseName: annikah
+    user: annikah
+
+services:
+  - type: web
+    name: annikah-web
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npx prisma migrate deploy && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "20.19.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: annikah-db
+          property: connectionString
+      - key: AUTH_SESSION_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_BOT_USERNAME
+        sync: false
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false
+      - key: TELEGRAM_SETUP_SECRET
+        sync: false

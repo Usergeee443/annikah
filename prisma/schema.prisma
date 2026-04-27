@@ -1,0 +1,249 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  email        String   @unique
+  passwordHash String
+  phone        String?  @unique
+  telegramId   String?  @unique
+  authProvider String   @default("email") // email | telegram
+
+  profile   Profile?
+  sessions  Session[]
+  telegramLoginCodes TelegramLoginCode[]
+  listings  Listing[]
+  favorites Favorite[]
+  requestsSent     Request[] @relation("requests_sent")
+  requestsReceived Request[] @relation("requests_received")
+  chatsA Chat[] @relation("chat_a")
+  chatsB Chat[] @relation("chat_b")
+  messages Message[]
+  supportThread SupportThread?
+  listingViews ListingView[]
+}
+
+model TelegramRegisterSession {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  expiresAt      DateTime
+  linkToken      String   @unique
+  telegramChatId String?
+  phone          String?
+  passwordHash   String?
+  step           String   @default("new") // new | await_contact | await_password | done
+}
+
+model TelegramLoginCode {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  code      String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  category       String   @default("kelinlar")
+  name           String
+  age            Int
+  country        String
+  region         String
+  city           String
+  nationality    String
+  heightCm       Int
+  weightKg       Int
+  smokes         Boolean?
+  sportPerWeek   Int?
+  maritalStatus  String
+  children       String
+  polygamyAllowance Int?
+  education      String
+  jobTitle       String
+  incomeMonthlyUsd Int?
+
+  aqeeda         String
+  prayer         String
+  quran          String
+  madhab         String
+
+  partnerAgeFrom Int?
+  partnerAgeTo   Int?
+  partnerCountries String?
+  partnerRegions   String?
+  partnerCities    String?
+
+  about          String
+  isComplete     Boolean @default(false)
+}
+
+model Listing {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  category  String
+  active    Boolean  @default(true)
+  moderationStatus String @default("approved") // pending | approved | rejected
+  moderatedAt DateTime?
+  plan      String
+  priceCents Int
+  expiresAt DateTime
+
+  boostUntil DateTime?
+  boostScore Int @default(0)
+
+  // Snapshot from profile at time of publish
+  name           String
+  age            Int
+  country        String
+  region         String
+  city           String
+  nationality    String
+  heightCm       Int
+  weightKg       Int
+  smokes         Boolean?
+  sportPerWeek   Int?
+  maritalStatus  String
+  children       String
+  polygamyAllowance Int?
+  education      String
+  jobTitle       String
+  incomeMonthlyUsd Int?
+  aqeeda         String
+  prayer         String
+  quran          String
+  madhab         String
+  partnerAgeFrom Int?
+  partnerAgeTo   Int?
+  partnerCountries String?
+  partnerRegions   String?
+  partnerCities    String?
+  about          String
+
+  favorites Favorite[]
+  requests  Request[]
+  views     ListingView[]
+}
+
+model ListingView {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  viewerUserId String
+  viewerUser   User   @relation(fields: [viewerUserId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, viewerUserId])
+  @@index([listingId, createdAt])
+}
+
+model Favorite {
+  userId    String
+  listingId String
+  createdAt DateTime @default(now())
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([userId, listingId])
+}
+
+model Request {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  fromUserId String
+  fromUser   User @relation("requests_sent", fields: [fromUserId], references: [id], onDelete: Cascade)
+
+  toUserId   String
+  toUser     User @relation("requests_received", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  status     String @default("pending")
+  chat       Chat?
+
+  @@unique([listingId, fromUserId])
+}
+
+model Chat {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  endsAt    DateTime
+  endedAt   DateTime?
+
+  requestId String @unique
+  request   Request @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  userAId   String
+  userA     User @relation("chat_a", fields: [userAId], references: [id], onDelete: Cascade)
+  userBId   String
+  userB     User @relation("chat_b", fields: [userBId], references: [id], onDelete: Cascade)
+
+  messages  Message[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  body      String
+}
+
+model SupportThread {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  status    String   @default("open") // open | closed
+  messages  SupportMessage[]
+}
+
+model SupportMessage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  threadId  String
+  thread    SupportThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  sender    String   // user | admin
+  body      String
+}
+
