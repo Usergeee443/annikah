@@ -58,9 +58,6 @@ export default async function FavoritesPage() {
             <h1 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-[28px]">
               Sevimlilar
             </h1>
-            <p className="mt-1 text-[13px] font-medium text-zinc-600">
-              {items.length} ta saqlangan e’lon · istalgan vaqtda qaytib ko‘rishingiz mumkin
-            </p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

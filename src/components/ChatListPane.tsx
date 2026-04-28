@@ -73,7 +73,8 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
     <aside className="flex h-full min-h-0 flex-col overflow-hidden bg-white md:rounded-3xl md:border md:border-zinc-200/70 md:bg-white/95 md:shadow-[0_8px_28px_rgba(15,23,42,.06)]">
       {/* Header */}
       <div className="border-b border-zinc-200/70 px-4 pb-3 pt-4 md:rounded-t-3xl">
-        <div className="flex items-center justify-between">
+        {/* Desktop title (mobil yashirin) */}
+        <div className="hidden items-center justify-between md:flex">
           <h2 className="text-[18px] font-black tracking-tight text-zinc-950">Chatlar</h2>
           <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-extrabold tracking-widest text-zinc-600">
             {chats.length}
@@ -81,7 +82,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
         </div>
 
         {/* Search */}
-        <div className="relative mt-3">
+        <div className="relative md:mt-3">
           <svg
             viewBox="0 0 24 24"
             className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
@@ -94,6 +95,10 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Qidirish"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="search"
             className="h-10 w-full rounded-2xl bg-zinc-100 pl-9 pr-3 text-[13px] font-medium text-zinc-900 outline-none placeholder:text-zinc-400 transition focus:bg-white focus:shadow-[0_0_0_3px_rgba(24,24,27,.06)]"
           />
         </div>

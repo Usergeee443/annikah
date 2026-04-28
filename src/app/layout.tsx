@@ -18,6 +18,15 @@ export const metadata: Metadata = {
     "Annikah: kelinlar va kuyovlar e’lonlari, mukammal qidiruv va filter, sevimlilar, so‘rovlar va chat.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover" as const,
+  themeColor: "#fbfbfc",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

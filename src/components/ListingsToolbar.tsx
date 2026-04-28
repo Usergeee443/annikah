@@ -176,54 +176,56 @@ export default function ListingsToolbar({
     <form method="GET" action="/" className="grid gap-4">
       <input type="hidden" name="cat" value={cat} />
 
-      {/* Top: title left, search+filter right (minimal) */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="text-[18px] font-black tracking-tight text-zinc-950">
-            Annikah
-          </Link>
-          <span className="hidden text-[18px] font-black tracking-tight text-zinc-950 md:inline">E’lonlar</span>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="relative w-[240px] max-w-[60vw]">
-            <svg
-              viewBox="0 0 24 24"
-              className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
-              fill="none"
-            >
-              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
-              <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-            <input
-              name="q"
-              defaultValue={initial.q ?? ""}
-              placeholder="Qidirish…"
-              className="h-10 w-full rounded-2xl border border-zinc-200 bg-white pl-10 pr-3 text-[12.5px] font-semibold text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-zinc-300 focus:shadow-[0_0_0_4px_rgba(24,24,27,.06)]"
-            />
-          </div>
+      {/* Top: Annikah | search | filter */}
+      <div className="flex items-center gap-2">
+        <Link
+          href="/"
+          className="shrink-0 text-[20px] font-black tracking-tight text-zinc-950"
+        >
+          Annikah
+        </Link>
 
-          <button
-            type="button"
-            onClick={() => setOpen(true)}
-            aria-expanded={open}
-            className={cn(
-              "inline-flex h-10 items-center gap-2 rounded-2xl px-3 text-[12px] font-extrabold tracking-tight ring-1 transition",
-              hasActiveFilters
-                ? "bg-zinc-950 text-white ring-black/10 hover:bg-zinc-900"
-                : "bg-white text-zinc-900 ring-zinc-200 hover:bg-zinc-50",
-            )}
+        <div className="relative min-w-0 flex-1">
+          <svg
+            viewBox="0 0 24 24"
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
+            fill="none"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
-              <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            Filter
-            {hasActiveFilters ? (
-              <span className="ml-0.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-extrabold text-zinc-950">
-                ON
-              </span>
-            ) : null}
-          </button>
+            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
+            <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+          <input
+            name="q"
+            defaultValue={initial.q ?? ""}
+            placeholder="Qidirish"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            enterKeyHint="search"
+            className="h-10 w-full rounded-2xl border border-zinc-200 bg-white pl-9 pr-3 text-[13px] font-semibold text-zinc-900 placeholder-zinc-400 outline-none transition focus:border-zinc-300 focus:shadow-[0_0_0_3px_rgba(24,24,27,.05)]"
+          />
         </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-expanded={open}
+          aria-label="Filter"
+          className={cn(
+            "inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-2xl px-3 text-[12px] font-extrabold tracking-tight ring-1 transition",
+            hasActiveFilters
+              ? "bg-zinc-950 text-white ring-black/10 hover:bg-zinc-900"
+              : "bg-white text-zinc-900 ring-zinc-200 hover:bg-zinc-50",
+          )}
+        >
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
+            <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <span className="hidden sm:inline">Filter</span>
+          {hasActiveFilters ? (
+            <span className="inline-flex h-2 w-2 rounded-full bg-amber-400 sm:hidden" />
+          ) : null}
+        </button>
       </div>
 
       {middle}

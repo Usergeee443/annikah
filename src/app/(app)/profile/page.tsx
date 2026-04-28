@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import PasswordChangeCard from "@/components/PasswordChangeCard";
 
 function statusPill(s: string) {
   if (s === "approved") return "bg-emerald-50 text-emerald-800 ring-emerald-200";
@@ -66,9 +65,30 @@ export default async function ProfileHubPage() {
             Profilni tahrirlash
           </Link>
         </div>
-      </div>
 
-      <PasswordChangeCard />
+        <div className="mt-4 grid gap-2 border-t border-zinc-200/70 pt-4">
+          <Link
+            href="/profile/password"
+            className="-mx-2 inline-flex items-center justify-between gap-3 rounded-2xl px-2 py-2 transition hover:bg-zinc-50"
+          >
+            <div className="flex items-center gap-3">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-zinc-100 text-zinc-700">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                  <rect x="4" y="11" width="16" height="9" rx="2" stroke="currentColor" strokeWidth="1.7" />
+                  <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                </svg>
+              </span>
+              <div className="min-w-0">
+                <div className="text-[13.5px] font-extrabold tracking-tight text-zinc-950">Parolni o‘zgartirish</div>
+                <div className="text-[11.5px] font-semibold text-zinc-500">Akkauntingiz parolini yangilash</div>
+              </div>
+            </div>
+            <svg viewBox="0 0 24 24" className="h-4 w-4 text-zinc-400" fill="none" aria-hidden="true">
+              <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
+        </div>
+      </div>
 
       {/* Yordam CTA */}
       <div className="rounded-3xl bg-linear-to-r from-zinc-50/90 via-white to-zinc-50/80 px-1 py-5 sm:px-2">
