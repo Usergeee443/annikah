@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import ListingCard from "@/components/ListingCard";
@@ -25,7 +26,40 @@ export default async function AdsPage() {
 
   return (
     <div className="grid gap-6">
-      <h1 className="text-[22px] font-black tracking-tight text-zinc-950 sm:text-[26px]">Reklama</h1>
+      {/* Reklama berishga undash (asosiy sahifadagi CTA uslubida) */}
+      <div className="rounded-3xl bg-linear-to-r from-zinc-50/90 via-white to-zinc-50/80 px-1 py-5 sm:px-2">
+        <div className="grid gap-4 sm:flex sm:flex-wrap sm:items-center sm:gap-7">
+          <div className="flex items-center gap-5 sm:flex-1 sm:gap-7">
+            <div className="relative h-[88px] w-[88px] shrink-0 sm:h-[104px] sm:w-[104px]">
+              <Image
+                src="/fire.svg"
+                alt="Reklama bering"
+                fill
+                sizes="104px"
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[clamp(20px,4vw,28px)] font-black leading-[1.1] tracking-tight text-zinc-950">
+                Reklama bering — tezroq topiling
+              </div>
+              <div className="mt-2 max-w-xl text-[13px] font-medium leading-relaxed text-zinc-600 sm:text-[14px]">
+                Reklamadagi e’lonlarda <span className="font-extrabold text-zinc-900">“Top”</span> belgisi ko‘rinadi va
+                ko‘proq ko‘rishlar bo‘ladi.
+              </div>
+            </div>
+          </div>
+
+          <Link
+            href="/reklama"
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-amber-500 via-orange-500 to-rose-500 px-6 text-[12px] font-extrabold text-white ring-1 ring-orange-600/30 shadow-[0_14px_34px_rgba(249,115,22,.22)] transition hover:from-amber-400 hover:via-orange-500 hover:to-rose-500 sm:h-12 sm:w-auto sm:px-7"
+          >
+
+            Reklama berish
+          </Link>
+        </div>
+      </div>
 
       {listings.length === 0 ? (
         <div className="flex min-h-[calc(100dvh-10rem)] flex-col items-center justify-center text-center">
@@ -52,41 +86,27 @@ export default async function AdsPage() {
         </div>
       ) : (
         <>
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="max-w-xl text-[13px] font-medium text-zinc-600">
-                Faol reklamada e’lonlarda <span className="font-extrabold text-zinc-900">“Top”</span> belgisi
-                ko‘rinadi. Reklama tugamaguncha shu e’longa qayta boost qo‘yib bo‘lmaydi.
-              </p>
-              {activeBoost.length > 0 ? (
-                <p className="mt-1 text-[12px] font-semibold text-emerald-700">
-                  Faol reklama: {activeBoost.length} ta
-                </p>
-              ) : null}
-            </div>
-            <Link
-              href="/reklama"
-              className="inline-flex h-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
-            >
-              Reklama berish
-            </Link>
-          </div>
+          
 
           <div>
-            <h2 className="mb-3 text-[12px] font-extrabold uppercase tracking-widest text-zinc-500">
-              Faol reklamalaringiz
-            </h2>
+            <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+              <h2 className="text-[12px] font-extrabold uppercase tracking-widest text-zinc-500">
+                Mening reklamalarim
+              </h2>
+            </div>
+            
             {sorted.length === 0 ? (
               <p className="text-[13px] font-medium text-zinc-600">
                 Hozircha faol (tasdiqlangan va muddati tugamagan) e’lon yo‘q. Barcha e’lonlaringizni «E’lonlarim»
                 bo‘limidan ko‘rishingiz mumkin.
               </p>
             ) : (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {sorted.map((l) => (
                   <ListingCard
                     key={l.id}
-                    l={{
+                    l={
+                      {
                       id: l.id,
                       name: l.name,
                       age: l.age,
@@ -95,13 +115,15 @@ export default async function AdsPage() {
                       region: l.region,
                       city: l.city,
                       country: l.country,
+                      nationality: l.nationality,
                       category: l.category,
                       jobTitle: l.jobTitle,
                       prayer: l.prayer,
                       maritalStatus: l.maritalStatus,
                       boostUntil: l.boostUntil,
                       createdAt: l.createdAt,
-                    }}
+                      } as any
+                    }
                     isFav={false}
                     authed
                     hideFavorite

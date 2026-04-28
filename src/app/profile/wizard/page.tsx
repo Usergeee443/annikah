@@ -16,7 +16,7 @@ function stepKeyFromQuery(step: string | undefined): string | null {
   return null;
 }
 
-export default async function ProfilePage({ searchParams }: { searchParams: Promise<Search> }) {
+export default async function ProfileWizardPage({ searchParams }: { searchParams: Promise<Search> }) {
   const user = await requireUser();
   const sp = (await searchParams) || {};
   const profile = await db.profile.findUnique({ where: { userId: user.id } });
@@ -36,8 +36,7 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
       nationality: (data.nationality || "").trim(),
       heightCm: Math.max(0, Math.floor(Number(data.heightCm) || 0)),
       weightKg: Math.max(0, Math.floor(Number(data.weightKg) || 0)),
-      smokes:
-        data.smokes === "yes" ? true : data.smokes === "no" ? false : null,
+      smokes: data.smokes === "yes" ? true : data.smokes === "no" ? false : null,
       sportPerWeek:
         data.sportPerWeek === null || data.sportPerWeek === undefined
           ? null
@@ -98,9 +97,9 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
     return { ok: true };
   }
 
-  async function exitToHome() {
+  async function exitToProfile() {
     "use server";
-    redirect("/");
+    redirect("/profile");
   }
 
   const initial: Partial<ProfileData> | null =
@@ -142,7 +141,8 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
       userEmail={user.email}
       initialStepKey={initialStepKey}
       onSubmit={save}
-      onExit={exitToHome}
+      onExit={exitToProfile}
     />
   );
 }
+

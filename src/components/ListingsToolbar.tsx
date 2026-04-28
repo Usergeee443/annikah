@@ -178,7 +178,12 @@ export default function ListingsToolbar({
 
       {/* Top: title left, search+filter right (minimal) */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-[18px] font-black tracking-tight text-zinc-950">E’lonlar</div>
+        <div className="flex items-center gap-3">
+          <Link href="/" className="text-[18px] font-black tracking-tight text-zinc-950">
+            Annikah
+          </Link>
+          <span className="hidden text-[18px] font-black tracking-tight text-zinc-950 md:inline">E’lonlar</span>
+        </div>
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative w-[240px] max-w-[60vw]">
             <svg

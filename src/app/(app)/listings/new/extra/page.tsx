@@ -6,13 +6,13 @@ import ExtraListingWizard from "@/components/ExtraListingWizard";
 export default async function ExtraListingPage() {
   const user = await requireUser();
   const profile = await db.profile.findUnique({ where: { userId: user.id } });
-  if (!profile?.isComplete) redirect("/profile");
+  if (!profile?.isComplete) redirect("/profile/wizard");
 
   async function create(data: any) {
     "use server";
     const user = await requireUser();
     const profile = await db.profile.findUnique({ where: { userId: user.id } });
-    if (!profile?.isComplete) redirect("/profile");
+    if (!profile?.isComplete) redirect("/profile/wizard");
 
     // sanitize
     const safe = {

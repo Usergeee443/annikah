@@ -243,28 +243,10 @@ export default function ChatRoom({
         </div>
       </header>
 
-      {/* Privacy notice */}
-      <div className="shrink-0 border-b border-amber-200/70 bg-amber-50/70 px-4 py-2 sm:px-5">
-        <div className="flex items-start gap-2 text-[11px] font-bold text-amber-900">
-          <svg viewBox="0 0 24 24" className="mt-0.5 h-3.5 w-3.5 shrink-0" fill="none">
-            <path
-              d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span>
-            Telefon raqam, email yoki tashqi havolalarni faqat ikki tomon ishonganidan keyin
-            almashing — platforma himoyasi yoqilgan.
-          </span>
-        </div>
-      </div>
-
       {/* Messages */}
       <div
         ref={scrollRef}
-        className="flex-1 min-h-0 overflow-y-auto bg-[radial-gradient(circle_at_50%_-10%,#eef2ff_0%,#f4f4f5_55%)] px-3 py-4 sm:px-6"
+        className="chat-telegram-bg flex-1 min-h-0 overflow-y-auto px-3 py-4 pb-24 sm:px-6"
       >
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
@@ -322,15 +304,15 @@ export default function ChatRoom({
                           radius +
                           " " +
                           (mine
-                            ? "bg-sky-500 text-white"
-                            : "bg-white text-zinc-900 ring-1 ring-zinc-200")
+                            ? "bg-[#d9fdd3] text-zinc-900 ring-1 ring-emerald-200 shadow-[0_1px_1px_rgba(0,0,0,.08)]"
+                            : "bg-white text-zinc-900 ring-1 ring-zinc-200 shadow-[0_1px_1px_rgba(0,0,0,.06)]")
                         }
                       >
                         <div className="whitespace-pre-wrap wrap-break-word">{m.body}</div>
                         <div
                           className={
                             "mt-0.5 flex items-center justify-end gap-1 text-[10px] " +
-                            (mine ? "text-white/80" : "text-zinc-400")
+                            (mine ? "text-emerald-900/60" : "text-zinc-400")
                           }
                         >
                           <span>{timeOnly(m.createdAt)}</span>
@@ -364,7 +346,7 @@ export default function ChatRoom({
       </div>
 
       {/* Composer */}
-      <div className="shrink-0 border-t border-zinc-200/70 bg-white px-3 py-3 sm:px-5">
+      <div className="sticky bottom-0 shrink-0 border-t border-zinc-200/70 bg-white/95 px-3 py-3 backdrop-blur sm:px-5">
         {isEnded ? (
           <div className="flex items-center justify-center rounded-2xl bg-zinc-100 px-4 py-3 text-[12.5px] font-extrabold text-zinc-600 ring-1 ring-zinc-200">
             Suhbat tugagan — yangi xabar yuborib bo‘lmaydi

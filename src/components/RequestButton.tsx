@@ -48,7 +48,7 @@ export default function RequestButton({
         const data = await res.json().catch(() => null);
         if (!res.ok) {
           if (data?.error === "PROFILE_INCOMPLETE") {
-            router.push("/profile");
+            router.push("/profile/wizard");
             return;
           }
           setError(data?.error || "Xatolik");

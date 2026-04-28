@@ -13,7 +13,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   if (listing.ownerId !== user.id) return NextResponse.json({ error: "FORBIDDEN" }, { status: 403 });
 
   const profile = await db.profile.findUnique({ where: { userId: user.id } });
-  if (!profile?.isComplete) return NextResponse.redirect(new URL("/profile", url.origin));
+  if (!profile?.isComplete) return NextResponse.redirect(new URL("/profile/wizard", url.origin));
 
   await db.listing.update({
     where: { id },
@@ -47,6 +47,6 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     },
   });
 
-  return NextResponse.redirect(new URL("/elonlarim", url.origin));
+  return NextResponse.redirect(new URL("/profile#elonlarim", url.origin));
 }
 

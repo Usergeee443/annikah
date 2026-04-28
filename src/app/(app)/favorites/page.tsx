@@ -63,7 +63,7 @@ export default async function FavoritesPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((l) => (
               <ListingCard
                 key={l.id}
@@ -76,6 +76,7 @@ export default async function FavoritesPage() {
                   region: l.region,
                   city: l.city,
                   country: l.country,
+                  nationality: l.nationality,
                   category: l.category,
                   jobTitle: l.jobTitle,
                   prayer: l.prayer,

@@ -170,8 +170,8 @@ export default async function ListingsPage({
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {listings.map((l) => (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {listings.map((l, idx) => (
             <ListingCard
               key={l.id}
               l={{
@@ -183,6 +183,7 @@ export default async function ListingsPage({
                 region: l.region,
                 city: l.city,
                 country: l.country,
+                nationality: l.nationality,
                 category: l.category,
                 jobTitle: l.jobTitle,
                 prayer: l.prayer,
@@ -192,6 +193,7 @@ export default async function ListingsPage({
               }}
               isFav={favIds.has(l.id)}
               authed={!!user}
+              rank={idx + 1}
             />
           ))}
         </div>

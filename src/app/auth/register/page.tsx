@@ -26,7 +26,7 @@ export default function RegisterPage() {
       });
       const data = (await res.json()) as { ok?: boolean; error?: string };
       if (!res.ok || !data.ok) throw new Error(data.error || "Xatolik");
-      router.push("/profile");
+      router.push("/profile/wizard");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Xatolik");

@@ -14,6 +14,7 @@ type ListingCardProps = {
     region: string;
     city: string;
     country: string;
+    nationality?: string;
     category: string;
     jobTitle: string;
     prayer: string;
@@ -28,6 +29,8 @@ type ListingCardProps = {
   onPress?: () => void;
   /** `pin` — faqat pin belgisi (masalan, asosiy e’lon) */
   coverBadge?: "category" | "pin";
+  /** Reyting (masalan #3) */
+  rank?: number;
 };
 
 function prayerLabel(p: string) {
@@ -114,7 +117,7 @@ const IconMoon = (
 );
 
 const shellCls =
-  "block w-full overflow-hidden rounded-2xl bg-white text-left ring-1 ring-zinc-200/80 shadow-[0_2px_18px_rgba(15,23,42,.04)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(15,23,42,.10)]";
+  "block w-full overflow-hidden rounded-3xl bg-[#0b0f0e] text-left ring-1 ring-zinc-200/10 shadow-[0_10px_40px_rgba(15,23,42,.18)] transition";
 
 export default function ListingCard({
   l,
@@ -124,13 +127,13 @@ export default function ListingCard({
   disableLink,
   onPress,
   coverBadge = "category",
+  rank,
 }: ListingCardProps) {
   const [asOf] = useState(() => new Date());
   const boostMs = toMs(l.boostUntil);
   const isBoosted = boostMs !== null && boostMs > asOf.getTime();
 
   const isKelin = l.category === "kelinlar";
-  const initial = (l.name?.trim()?.[0] || "?").toUpperCase();
 
   const gradient = isKelin
     ? "from-rose-300 via-fuchsia-500 to-rose-800"
@@ -138,101 +141,127 @@ export default function ListingCard({
 
   const marital = maritalShort(l.maritalStatus);
 
+  const chipCls =
+    "inline-flex min-w-0 max-w-[42cqw] items-center gap-2 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-black tracking-tight text-white ring-1 ring-white/14 backdrop-blur";
+
   const cover = (
     <div
       style={{ containerType: "inline-size" }}
-      className={`relative aspect-square w-full overflow-hidden bg-linear-to-br ${gradient}`}
+      className={`relative min-h-[220px] w-full overflow-hidden bg-linear-to-b ${gradient}`}
     >
+      <span aria-hidden className="pointer-events-none absolute inset-0 bg-black/35" />
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_22%,rgba(255,255,255,.32),transparent_55%)]"
-      />
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.42)_0%,transparent_42%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,.20),transparent_55%)]"
       />
 
-      {isBoosted ? (
-        <span className="absolute left-2.5 top-2.5 inline-flex h-7 items-center gap-1 rounded-full bg-amber-400 px-2 text-[10px] font-extrabold uppercase tracking-[0.18em] text-amber-950 shadow-[0_4px_14px_rgba(245,158,11,.32)] ring-1 ring-amber-500">
-          <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="currentColor">
-            <path d="M12 2l2.7 6.3L22 9l-5 4.6 1.4 7.4L12 17l-6.4 4 1.4-7.4L2 9l7.3-.7z" />
-          </svg>
-          Top
-        </span>
-      ) : coverBadge === "pin" ? (
-        <span
-          className="absolute left-2.5 top-2.5 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/18 text-white ring-1 ring-white/30 backdrop-blur"
-          aria-label="Asosiy e’lon"
-        >
-          <span className="scale-110 text-white">{IconPin}</span>
-        </span>
-      ) : (
-        <span className="absolute left-2.5 top-2.5 inline-flex h-7 items-center rounded-full bg-white/15 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-white ring-1 ring-white/25 backdrop-blur">
-          {isKelin ? "Kelin" : "Kuyov"}
-        </span>
-      )}
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span
-          aria-hidden
-          style={{ fontSize: "58cqw", lineHeight: 1 }}
-          className="select-none font-black tracking-[-0.04em] text-white/95 drop-shadow-[0_10px_28px_rgba(0,0,0,.30)]"
-        >
-          {initial}
-        </span>
-      </div>
-
-      <div className="absolute bottom-0 left-0 right-0 p-3">
-        <div className="truncate text-[16px] font-black leading-tight tracking-tight text-white drop-shadow">
-          {l.name}, {l.age}
-        </div>
-        <div className="mt-0.5 flex items-center gap-1 truncate text-[11px] font-bold text-white/85">
-          <span className="text-white/75">{IconPin}</span>
-          <span className="truncate">
-            {l.city}
-            {l.country ? ` · ${l.country}` : ""}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const info = (
-    <div className="p-3.5">
-      <div className="grid grid-cols-2 gap-2">
-        <div className="flex items-center gap-1.5 text-[11.5px] font-bold text-zinc-700">
-          <span className="text-zinc-400">{IconRuler}</span>
-          <span className="tabular-nums">{l.heightCm} sm</span>
-        </div>
-        <div className="flex items-center gap-1.5 text-[11.5px] font-bold text-zinc-700">
-          <span className="text-zinc-400">{IconScale}</span>
-          <span className="tabular-nums">{l.weightKg} kg</span>
-        </div>
-      </div>
-
-      {l.jobTitle ? (
-        <div className="mt-1.5 flex items-center gap-1.5 text-[11.5px] font-bold text-zinc-700">
-          <span className="text-zinc-400">{IconBriefcase}</span>
-          <span className="truncate">{l.jobTitle}</span>
+      {!hideFavorite ? (
+        <div className="absolute right-4 top-4 z-10">
+          <FavoriteButton listingId={l.id} initial={isFav} authed={authed} variant="icon" />
         </div>
       ) : null}
 
-      <div className="mt-1.5 flex items-center gap-1.5 text-[11.5px] font-bold text-zinc-700">
-        <span className="text-emerald-600">{IconMoon}</span>
-        <span className="truncate">Namoz: {prayerLabel(l.prayer)}</span>
+      {/* top chips */}
+      <div className="absolute left-4 right-4 top-4 flex flex-wrap items-center gap-2 pr-12">
+        {typeof rank === "number" ? (
+          <span className="inline-flex items-center rounded-xl bg-lime-400 px-2.5 py-1 text-[11px] font-black text-black shadow-[0_8px_20px_rgba(163,230,53,.28)]">
+            #{rank}
+          </span>
+        ) : null}
+        {isBoosted ? (
+          <span className={chipCls}>
+            <span className="text-emerald-300">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l2.7 6.3L22 9l-5 4.6 1.4 7.4L12 17l-6.4 4 1.4-7.4L2 9l7.3-.7z" />
+              </svg>
+            </span>
+            TOP
+          </span>
+        ) : null}
+
+        {l.nationality ? (
+          <span className={chipCls}>
+            <span className="text-emerald-300">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                <path
+                  d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path d="M2 12h20" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </span>
+            <span className="truncate">{l.nationality.toUpperCase()}</span>
+          </span>
+        ) : null}
+
+        {l.country ? (
+          <span className={chipCls}>
+            <span className="text-emerald-300">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                <path
+                  d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M12 2c3 3.2 3 16.8 0 20M12 2c-3 3.2-3 16.8 0 20"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  opacity=".85"
+                />
+              </svg>
+            </span>
+            <span className="truncate">{l.country.toUpperCase()}</span>
+          </span>
+        ) : null}
+
+        {l.city ? (
+          <span className={chipCls}>
+            <span className="text-emerald-300">{IconPin}</span>
+            <span className="truncate">{l.city.toUpperCase()}</span>
+          </span>
+        ) : null}
       </div>
 
-      {marital ? (
-        <div className="mt-2.5 flex items-center justify-between gap-2">
-          <span
-            className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] ring-1 ${
-              isKelin ? "bg-rose-50 text-rose-700 ring-rose-200/80" : "bg-sky-50 text-sky-700 ring-sky-200/80"
-            }`}
-          >
-            {marital}
-          </span>
+      {/* bottom panel (name + info) */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 pt-0">
+        <div className="grid gap-3">
+          <div className="font-black leading-none tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,.55)] text-[clamp(22px,8cqw,34px)]">
+            {l.name} <span className="text-white/65 text-[clamp(14px,5cqw,20px)]">{l.age} yosh</span>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 text-white/90">
+            <div className="flex flex-wrap items-center gap-5 font-extrabold text-[clamp(12px,4.3cqw,16px)]">
+              <span className="inline-flex items-center gap-2">
+                <span className="text-emerald-300">{IconRuler}</span>
+                {l.heightCm} sm • {l.weightKg} kg
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center gap-5 font-extrabold text-[clamp(12px,4.3cqw,16px)]">
+              <span className="inline-flex items-center gap-2">
+                <span className="text-emerald-300">{IconMoon}</span>
+                {prayerLabel(l.prayer)}
+              </span>
+              {marital ? (
+                <span className="inline-flex items-center gap-2">
+                  <span className="text-emerald-300">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                      <path
+                        d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {marital}
+                </span>
+              ) : null}
+            </div>
+          </div>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 
@@ -246,20 +275,12 @@ export default function ListingCard({
           className={shellCls}
         >
           {cover}
-          {info}
         </button>
       ) : (
         <Link href={`/listings/${l.id}`} aria-label={`${l.name}, ${l.age} yosh`} className={shellCls}>
           {cover}
-          {info}
         </Link>
       )}
-
-      {!hideFavorite ? (
-        <div className="absolute right-2 top-2 z-10">
-          <FavoriteButton listingId={l.id} initial={isFav} authed={authed} variant="icon" />
-        </div>
-      ) : null}
     </article>
   );
 }

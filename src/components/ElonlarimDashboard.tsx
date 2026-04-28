@@ -251,6 +251,7 @@ export default function ElonlarimDashboard({
         region: l.region,
         city: l.city,
         country: l.country,
+        nationality: l.nationality,
         category: l.category,
         jobTitle: l.jobTitle,
         prayer: l.prayer,

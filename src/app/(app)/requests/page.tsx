@@ -198,22 +198,37 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
             return (
               <div
                 key={r.id}
-                className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur"
+                className="relative overflow-hidden rounded-[28px] bg-[#0b0f0e] p-5 shadow-[0_18px_60px_rgba(0,0,0,.18)] ring-1 ring-white/10"
               >
+                <span
+                  aria-hidden
+                  className={
+                    "pointer-events-none absolute inset-0 opacity-90 " +
+                    (r.listing.category === "kelinlar"
+                      ? "bg-[radial-gradient(circle_at_22%_10%,rgba(244,114,182,.55),transparent_55%),radial-gradient(circle_at_82%_20%,rgba(147,51,234,.45),transparent_55%)]"
+                      : "bg-[radial-gradient(circle_at_22%_10%,rgba(56,189,248,.50),transparent_55%),radial-gradient(circle_at_82%_20%,rgba(99,102,241,.45),transparent_55%)]")
+                  }
+                />
+                <span aria-hidden className="pointer-events-none absolute inset-0 bg-black/45" />
+
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <Pill tone={r.listing.category === "kelinlar" ? "rose" : "blue"}>
-                        {r.listing.category === "kelinlar" ? "Kelin" : "Kuyov"}
-                      </Pill>
-                      <Pill tone={sl.tone}>{sl.label}</Pill>
-                      <Pill tone="zinc">{new Date(r.createdAt).toLocaleString()}</Pill>
+                      <span className="inline-flex items-center rounded-xl bg-lime-400 px-2.5 py-1 text-[11px] font-black text-black shadow-[0_8px_20px_rgba(163,230,53,.18)]">
+                        {tab === "sent" ? "YUBORILGAN" : "KELGAN"}
+                      </span>
+                      <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-black tracking-tight text-white ring-1 ring-white/14 backdrop-blur">
+                        {r.listing.category === "kelinlar" ? "KELIN" : "KUYOV"}
+                      </span>
+                      <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-black tracking-tight text-white ring-1 ring-white/14 backdrop-blur">
+                        {sl.label.toUpperCase()}
+                      </span>
                     </div>
-                    <div className="mt-2 text-[16px] font-black tracking-tight text-zinc-950">
+                    <div className="mt-3 text-[22px] font-black leading-tight tracking-tight text-white">
                       {tab === "sent" ? r.listing.name : otherName}
-                      {otherProfile?.age ? ` · ${otherProfile.age} yosh` : ""}
+                      {otherProfile?.age ? <span className="ml-2 text-white/60">{otherProfile.age} yosh</span> : null}
                     </div>
-                    <div className="mt-0.5 text-[12.5px] font-semibold text-zinc-700">
+                    <div className="mt-1 text-[13px] font-semibold text-white/80">
                       {tab === "sent"
                         ? `E’lon: ${r.listing.name} · ${r.listing.region}, ${r.listing.city}`
                         : otherProfile
@@ -225,14 +240,14 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
                   <div className="flex flex-wrap items-center gap-2">
                     <Link
                       href={`/listings/${r.listingId}`}
-                      className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-white/10 px-3 text-[12px] font-extrabold text-white ring-1 ring-white/16 backdrop-blur hover:bg-white/15"
                     >
                       E’lonni ochish
                     </Link>
                     {r.chat ? (
                       <Link
                         href={`/chats/${r.chat.id}`}
-                        className="inline-flex h-9 items-center justify-center rounded-2xl bg-emerald-600 px-3 text-[12px] font-extrabold text-white ring-1 ring-emerald-700 hover:bg-emerald-500"
+                        className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-500/90 px-3 text-[12px] font-extrabold text-white ring-1 ring-emerald-300/40 shadow-[0_16px_40px_rgba(16,185,129,.18)] backdrop-blur hover:bg-emerald-400"
                       >
                         Chatni boshlash
                       </Link>
@@ -244,6 +259,34 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
                       />
                     )}
                   </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-3 text-white/70">
+                  <span className="inline-flex items-center gap-2 text-[12px] font-extrabold">
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                      <path
+                        d="M8 7V3h8v4M6 7h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinejoin="round"
+                      />
+                      <path d="M9 13h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    {new Date(r.createdAt).toLocaleDateString()}
+                  </span>
+                  {r.status === "pending" ? (
+                    <span className="inline-flex items-center gap-2 text-[12px] font-extrabold">
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                        <path
+                          d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                        />
+                        <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                      Yangi so‘rov
+                    </span>
+                  ) : null}
                 </div>
               </div>
             );

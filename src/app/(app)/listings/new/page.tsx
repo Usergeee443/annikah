@@ -35,14 +35,14 @@ export default async function NewListingPage() {
   const user = await requireUser();
   const profile = await db.profile.findUnique({ where: { userId: user.id } });
   if (!profile?.isComplete) {
-    redirect("/profile");
+    redirect("/profile/wizard");
   }
 
   async function create(formData: FormData) {
     "use server";
     const user = await requireUser();
     const profile = await db.profile.findUnique({ where: { userId: user.id } });
-    if (!profile?.isComplete) redirect("/profile");
+    if (!profile?.isComplete) redirect("/profile/wizard");
 
     const plan = (String(formData.get("plan") || "month1") as Plan);
 
@@ -107,7 +107,7 @@ export default async function NewListingPage() {
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link
-            href="/profile"
+            href="/profile/wizard"
             className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
           >
             Profilni tekshirish

@@ -13,111 +13,60 @@ function cls(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
 }
 
+const STROKE = {
+  fill: "none" as const,
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+
 const ITEMS: NavItem[] = [
   {
     href: "/",
-    label: "Bosh sahifa",
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-        <path
-          d="M3 10.5L12 3l9 7.5V21a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 21V10.5z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-          className={active ? "opacity-100" : "opacity-80"}
-        />
-        <path
-          d="M9.5 22V14.5h5V22"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className={active ? "opacity-100" : "opacity-80"}
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "/listings",
     label: "E’lonlar",
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-        <path
-          d="M7 8h10M7 12h10M7 16h7"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-          className={active ? "opacity-100" : "opacity-80"}
-        />
-      </svg>
-    ),
-  },
-  {
-    href: "/chats",
-    label: "Chat",
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-        <path
-          d="M20 14a4 4 0 0 1-4 4H9l-5 3V6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-          className={active ? "opacity-100" : "opacity-80"}
-        />
-        <path
-          d="M8 8h8M8 12h6"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" {...STROKE} aria-hidden="true">
+        <path d="m3 11 9-8 9 8" />
+        <path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5" />
       </svg>
     ),
   },
   {
     href: "/requests",
-    label: "So‘rov",
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-        <path
-          d="M7 4h10v16H7z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-          className={active ? "opacity-100" : "opacity-80"}
-        />
-        <path
-          d="M9 8h6M9 12h6M9 16h4"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+    label: "So‘rovlar",
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" {...STROKE} aria-hidden="true">
+        <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+        <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/chats",
+    label: "Chatlar",
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" {...STROKE} aria-hidden="true">
+        <path d="M21 12a8 8 0 0 1-11.5 7.16L4 20l1-5A8 8 0 1 1 21 12z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/favorites",
+    label: "Sevimli",
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" {...STROKE} aria-hidden="true">
+        <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z" />
       </svg>
     ),
   },
   {
     href: "/profile",
     label: "Profil",
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
-        <path
-          d="M20 21a8 8 0 0 0-16 0"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-          className={active ? "opacity-100" : "opacity-80"}
-        />
+    icon: () => (
+      <svg viewBox="0 0 24 24" className="h-[22px] w-[22px]" {...STROKE} aria-hidden="true">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21a8 8 0 0 1 16 0" />
       </svg>
     ),
   },
@@ -131,46 +80,58 @@ function isActive(pathname: string, href: string) {
 export default function MobileBottomNav() {
   const pathname = usePathname() || "/";
 
-  // Auth/admin sahifalarda ko‘rsatmaymiz
   if (pathname.startsWith("/auth/") || pathname.startsWith("/adminpanel")) return null;
+  if (pathname.startsWith("/chats/") && pathname !== "/chats") return null;
 
   return (
-    <nav
-      className={cls(
-        "fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200/70 bg-white/90 backdrop-blur supports-backdrop-filter:bg-white/70",
-        "md:hidden",
-      )}
-      style={{
-        paddingBottom: "env(safe-area-inset-bottom)",
-      }}
-      aria-label="Pastki menyu"
-    >
-      <div className="mx-auto grid max-w-md grid-cols-5 px-2 py-2">
-        {ITEMS.map((it) => {
-          const active = isActive(pathname, it.href);
-          return (
-            <Link
-              key={it.href}
-              href={it.href}
-              className={cls(
-                "flex flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 text-[10px] font-extrabold tracking-tight transition",
-                active ? "text-zinc-950" : "text-zinc-500 hover:text-zinc-800",
-              )}
-            >
-              <span
-                className={cls(
-                  "grid h-9 w-9 place-items-center rounded-2xl",
-                  active ? "bg-zinc-950 text-white shadow-sm" : "bg-transparent",
-                )}
-              >
-                {it.icon(active)}
-              </span>
-              <span className="leading-none">{it.label}</span>
-            </Link>
-          );
-        })}
+    <nav className="fixed inset-x-0 bottom-0 z-50 md:hidden" aria-label="Pastki menyu">
+      <div
+        className="mx-auto w-full max-w-md px-3"
+        style={{ paddingBottom: "calc(14px + env(safe-area-inset-bottom))" }}
+      >
+        <div
+          className="relative overflow-hidden rounded-full p-1.5 ring-1 ring-white/40 shadow-[0_22px_60px_rgba(15,23,42,.22),inset_0_1px_0_rgba(255,255,255,.6)] [backdrop-filter:blur(28px)_saturate(180%)] [-webkit-backdrop-filter:blur(28px)_saturate(180%)]"
+          style={{ backgroundColor: "rgba(255,255,255,0.30)" }}
+        >
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-2 top-0 h-1/2 rounded-t-full bg-linear-to-b from-white/40 to-transparent"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/20"
+          />
+
+          <div className="relative grid grid-cols-5">
+            {ITEMS.map((it) => {
+              const active = isActive(pathname, it.href);
+              return (
+                <Link
+                  key={it.href}
+                  href={it.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cls(
+                    "group flex flex-col items-center justify-center gap-0.5 rounded-full px-1 py-1.5 text-[10.5px] font-extrabold tracking-tight transition",
+                    active ? "text-indigo-700" : "text-zinc-700/85 hover:text-zinc-900",
+                  )}
+                >
+                  <span
+                    className={cls(
+                      "grid h-11 w-11 place-items-center rounded-full transition",
+                      active
+                        ? "bg-white/72 ring-1 ring-white/55 shadow-[0_10px_30px_rgba(99,102,241,.25),inset_0_1px_0_rgba(255,255,255,.7)]"
+                        : "bg-transparent group-hover:bg-white/30",
+                    )}
+                  >
+                    {it.icon(active)}
+                  </span>
+                  <span className="leading-none">{it.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </nav>
   );
 }
-

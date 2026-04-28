@@ -70,9 +70,9 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
   }, [tab, active, ended, q]);
 
   return (
-    <aside className="flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border border-zinc-200/70 bg-white/95 shadow-[0_8px_28px_rgba(15,23,42,.06)]">
+    <aside className="flex h-full min-h-0 flex-col overflow-hidden bg-white md:rounded-3xl md:border md:border-zinc-200/70 md:bg-white/95 md:shadow-[0_8px_28px_rgba(15,23,42,.06)]">
       {/* Header */}
-      <div className="border-b border-zinc-200/70 px-4 pb-3 pt-4">
+      <div className="border-b border-zinc-200/70 px-4 pb-3 pt-4 md:rounded-t-3xl">
         <div className="flex items-center justify-between">
           <h2 className="text-[18px] font-black tracking-tight text-zinc-950">Chatlar</h2>
           <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-extrabold tracking-widest text-zinc-600">

@@ -194,8 +194,7 @@ const NAV_TOP: NavItem[] = [
 ];
 
 const NAV_BOTTOM: NavItem[] = [
-  { key: "profile", href: "/elonlarim", label: "E’lonlarim", icon: ICON.user },
-  { key: "help", href: "/help", label: "Yordam", icon: ICON.help },
+  { key: "profile", href: "/profile", label: "Profil", icon: ICON.user },
 ];
 
 export default function SidebarClient({ user }: { user: SidebarUser | null }) {
