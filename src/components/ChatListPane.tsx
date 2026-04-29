@@ -97,6 +97,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Qidirish"
+            inputMode="search"
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}

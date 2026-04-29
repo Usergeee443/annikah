@@ -246,7 +246,7 @@ export default function ChatRoom({
       {/* Messages (faqat shu qism scroll bo'ladi) */}
       <div
         ref={scrollRef}
-        className="chat-telegram-bg flex-1 min-h-0 overflow-y-auto px-3 py-4 sm:px-6"
+        className="chat-telegram-bg flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 py-4 pb-[calc(92px+env(safe-area-inset-bottom))] sm:px-6 lg:pb-4"
       >
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
@@ -346,10 +346,12 @@ export default function ChatRoom({
       </div>
 
       {/* Composer (qotib turadi) */}
-      <div
-        className="shrink-0 border-t border-zinc-200/70 bg-white/95 px-3 py-3 backdrop-blur sm:px-5"
-        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
-      >
+      <div className="lg:static lg:shrink-0 lg:border-t lg:border-zinc-200/70 lg:bg-white/95 lg:backdrop-blur">
+        {/* Mobile: fixed composer — klaviatura ustida turadi */} 
+        <div
+          className="fixed inset-x-0 bottom-0 z-20 border-t border-zinc-200/70 bg-white/95 px-3 py-3 backdrop-blur sm:px-5 lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:backdrop-blur-0"
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
+        >
         {isEnded ? (
           <div className="flex items-center justify-center rounded-2xl bg-zinc-100 px-4 py-3 text-[12.5px] font-extrabold text-zinc-600 ring-1 ring-zinc-200">
             Suhbat tugagan — yangi xabar yuborib bo‘lmaydi
@@ -405,6 +407,7 @@ export default function ChatRoom({
             {error}
           </div>
         ) : null}
+        </div>
       </div>
     </section>
   );

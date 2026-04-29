@@ -86,69 +86,91 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
 
   return (
     <div className="grid gap-5">
+      {/* Header: So'rovlar + Kelgan/Ketgan + qidiruv tugmasi (bosilganda input ochiladi) */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-center gap-3">
           <h1 className="text-[22px] font-black tracking-tight text-zinc-950 sm:text-[26px]">
             So‘rovlar
           </h1>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-extrabold tracking-widest text-zinc-600 ring-1 ring-zinc-200">
-            {tab === "sent" ? sent.length : received.length} ta
-          </span>
-        </div>
-        <form action="/requests" method="GET" className="flex items-center gap-2">
-          <input type="hidden" name="tab" value={tab} />
-          <div className="relative">
-            <svg
-              viewBox="0 0 24 24"
-              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
-              fill="none"
-            >
-              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.7" />
-              <path d="M20 20l-3.2-3.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-            </svg>
-            <input
-              name="q"
-              defaultValue={q}
-              placeholder="Qidirish..."
-              className="h-10 w-[220px] rounded-2xl bg-white pl-10 pr-3 text-[13px] font-semibold text-zinc-900 ring-1 ring-zinc-200 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 sm:w-[280px]"
-            />
-          </div>
-          {q ? (
+          <div className="inline-flex rounded-2xl bg-zinc-100/80 p-1 ring-1 ring-zinc-200">
             <Link
-              href={`/requests?tab=${tab}`}
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+              href={`/requests?tab=received${q ? `&q=${encodeURIComponent(q)}` : ""}`}
+              className={
+                "inline-flex h-9 items-center justify-center rounded-xl px-4 text-[12px] font-extrabold tracking-tight transition " +
+                (tab === "received"
+                  ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
+                  : "text-zinc-600 hover:text-zinc-900")
+              }
             >
-              Tozalash
+              Kelgan
             </Link>
-          ) : null}
-        </form>
-      </div>
-
-      <div className="flex justify-center">
-        <div className="inline-flex rounded-2xl bg-zinc-100/80 p-1 ring-1 ring-zinc-200">
-          <Link
-            href={`/requests?tab=received${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-            className={
-              "inline-flex h-9 items-center justify-center rounded-xl px-4 text-[12px] font-extrabold tracking-tight transition " +
-              (tab === "received"
-                ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
-                : "text-zinc-600 hover:text-zinc-900")
-            }
-          >
-            Kelgan ({received.length})
-          </Link>
-          <Link
-            href={`/requests?tab=sent${q ? `&q=${encodeURIComponent(q)}` : ""}`}
-            className={
-              "inline-flex h-9 items-center justify-center rounded-xl px-4 text-[12px] font-extrabold tracking-tight transition " +
-              (tab === "sent"
-                ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
-                : "text-zinc-600 hover:text-zinc-900")
-            }
-          >
-            Yuborilgan ({sent.length})
-          </Link>
+            <Link
+              href={`/requests?tab=sent${q ? `&q=${encodeURIComponent(q)}` : ""}`}
+              className={
+                "inline-flex h-9 items-center justify-center rounded-xl px-4 text-[12px] font-extrabold tracking-tight transition " +
+                (tab === "sent"
+                  ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
+                  : "text-zinc-600 hover:text-zinc-900")
+              }
+            >
+              Ketgan
+            </Link>
+          </div>
         </div>
+
+        <details className="group relative">
+          <summary className="list-none">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.8" />
+                <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </span>
+          </summary>
+          <div className="absolute right-0 z-20 mt-2 w-[min(92vw,360px)] rounded-3xl bg-white p-3 shadow-[0_18px_60px_rgba(15,23,42,.18)] ring-1 ring-zinc-200">
+            <form action="/requests" method="GET" className="grid gap-2">
+              <input type="hidden" name="tab" value={tab} />
+              <div className="relative">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
+                  fill="none"
+                >
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.7" />
+                  <path
+                    d="M20 20l-3.2-3.2"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <input
+                  name="q"
+                  defaultValue={q}
+                  placeholder="Qidirish…"
+                  inputMode="search"
+                  className="h-11 w-full rounded-2xl bg-zinc-100 pl-10 pr-3 text-[13px] font-semibold text-zinc-900 outline-none placeholder:text-zinc-400 transition focus:bg-white focus:shadow-[0_0_0_3px_rgba(24,24,27,.06)]"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                {q ? (
+                  <Link
+                    href={`/requests?tab=${tab}`}
+                    className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                  >
+                    Tozalash
+                  </Link>
+                ) : null}
+                <button
+                  type="submit"
+                  className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+                >
+                  Qidirish
+                </button>
+              </div>
+            </form>
+          </div>
+        </details>
       </div>
 
       {list.length === 0 ? (

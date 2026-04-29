@@ -81,6 +81,7 @@ function isActive(pathname: string, href: string) {
 export default function MobileBottomNav() {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     if (!open) return;
@@ -95,8 +96,18 @@ export default function MobileBottomNav() {
     setOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    function onHide(e: Event) {
+      const ce = e as CustomEvent<{ hidden?: boolean }>;
+      setHidden(Boolean(ce.detail?.hidden));
+    }
+    window.addEventListener("annikah:bottomnav", onHide as EventListener);
+    return () => window.removeEventListener("annikah:bottomnav", onHide as EventListener);
+  }, []);
+
   if (pathname.startsWith("/auth/") || pathname.startsWith("/adminpanel")) return null;
   if (pathname.startsWith("/chats/") && pathname !== "/chats") return null;
+  if (hidden) return null;
 
   return (
     <>
@@ -116,7 +127,7 @@ export default function MobileBottomNav() {
         aria-label="Pastki menyu"
       >
         <div
-          className="mx-auto w-full max-w-md px-4"
+          className="w-full px-4"
           style={{ paddingBottom: "calc(16px + env(safe-area-inset-bottom))" }}
         >
           {/* Sheet (above the FAB) */}
@@ -162,20 +173,24 @@ export default function MobileBottomNav() {
           </div>
 
           {/* Single FAB */}
-          <div className="flex justify-center">
+          <div className="flex justify-end">
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Menyuni yopish" : "Menyuni ochish"}
               className={cls(
-                "pointer-events-auto inline-flex h-14 w-14 items-center justify-center rounded-full ring-1 ring-white/45 text-zinc-950 transition shadow-[0_22px_50px_rgba(15,23,42,.28),inset_0_1px_0_rgba(255,255,255,.65)] [backdrop-filter:blur(28px)_saturate(180%)] [-webkit-backdrop-filter:blur(28px)_saturate(180%)]",
-                open ? "rotate-45" : "rotate-0",
+                "pointer-events-auto inline-flex h-14 w-14 items-center justify-center rounded-full ring-1 ring-white/45 text-zinc-950 transition [backdrop-filter:blur(28px)_saturate(180%)] [-webkit-backdrop-filter:blur(28px)_saturate(180%)]",
               )}
               style={{ backgroundColor: "rgba(255,255,255,0.42)" }}
             >
               <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" aria-hidden="true">
-                <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+                <path
+                  d="M4 7h16M4 12h16M4 17h16"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           </div>

@@ -266,12 +266,7 @@ function Chips({
 
 function Logo() {
   return (
-    <Link href="/" aria-label="Annikah" className="shrink-0 inline-flex items-center gap-1.5">
-      <span className="relative grid h-8 w-8 place-items-center rounded-2xl bg-linear-to-br from-rose-400 via-fuchsia-500 to-indigo-500 text-white shadow-[0_10px_24px_rgba(244,114,182,.32),inset_0_1px_0_rgba(255,255,255,.45)]">
-        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-          <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z" />
-        </svg>
-      </span>
+    <Link href="/" aria-label="Annikah" className="shrink-0 inline-flex items-center">
       <span className="text-[19px] font-black tracking-tight bg-linear-to-r from-rose-500 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
         Annikah
       </span>
@@ -301,6 +296,13 @@ export default function ListingsToolbar({
     return () => {
       document.body.style.overflow = orig;
     };
+  }, [open]);
+
+  // Mobil bottom nav'ni filter ochilganda yashirish
+  useEffect(() => {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    if (!isMobile) return;
+    window.dispatchEvent(new CustomEvent("annikah:bottomnav", { detail: { hidden: open } }));
   }, [open]);
 
   useEffect(() => {
@@ -335,7 +337,7 @@ export default function ListingsToolbar({
       {/* Top row */}
       <div className="flex items-center gap-2">
         {/* Desktopda sidebar’da logo bor — headerda yashiramiz */}
-        <div className="md:hidden">
+        <div className={cn("md:hidden", searchOpen ? "hidden" : "block")}>
           <Logo />
         </div>
 
