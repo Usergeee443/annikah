@@ -172,9 +172,9 @@ export default function ChatRoom({
   );
 
   return (
-    <section className="flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border border-zinc-200/70 bg-white shadow-[0_8px_28px_rgba(15,23,42,.06)]">
-      {/* Header */}
-      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-zinc-200/70 bg-white/95 px-4 py-3 backdrop-blur sm:px-5">
+    <section className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-white lg:rounded-3xl lg:border lg:border-zinc-200/70 lg:shadow-[0_8px_28px_rgba(15,23,42,.06)]">
+      {/* Sticky header (orqaga, ism, tugatish) */}
+      <header className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b border-zinc-200/70 bg-white/95 px-4 py-3 pt-[calc(env(safe-area-inset-top)+12px)] backdrop-blur lg:static lg:px-5 lg:pt-3">
         <div className="flex min-w-0 items-center gap-3">
           {/* back on mobile */}
           <Link
@@ -243,10 +243,10 @@ export default function ChatRoom({
         </div>
       </header>
 
-      {/* Messages */}
+      {/* Messages (faqat shu qism scroll bo'ladi) */}
       <div
         ref={scrollRef}
-        className="chat-telegram-bg flex-1 min-h-0 overflow-y-auto px-3 py-4 pb-24 sm:px-6"
+        className="chat-telegram-bg flex-1 min-h-0 overflow-y-auto px-3 py-4 sm:px-6"
       >
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
@@ -345,8 +345,11 @@ export default function ChatRoom({
         )}
       </div>
 
-      {/* Composer */}
-      <div className="sticky bottom-0 shrink-0 border-t border-zinc-200/70 bg-white/95 px-3 py-3 backdrop-blur sm:px-5">
+      {/* Composer (qotib turadi) */}
+      <div
+        className="shrink-0 border-t border-zinc-200/70 bg-white/95 px-3 py-3 backdrop-blur sm:px-5"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
+      >
         {isEnded ? (
           <div className="flex items-center justify-center rounded-2xl bg-zinc-100 px-4 py-3 text-[12.5px] font-extrabold text-zinc-600 ring-1 ring-zinc-200">
             Suhbat tugagan — yangi xabar yuborib bo‘lmaydi

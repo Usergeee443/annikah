@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import BoostButton from "@/components/BoostButton";
+import { getPricingConfig } from "@/lib/pricing";
 
 export default async function ReklamaTarifPage({
   params,
@@ -22,6 +23,7 @@ export default async function ReklamaTarifPage({
   }
 
   const boostActive = Boolean(listing.boostUntil && listing.boostUntil > now);
+  const pricing = await getPricingConfig();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-8">
@@ -75,9 +77,15 @@ export default async function ReklamaTarifPage({
             Paketni tanlang. To‘lov integratsiyasi keyingi bosqichda (demo narxlar).
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            <BoostButton listingId={listing.id} days={3} label="Mini boost" priceUzs={29000} />
-            <BoostButton listingId={listing.id} days={7} label="Standart boost" priceUzs={59000} />
-            <BoostButton listingId={listing.id} days={14} label="Premium boost" priceUzs={99000} />
+            {pricing.boosts.map((b) => (
+              <BoostButton
+                key={b.id}
+                listingId={listing.id}
+                days={b.days}
+                label={b.label}
+                priceUzs={b.priceUzs}
+              />
+            ))}
           </div>
         </div>
       )}

@@ -2,34 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-
-type Plan = "days15" | "month1" | "months3";
-
-const PLANS: Array<{
-  id: Plan;
-  title: string;
-  days: number;
-  priceUzs: number;
-  badge?: string;
-}> = [
-  { id: "days15", title: "15 kun", days: 15, priceUzs: 39000 },
-  { id: "month1", title: "1 oy", days: 30, priceUzs: 69000, badge: "Mashhur" },
-  { id: "months3", title: "3 oy", days: 90, priceUzs: 159000, badge: "Eng tejamli" },
-];
-
-function priceForPlan(plan: Plan) {
-  if (plan === "days15") return 3900;
-  if (plan === "month1") return 6900;
-  return 15900;
-}
-
-function expiresForPlan(plan: Plan) {
-  const d = new Date();
-  if (plan === "days15") d.setDate(d.getDate() + 15);
-  else if (plan === "month1") d.setMonth(d.getMonth() + 1);
-  else d.setMonth(d.getMonth() + 3);
-  return d;
-}
+import {
+  expiresForListingPlan,
+  getListingPlan,
+  getPricingConfig,
+  type ListingPlanId,
+} from "@/lib/pricing";
 
 export default async function NewListingPage() {
   const user = await requireUser();
@@ -38,16 +16,20 @@ export default async function NewListingPage() {
     redirect("/profile/wizard");
   }
 
+  const pricing = await getPricingConfig();
+  const PLANS = pricing.listingPlans;
+
   async function create(formData: FormData) {
     "use server";
     const user = await requireUser();
     const profile = await db.profile.findUnique({ where: { userId: user.id } });
     if (!profile?.isComplete) redirect("/profile/wizard");
 
-    const plan = (String(formData.get("plan") || "month1") as Plan);
-
-    const priceCents = priceForPlan(plan);
-    const expiresAt = expiresForPlan(plan);
+    const cfg = await getPricingConfig();
+    const planId = String(formData.get("plan") || "month1") as ListingPlanId;
+    const plan = getListingPlan(cfg, planId);
+    const priceCents = plan.priceUzs;
+    const expiresAt = expiresForListingPlan(plan);
 
     const listing = await db.listing.create({
       data: {
@@ -56,7 +38,7 @@ export default async function NewListingPage() {
         active: false,
         moderationStatus: "pending",
         moderatedAt: null,
-        plan,
+        plan: plan.id,
         priceCents,
         expiresAt,
         boostUntil: null,
@@ -131,13 +113,9 @@ export default async function NewListingPage() {
                 ) : null}
                 <div className="text-[14px] font-extrabold tracking-tight text-zinc-950">{p.title}</div>
                 <div className="mt-1 text-[11px] font-bold text-zinc-600">{p.days} kun ko‘rinadi</div>
-                <div className="mt-1 text-[11px] font-semibold text-zinc-500">
-                  {p.id === "days15"
-                    ? "Tez start · oddiy joylash"
-                    : p.id === "month1"
-                      ? "Eng mashhur · balans"
-                      : "Ko‘p ko‘rinish · tejamli"}
-                </div>
+                {p.description ? (
+                  <div className="mt-1 text-[11px] font-semibold text-zinc-500">{p.description}</div>
+                ) : null}
                 <div className="mt-3 text-xl font-extrabold tracking-tight text-zinc-950">
                   {p.priceUzs.toLocaleString()} <span className="text-[12px] font-bold text-zinc-600">so‘m</span>
                 </div>

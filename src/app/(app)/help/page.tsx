@@ -19,21 +19,7 @@ export default async function HelpPage() {
   });
 
   return (
-    <div className="grid gap-4">
-      <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">YORDAM</div>
-            <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">
-              Adminlarga yozing
-            </h1>
-            <p className="mt-1 text-[13px] font-medium text-zinc-600">
-              Savol yoki muammo bo‘lsa shu yerda yozing. Javoblar ham shu chat orqali keladi.
-            </p>
-          </div>
-        </div>
-      </div>
-
+    <div className="-mx-4 -mt-4 flex min-h-[calc(100dvh-env(safe-area-inset-bottom))] flex-col overflow-hidden bg-white/70 sm:-mx-5 sm:-mt-5 md:m-0 md:min-h-0 md:rounded-3xl md:border md:border-zinc-200/70 md:bg-white md:shadow-[0_8px_28px_rgba(15,23,42,.05)]">
       <SupportRoom
         initialMessages={messages.map((m) => ({
           id: m.id,

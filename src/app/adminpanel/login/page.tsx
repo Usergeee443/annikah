@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="flex min-h-[calc(100dvh-8rem)] items-center justify-center">
-      <div className="w-full max-w-md rounded-3xl border border-zinc-200/70 bg-white/80 p-6 shadow-[0_18px_36px_rgba(15,23,42,.10)] backdrop-blur">
+      <div className="w-full max-w-md rounded-3xl border border-zinc-200/70 bg-white p-6 shadow-[0_18px_36px_rgba(15,23,42,.10)]">
         <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">ADMINPANEL</div>
         <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">Kirish</h1>
         <p className="mt-1 text-[13px] font-medium text-zinc-600">

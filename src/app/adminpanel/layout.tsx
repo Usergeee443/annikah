@@ -1,8 +1,25 @@
 import Link from "next/link";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { redirect } from "next/navigation";
+import { clearAdminSession, getAdminSession } from "@/lib/adminAuth";
+
+const NAV: Array<{ href: string; label: string }> = [
+  { href: "/adminpanel", label: "Statistika" },
+  { href: "/adminpanel/users", label: "Foydalanuvchilar" },
+  { href: "/adminpanel/listings", label: "E’lonlar" },
+  { href: "/adminpanel/moderation", label: "Moderatsiya" },
+  { href: "/adminpanel/support", label: "Support" },
+  { href: "/adminpanel/pricing", label: "Narxlar" },
+  { href: "/adminpanel/admins", label: "Adminlar" },
+];
+
+async function logoutAction() {
+  "use server";
+  await clearAdminSession();
+  redirect("/adminpanel/login");
+}
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const authed = await isAdminAuthed();
+  const session = await getAdminSession();
 
   return (
     <div className="min-h-screen bg-[#f4f4f5]">
@@ -12,31 +29,24 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             Admin Panel
           </Link>
           <div className="flex flex-wrap items-center gap-2">
-            <Link
-              href="/adminpanel"
-              className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
-              Statistika
-            </Link>
-            <Link
-              href="/adminpanel/support"
-              className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
-              Support chatlar
-            </Link>
-            <Link
-              href="/adminpanel/moderation"
-              className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
-              Moderatsiya
-            </Link>
-            {authed ? (
-              <form
-                action={async () => {
-                  "use server";
-                  await fetch("/api/admin/auth/logout", { method: "POST" }).catch(() => null);
-                }}
-              >
+            {session
+              ? NAV.map((it) => (
+                  <Link
+                    key={it.href}
+                    href={it.href}
+                    prefetch
+                    className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                  >
+                    {it.label}
+                  </Link>
+                ))
+              : null}
+            {session ? (
+              <form action={logoutAction}>
+                <span className="mr-2 hidden text-[11.5px] font-extrabold text-zinc-500 sm:inline">
+                  {session.username}
+                  {session.role === "super" ? " · super" : ""}
+                </span>
                 <button
                   type="submit"
                   className="inline-flex h-9 items-center justify-center rounded-2xl bg-rose-50 px-3 text-[12px] font-extrabold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100"
@@ -59,4 +69,3 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     </div>
   );
 }
-

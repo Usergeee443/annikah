@@ -2,11 +2,19 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import ExtraListingWizard from "@/components/ExtraListingWizard";
+import {
+  expiresForListingPlan,
+  getListingPlan,
+  getPricingConfig,
+  type ListingPlanId,
+} from "@/lib/pricing";
 
 export default async function ExtraListingPage() {
   const user = await requireUser();
   const profile = await db.profile.findUnique({ where: { userId: user.id } });
   if (!profile?.isComplete) redirect("/profile/wizard");
+
+  const initialPricing = await getPricingConfig();
 
   async function create(data: any) {
     "use server";
@@ -57,18 +65,13 @@ export default async function ExtraListingPage() {
       partnerRegions: String(data?.partnerRegions || "").trim() || null,
       partnerCities: String(data?.partnerCities || "").trim() || null,
       about: String(data?.about || "").trim(),
-      plan: String(data?.plan || "month1") as "days15" | "month1" | "months3",
+      plan: String(data?.plan || "month1") as ListingPlanId,
     };
 
-    const priceCents =
-      safe.plan === "days15" ? 3900 : safe.plan === "month1" ? 6900 : 15900;
-    const expiresAt = (() => {
-      const d = new Date();
-      if (safe.plan === "days15") d.setDate(d.getDate() + 15);
-      else if (safe.plan === "month1") d.setMonth(d.getMonth() + 1);
-      else d.setMonth(d.getMonth() + 3);
-      return d;
-    })();
+    const cfg = await getPricingConfig();
+    const plan = getListingPlan(cfg, safe.plan);
+    const priceCents = plan.priceUzs;
+    const expiresAt = expiresForListingPlan(plan);
 
     const listing = await db.listing.create({
       data: {
@@ -97,6 +100,20 @@ export default async function ExtraListingPage() {
     redirect(`/listings/${listing.id}`);
   }
 
-  return <ExtraListingWizard initialProfile={profile} category={profile.category} onCreate={create} />;
+  return (
+    <ExtraListingWizard
+      initialProfile={profile}
+      category={profile.category}
+      onCreate={create}
+      plans={initialPricing.listingPlans.map((p) => ({
+        id: p.id,
+        title: p.title,
+        days: p.days,
+        priceUzs: p.priceUzs,
+        badge: p.badge,
+        description: p.description,
+      }))}
+    />
+  );
 }
 

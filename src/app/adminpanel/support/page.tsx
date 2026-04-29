@@ -28,7 +28,7 @@ export default async function AdminSupportListPage({ searchParams }: { searchPar
 
   return (
     <div className="grid gap-4">
-      <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur">
+      <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">SUPPORT</div>
@@ -65,7 +65,7 @@ export default async function AdminSupportListPage({ searchParams }: { searchPar
       </div>
 
       {threads.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-zinc-300 bg-white/70 p-10 text-center shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur">
+        <div className="rounded-3xl border border-dashed border-zinc-300 bg-white p-10 text-center shadow-[0_8px_28px_rgba(15,23,42,.05)]">
           <div className="text-[18px] font-black tracking-tight text-zinc-950">Hech narsa yo‘q</div>
           <div className="mt-1 text-[13px] font-medium text-zinc-600">
             {status === "open" ? "Ochiq support chat yo‘q." : "Yopilgan support chat yo‘q."}
@@ -81,7 +81,7 @@ export default async function AdminSupportListPage({ searchParams }: { searchPar
               <Link
                 key={t.id}
                 href={`/adminpanel/support/${t.id}`}
-                className="block rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur transition hover:shadow-[0_18px_36px_rgba(15,23,42,.10)]"
+                className="block rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] transition hover:shadow-[0_18px_36px_rgba(15,23,42,.10)]"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">

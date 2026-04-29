@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function ChatsIndexPage() {
   return (
-    <div className="-m-4 flex min-h-[calc(100dvh-84px-env(safe-area-inset-bottom))] items-center justify-center bg-white/70 sm:-m-5 md:m-0 md:min-h-0 md:rounded-3xl md:border md:border-zinc-200/70 md:shadow-[0_8px_28px_rgba(15,23,42,.05)]">
+    <div className="flex h-full min-h-0 flex-1 items-center justify-center bg-white lg:rounded-3xl lg:border lg:border-zinc-200/70 lg:bg-white/70 lg:shadow-[0_8px_28px_rgba(15,23,42,.05)]">
       <div className="flex flex-col items-center gap-4 px-8 py-12 text-center">
         <div className="relative">
           <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-linear-to-br from-sky-100 to-emerald-100 ring-1 ring-zinc-200/80">

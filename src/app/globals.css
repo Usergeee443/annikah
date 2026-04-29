@@ -55,6 +55,25 @@ a,
   display: none;
 }
 
+/* TOC anchor click — qisqa ringli pulse highlight */
+.scroll-pulse {
+  animation: scroll-pulse 1.4s ease-out 1;
+}
+@keyframes scroll-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.55);
+    background-color: rgba(99, 102, 241, 0.08);
+  }
+  60% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+    background-color: rgba(99, 102, 241, 0.04);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    background-color: transparent;
+  }
+}
+
 /* Telegram-uslubidagi chat fon patterni (yengil). */
 .chat-telegram-bg {
   /* WhatsApp/Telegram light'ga yaqin: ikonchasiz, yumshoq warm beige + yengil grain */

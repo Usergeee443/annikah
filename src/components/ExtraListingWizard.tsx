@@ -5,10 +5,19 @@ import { useMemo, useRef, useState, useTransition } from "react";
 
 type Plan = "days15" | "month1" | "months3";
 
-const PLANS: Array<{ id: Plan; title: string; days: number; priceUzs: number; badge?: string; perks: string[] }> = [
-  { id: "days15", title: "15 kun", days: 15, priceUzs: 39000, perks: ["Oddiy joylash", "15 kun faol"] },
-  { id: "month1", title: "1 oy", days: 30, priceUzs: 69000, badge: "Mashhur", perks: ["Oddiy joylash", "30 kun faol", "Ko‘proq ko‘rish"] },
-  { id: "months3", title: "3 oy", days: 90, priceUzs: 159000, badge: "Tejamli", perks: ["Oddiy joylash", "90 kun faol", "Eng tejamli narx"] },
+export type WizardPlan = {
+  id: Plan;
+  title: string;
+  days: number;
+  priceUzs: number;
+  badge?: string;
+  description?: string;
+};
+
+const DEFAULT_PLANS: WizardPlan[] = [
+  { id: "days15", title: "15 kun", days: 15, priceUzs: 39000 },
+  { id: "month1", title: "1 oy", days: 30, priceUzs: 69000, badge: "Mashhur" },
+  { id: "months3", title: "3 oy", days: 90, priceUzs: 159000, badge: "Tejamli" },
 ];
 
 type AnyProfile = any;
@@ -55,11 +64,14 @@ export default function ExtraListingWizard({
   initialProfile,
   category,
   onCreate,
+  plans,
 }: {
   initialProfile: AnyProfile;
   category: string;
   onCreate: (data: any) => Promise<any>;
+  plans?: WizardPlan[];
 }) {
+  const PLANS = plans && plans.length > 0 ? plans : DEFAULT_PLANS;
   const [step, setStep] = useState<0 | 1>(0);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
@@ -240,18 +252,13 @@ export default function ExtraListingWizard({
                   ) : null}
                   <div className="text-[14px] font-extrabold tracking-tight text-zinc-950">{p.title}</div>
                   <div className="mt-1 text-[11px] font-bold text-zinc-600">{p.days} kun ko‘rinadi</div>
+                  {p.description ? (
+                    <div className="mt-1 text-[11px] font-semibold text-zinc-500">{p.description}</div>
+                  ) : null}
                   <div className="mt-3 text-xl font-extrabold tracking-tight text-zinc-950">
                     {p.priceUzs.toLocaleString()}{" "}
                     <span className="text-[12px] font-bold text-zinc-600">so‘m</span>
                   </div>
-                  <ul className="mt-3 grid gap-1 text-[11px] font-semibold text-zinc-600">
-                    {p.perks.map((x) => (
-                      <li key={x} className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        <span>{x}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </button>
               ))}
             </div>

@@ -41,15 +41,13 @@ export default async function ProfileHubPage() {
   return (
     <div className="grid gap-5">
       <div>
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">PROFIL</div>
         <h1 className="mt-1 text-[26px] font-black tracking-tight text-zinc-950">Profil</h1>
       </div>
 
       {/* Account mini */}
-      <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-sm backdrop-blur">
+      <div className="rounded-3xl bg-white p-5 backdrop-blur">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-[12px] font-extrabold tracking-widest text-zinc-500">AKKAUNT</div>
             <div className="mt-2 text-[15px] font-black tracking-tight text-zinc-950">Hisob ma’lumotlari</div>
             <div className="mt-1 text-[13px] font-semibold text-zinc-600">
               {authProvider === "telegram"

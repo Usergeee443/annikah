@@ -40,8 +40,10 @@ function timeLeftLabel(iso: string): string {
   if (ms <= 0) return "Tugagan";
   const days = Math.floor(ms / (24 * 60 * 60 * 1000));
   const hours = Math.floor((ms % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-  if (days > 0) return `${days} kun qoldi`;
-  return `${hours} s qoldi`;
+  if (days > 0) return `${days} kun`;
+  if (hours > 0) return `${hours} soat`;
+  const mins = Math.max(1, Math.floor(ms / (60 * 1000)));
+  return `${mins} daq`;
 }
 
 export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
@@ -70,11 +72,11 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
   }, [tab, active, ended, q]);
 
   return (
-    <aside className="flex h-full min-h-0 flex-col overflow-hidden bg-white md:rounded-3xl md:border md:border-zinc-200/70 md:bg-white/95 md:shadow-[0_8px_28px_rgba(15,23,42,.06)]">
-      {/* Header */}
-      <div className="border-b border-zinc-200/70 px-4 pb-3 pt-4 md:rounded-t-3xl">
-        {/* Desktop title (mobil yashirin) */}
-        <div className="hidden items-center justify-between md:flex">
+    <aside className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-white lg:rounded-3xl lg:border lg:border-zinc-200/70 lg:bg-white/95 lg:shadow-[0_8px_28px_rgba(15,23,42,.06)]">
+      {/* Sticky header */}
+      <div className="sticky top-0 z-10 shrink-0 border-b border-zinc-200/70 bg-white/95 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+12px)] backdrop-blur lg:static lg:rounded-t-3xl lg:pt-4">
+        {/* Desktop title (mobilda yashirin) */}
+        <div className="hidden items-center justify-between lg:flex">
           <h2 className="text-[18px] font-black tracking-tight text-zinc-950">Chatlar</h2>
           <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-extrabold tracking-widest text-zinc-600">
             {chats.length}
@@ -82,7 +84,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
         </div>
 
         {/* Search */}
-        <div className="relative md:mt-3">
+        <div className="relative lg:mt-3">
           <svg
             viewBox="0 0 24 24"
             className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
@@ -152,8 +154,8 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
         </div>
       </div>
 
-      {/* List */}
-      <div className="flex-1 min-h-0 overflow-y-auto py-1.5">
+      {/* List (faqat shu qism scroll bo'ladi) */}
+      <div className="flex-1 min-h-0 overflow-y-auto pb-[calc(env(safe-area-inset-bottom)+96px)] lg:pb-2">
         {visible.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-2 px-6 py-12 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400">
@@ -184,13 +186,14 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                 c.category === "kelinlar"
                   ? "from-rose-300 to-rose-700"
                   : "from-sky-300 to-blue-700";
+              const leftLabel = c.ended ? "Tugagan" : timeLeftLabel(c.endsAt);
               return (
                 <li key={c.id}>
                   <Link
                     href={`/chats/${c.id}`}
                     className={
-                      "flex items-center gap-3 px-3 py-2.5 transition " +
-                      (isActive ? "bg-zinc-100" : "hover:bg-zinc-50")
+                      "flex items-center gap-3 px-4 py-3 transition " +
+                      (isActive ? "bg-zinc-100" : "active:bg-zinc-100 hover:bg-zinc-50")
                     }
                   >
                     {/* Avatar */}
@@ -205,16 +208,16 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
 
                     {/* Texts */}
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <div className="truncate text-[13.5px] font-extrabold tracking-tight text-zinc-950">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0 truncate text-[14px] font-extrabold tracking-tight text-zinc-950">
                           {c.otherName}
                         </div>
                         <div className="shrink-0 text-[10.5px] font-bold text-zinc-400">
                           {formatShortTime(c.lastAt || c.createdAt)}
                         </div>
                       </div>
-                      <div className="mt-0.5 flex items-center justify-between gap-2">
-                        <div className="truncate text-[12px] font-medium text-zinc-600">
+                      <div className="mt-1 flex items-center justify-between gap-2">
+                        <div className="min-w-0 truncate text-[12.5px] font-medium text-zinc-600">
                           {c.lastMessage ? (
                             <>
                               {c.lastFromMe ? (
@@ -228,13 +231,19 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                         </div>
                         <span
                           className={
-                            "shrink-0 rounded-full px-1.5 py-0.5 text-[9.5px] font-extrabold uppercase tracking-[0.12em] ring-1 " +
+                            "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-extrabold ring-1 " +
                             (c.ended
                               ? "bg-zinc-100 text-zinc-600 ring-zinc-200"
                               : "bg-emerald-50 text-emerald-700 ring-emerald-200")
                           }
                         >
-                          {c.ended ? "Tugagan" : timeLeftLabel(c.endsAt)}
+                          <span
+                            className={
+                              "h-1.5 w-1.5 rounded-full " +
+                              (c.ended ? "bg-zinc-400" : "bg-emerald-500")
+                            }
+                          />
+                          {leftLabel}
                         </span>
                       </div>
                     </div>
@@ -244,11 +253,6 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             })}
           </ul>
         )}
-      </div>
-
-      {/* Footer note */}
-      <div className="border-t border-zinc-200/70 bg-zinc-50/60 px-4 py-2.5 text-[10.5px] font-bold text-zinc-500">
-        Suhbatlar 7 kun davom etadi · ichki xabar himoyasi yoqilgan
       </div>
     </aside>
   );

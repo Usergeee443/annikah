@@ -117,28 +117,7 @@ export default function SupportRoom({
   }
 
   return (
-    <section className="flex h-[calc(100dvh-10rem)] min-h-[520px] flex-col overflow-hidden rounded-3xl border border-zinc-200/70 bg-white shadow-[0_8px_28px_rgba(15,23,42,.06)]">
-      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-zinc-200/70 bg-white/95 px-4 py-3 backdrop-blur sm:px-5">
-        <div className="min-w-0">
-          <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">YORDAM</div>
-          <div className="mt-1 truncate text-[15px] font-extrabold tracking-tight text-zinc-950">
-            Adminlarga yozish
-          </div>
-          <div className="mt-0.5 text-[11.5px] font-medium text-zinc-500">
-            Savolingizni yozing — adminlar shu chatdan javob beradi.
-          </div>
-        </div>
-        <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-extrabold text-emerald-800 ring-1 ring-emerald-200">
-          Online
-        </span>
-      </header>
-
-      <div className="shrink-0 border-b border-amber-200/70 bg-amber-50/70 px-4 py-2 sm:px-5">
-        <div className="text-[11px] font-bold text-amber-900">
-          Shaxsiy ma’lumotlar yoki telefon raqamingizni oshkora yozmang. Kerak bo‘lsa admin so‘raydi.
-        </div>
-      </div>
-
+    <section className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-transparent">
       <div
         ref={scrollRef}
         className="flex-1 min-h-0 overflow-y-auto bg-[radial-gradient(circle_at_50%_-10%,#eef2ff_0%,#f4f4f5_55%)] px-3 py-4 sm:px-6"
@@ -228,7 +207,10 @@ export default function SupportRoom({
         </div>
       </div>
 
-      <div className="shrink-0 border-t border-zinc-200/70 bg-white px-3 py-3 sm:px-5">
+      <div
+        className="shrink-0 border-t border-zinc-200/70 bg-white px-3 py-3 sm:px-5"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
+      >
         <div className="mx-auto flex w-full max-w-3xl items-end gap-2">
           <div className="flex flex-1 items-end rounded-2xl bg-zinc-100 px-3 py-1.5 transition focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(24,24,27,.06)] focus-within:ring-1 focus-within:ring-zinc-200">
             <textarea

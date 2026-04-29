@@ -3,8 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
-import FavoriteButton from "@/components/FavoriteButton";
-import RequestButton from "@/components/RequestButton";
+import ListingSidebar from "@/components/ListingSidebar";
 import ListingStatsDrawer from "@/components/ListingStatsDrawer";
 
 function maritalLabel(v: string) {
@@ -100,35 +99,136 @@ function smokesLabel(v: boolean | null) {
   return v ? "Chekadi" : "Chekmaydi";
 }
 
+type SectionAccent =
+  | "indigo"
+  | "rose"
+  | "amber"
+  | "emerald"
+  | "sky"
+  | "fuchsia"
+  | "violet"
+  | "zinc";
+
+const ACCENTS: Record<
+  SectionAccent,
+  { iconBg: string; ring: string; hint: string; tint: string }
+> = {
+  indigo: {
+    iconBg: "bg-linear-to-br from-indigo-400 to-indigo-600 text-white shadow-[0_8px_18px_rgba(79,70,229,.22)]",
+    ring: "ring-indigo-100",
+    hint: "text-indigo-700",
+    tint: "from-indigo-50/60 to-white",
+  },
+  rose: {
+    iconBg: "bg-linear-to-br from-rose-400 to-rose-600 text-white shadow-[0_8px_18px_rgba(244,63,94,.22)]",
+    ring: "ring-rose-100",
+    hint: "text-rose-700",
+    tint: "from-rose-50/60 to-white",
+  },
+  amber: {
+    iconBg: "bg-linear-to-br from-amber-400 to-orange-500 text-white shadow-[0_8px_18px_rgba(251,146,60,.24)]",
+    ring: "ring-amber-100",
+    hint: "text-amber-800",
+    tint: "from-amber-50/60 to-white",
+  },
+  emerald: {
+    iconBg: "bg-linear-to-br from-emerald-400 to-emerald-600 text-white shadow-[0_8px_18px_rgba(16,185,129,.22)]",
+    ring: "ring-emerald-100",
+    hint: "text-emerald-700",
+    tint: "from-emerald-50/60 to-white",
+  },
+  sky: {
+    iconBg: "bg-linear-to-br from-sky-400 to-blue-600 text-white shadow-[0_8px_18px_rgba(14,165,233,.22)]",
+    ring: "ring-sky-100",
+    hint: "text-sky-700",
+    tint: "from-sky-50/60 to-white",
+  },
+  fuchsia: {
+    iconBg: "bg-linear-to-br from-fuchsia-400 to-purple-600 text-white shadow-[0_8px_18px_rgba(217,70,239,.22)]",
+    ring: "ring-fuchsia-100",
+    hint: "text-fuchsia-700",
+    tint: "from-fuchsia-50/60 to-white",
+  },
+  violet: {
+    iconBg: "bg-linear-to-br from-violet-400 to-violet-600 text-white shadow-[0_8px_18px_rgba(139,92,246,.22)]",
+    ring: "ring-violet-100",
+    hint: "text-violet-700",
+    tint: "from-violet-50/60 to-white",
+  },
+  zinc: {
+    iconBg: "bg-linear-to-br from-zinc-400 to-zinc-600 text-white shadow-[0_8px_18px_rgba(63,63,70,.22)]",
+    ring: "ring-zinc-100",
+    hint: "text-zinc-700",
+    tint: "from-zinc-50/60 to-white",
+  },
+};
+
 function Section({
+  id,
   title,
   hint,
+  accent,
+  icon,
   children,
 }: {
+  id?: string;
   title: string;
   hint?: string;
+  accent: SectionAccent;
+  icon: ReactNode;
   children: ReactNode;
 }) {
+  const a = ACCENTS[accent];
   return (
-    <section className="rounded-2xl bg-white p-4 ring-1 ring-zinc-200/90 sm:p-5">
-      <div className="flex items-end justify-between gap-2">
-        <h2 className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">{title}</h2>
-        {hint ? (
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-zinc-400">{hint}</span>
-        ) : null}
+    <section
+      id={id}
+      className={
+        "scroll-mt-24 overflow-hidden rounded-3xl bg-white ring-1 shadow-[0_8px_28px_rgba(15,23,42,.05)] " +
+        a.ring
+      }
+    >
+      <div className={"flex items-center gap-3 bg-linear-to-r p-4 sm:p-5 " + a.tint}>
+        <span
+          className={"grid h-11 w-11 shrink-0 place-items-center rounded-2xl " + a.iconBg}
+          aria-hidden
+        >
+          {icon}
+        </span>
+        <div className="min-w-0">
+          {hint ? (
+            <div
+              className={
+                "text-[10px] font-extrabold uppercase tracking-[0.18em] " + a.hint
+              }
+            >
+              {hint}
+            </div>
+          ) : null}
+          <h2 className="mt-0.5 text-[15px] font-black tracking-tight text-zinc-950">
+            {title}
+          </h2>
+        </div>
       </div>
-      <div className="mt-4">{children}</div>
+      <div className="border-t border-zinc-100 p-4 sm:p-5">{children}</div>
     </section>
   );
 }
 
-function Dl({ rows }: { rows: Array<{ k: string; v: string }> }) {
+function Dl({
+  rows,
+  highlightKey,
+}: {
+  rows: Array<{ k: string; v: string; id?: string }>;
+  highlightKey?: string;
+}) {
   return (
     <dl className="grid gap-2.5 sm:grid-cols-2">
       {rows.map((r) => (
         <div
           key={r.k}
-          className="flex items-start justify-between gap-3 rounded-2xl bg-zinc-50/90 px-3.5 py-2.5 ring-1 ring-zinc-200/80"
+          id={r.id}
+          data-key={highlightKey}
+          className="scroll-mt-28 flex items-start justify-between gap-3 rounded-2xl bg-zinc-50/90 px-3.5 py-2.5 ring-1 ring-zinc-200/80"
         >
           <dt className="text-[11px] font-bold text-zinc-500">{r.k}</dt>
           <dd className="max-w-[65%] text-right text-[12.5px] font-extrabold tracking-tight text-zinc-950">
@@ -138,6 +238,114 @@ function Dl({ rows }: { rows: Array<{ k: string; v: string }> }) {
       ))}
     </dl>
   );
+}
+
+function ICONS() {
+  return {
+    user: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.7" />
+        <path d="M4 21a8 8 0 0 1 16 0" stroke="currentColor" strokeWidth="1.7" />
+      </svg>
+    ),
+    note: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+        <path
+          d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path d="M14 3v6h6" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+        <path d="M9 13h6M9 17h4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      </svg>
+    ),
+    rings: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+        <circle cx="9" cy="14" r="5" stroke="currentColor" strokeWidth="1.7" />
+        <circle cx="16" cy="14" r="5" stroke="currentColor" strokeWidth="1.7" />
+        <path
+          d="M9 9 7 5h4l-2 4M16 9l-2-4h4l-2 4"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+    cap: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+        <path
+          d="M12 3 1 9l11 6 9-4.91V17"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path d="M5 12v5a7 7 0 0 0 14 0v-5" stroke="currentColor" strokeWidth="1.7" />
+      </svg>
+    ),
+    mosque: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+        <path
+          d="M12 3c2 2 4 4 4 7H8c0-3 2-5 4-7z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M4 21V12a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v9"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M10 21v-4a2 2 0 0 1 4 0v4"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path d="M2 21h20" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      </svg>
+    ),
+    users: (
+      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
+        <circle cx="9" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.7" />
+        <circle cx="17" cy="9" r="2.5" stroke="currentColor" strokeWidth="1.7" />
+        <path d="M3 21a6 6 0 0 1 12 0" stroke="currentColor" strokeWidth="1.7" />
+        <path d="M15 21a4 4 0 0 1 6.5-3.1" stroke="currentColor" strokeWidth="1.7" />
+      </svg>
+    ),
+    pin: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+        <path
+          d="M12 22s-7-7.58-7-12a7 7 0 1 1 14 0c0 4.42-7 12-7 12z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+        />
+        <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.7" />
+      </svg>
+    ),
+    ruler: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+        <path
+          d="m3 17 14-14 4 4L7 21z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+        <path d="m6 14 2 2M9 11l3 3M12 8l2 2" stroke="currentColor" strokeWidth="1.7" />
+      </svg>
+    ),
+    star: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+        <path
+          d="m12 3 2.6 5.6L20 9.4l-4 4 1 5.6L12 16.8l-5 2.2 1-5.6-4-4 5.4-.8z"
+          stroke="currentColor"
+          strokeWidth="1.7"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
+  };
 }
 
 export default async function ListingDetailPage({
@@ -198,205 +406,250 @@ export default async function ListingDetailPage({
         ? "Rad etilgan. Profilni yangilab qayta yuboring."
         : null;
 
+  const I = ICONS();
+
+  const tocItems = [
+    ...(listing.about
+      ? [{ id: "about", label: "O‘zi haqida", icon: I.note }]
+      : []),
+    { id: "main", label: "Asosiy ma’lumotlar", icon: I.user },
+    { id: "row-address", label: "Manzil", icon: I.pin },
+    { id: "row-physical", label: "Bo‘y / vazn", icon: I.ruler },
+    { id: "marital", label: "Oilaviy holat", icon: I.rings },
+    { id: "education", label: "Ta’lim va kasb", icon: I.cap },
+    { id: "religion", label: "Diniy ma’lumotlar", icon: I.mosque },
+    { id: "partner", label: "Juftga talablar", icon: I.users },
+  ];
+
   return (
     <div className="min-h-screen bg-[#f4f4f5] text-zinc-950">
-      <header className="sticky top-0 z-30 border-b border-zinc-200/80 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-4 sm:px-5">
-          <Link href="/" className="text-[15px] font-black tracking-tight text-zinc-950">
-            Annikah
-          </Link>
+      {/* Tozalangan, rangsiz header — orqaga · Annikah · placeholder */}
+      <header className="sticky top-0 z-30 bg-transparent">
+        <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
           <Link
             href="/"
-            className="inline-flex h-9 items-center gap-1.5 rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+            aria-label="Orqaga"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/70 text-zinc-900 ring-1 ring-zinc-200/80 backdrop-blur transition hover:bg-white"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
               <path
-                d="M19 12H5M12 5l-7 7 7 7"
+                d="m15 6-6 6 6 6"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </svg>
-            E’lonlar
           </Link>
+          <Link href="/" aria-label="Annikah" className="inline-flex items-center gap-1.5">
+            <span className="relative grid h-8 w-8 place-items-center rounded-2xl bg-linear-to-br from-rose-400 via-fuchsia-500 to-indigo-500 text-white shadow-[0_10px_24px_rgba(244,114,182,.32),inset_0_1px_0_rgba(255,255,255,.45)]">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden>
+                <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z" />
+              </svg>
+            </span>
+            <span className="text-[19px] font-black tracking-tight bg-linear-to-r from-rose-500 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
+              Annikah
+            </span>
+          </Link>
+          <span className="h-10 w-10" aria-hidden />
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl space-y-4 px-4 py-5 sm:space-y-5 sm:px-5 sm:py-6">
+      <main className="mx-auto max-w-[1400px] px-4 pb-24 pt-2 sm:px-6 lg:px-8 lg:pb-12">
         {isOwner && listing.moderationStatus !== "approved" ? (
-          <div className="rounded-2xl bg-amber-50 px-4 py-3 text-[12.5px] font-semibold leading-relaxed text-amber-950 ring-1 ring-amber-200">
+          <div className="mb-4 rounded-2xl bg-amber-50 px-4 py-3 text-[12.5px] font-semibold leading-relaxed text-amber-950 ring-1 ring-amber-200">
             <span className="font-extrabold">Holat: </span>
             {modHint}
           </div>
         ) : null}
 
-        {/* Hero — ListingCard bilan bir xil to‘rtburchak gradient */}
-        <section className="overflow-hidden rounded-2xl bg-white ring-1 ring-zinc-200/80 shadow-[0_2px_18px_rgba(15,23,42,.04)]">
-          <div style={{ containerType: "inline-size" }} className="relative aspect-5/4 w-full sm:aspect-video">
-            <div className={`absolute inset-0 bg-linear-to-br ${heroGradient}`}>
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_22%,rgba(255,255,255,.3),transparent_55%)]"
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.5)_0%,transparent_50%)]"
-              />
+        <div className="grid gap-5 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[360px_minmax(0,1fr)] xl:gap-10">
+          {/* Left sticky sidebar (desktop) + mobile bottom action bar */}
+          <ListingSidebar
+            listingId={listing.id}
+            name={listing.name}
+            age={listing.age}
+            category={listing.category}
+            city={listing.city}
+            country={listing.country}
+            authed={!!user}
+            isOwner={isOwner}
+            isFav={isFav}
+            requestStatus={
+              (myRequest?.status as
+                | "pending"
+                | "accepted"
+                | "rejected"
+                | "cancelled"
+                | undefined) || "none"
+            }
+            chatId={myRequest?.chat?.id || null}
+            tocItems={tocItems}
+          />
 
-              <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
-                {isBoosted ? (
-                  <span className="inline-flex h-7 items-center gap-1 rounded-full bg-amber-400 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-950 shadow-sm ring-1 ring-amber-500">
-                    Top
-                  </span>
-                ) : (
-                  <span className="inline-flex h-7 items-center rounded-full bg-white/15 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/25 backdrop-blur">
-                    {isKelin ? "Kelin" : "Kuyov"}
-                  </span>
-                )}
+          {/* Right main content */}
+          <div className="grid gap-4">
+            {/* Mobile-only hero (desktopda chap sidebarda profil bor — takrorlamaymiz) */}
+            <section className="overflow-hidden rounded-3xl bg-white ring-1 ring-zinc-200/80 shadow-[0_8px_28px_rgba(15,23,42,.06)] lg:hidden">
+              <div
+                style={{ containerType: "inline-size" }}
+                className="relative aspect-5/4 w-full sm:aspect-video"
+              >
+                <div className={"absolute inset-0 bg-linear-to-br " + heroGradient}>
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_22%,rgba(255,255,255,.3),transparent_55%)]"
+                  />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.5)_0%,transparent_50%)]"
+                  />
+                  <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
+                    {isBoosted ? (
+                      <span className="inline-flex h-7 items-center gap-1 rounded-full bg-amber-400 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-950 shadow-sm ring-1 ring-amber-500">
+                        Top
+                      </span>
+                    ) : (
+                      <span className="inline-flex h-7 items-center rounded-full bg-white/15 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/25 backdrop-blur">
+                        {isKelin ? "Kelin" : "Kuyov"}
+                      </span>
+                    )}
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      aria-hidden
+                      className="select-none font-black tracking-[-0.04em] text-white/95 drop-shadow-[0_10px_28px_rgba(0,0,0,.28)]"
+                      style={{ fontSize: "min(38vw, 160px)" }}
+                    >
+                      {initial}
+                    </span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                    <h1 className="text-[clamp(22px,5vw,32px)] font-black leading-tight tracking-tight text-white drop-shadow">
+                      {listing.name}
+                    </h1>
+                    <p className="mt-1 text-[13px] font-semibold text-white/85">
+                      {listing.age} yosh · {listing.city} · {listing.country}
+                    </p>
+                  </div>
+                </div>
               </div>
+            </section>
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span
-                  aria-hidden
-                  className="select-none font-black tracking-[-0.04em] text-white/95 drop-shadow-[0_10px_28px_rgba(0,0,0,.28)]"
-                  style={{ fontSize: "min(42vw, 140px)" }}
-                >
-                  {initial}
-                </span>
+            {/* Desktop owner stats action */}
+            {isOwner ? (
+              <div className="flex flex-wrap items-center justify-end gap-2">
+                <ListingStatsDrawer listingId={listing.id} />
               </div>
+            ) : null}
 
-              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                <h1 className="text-[clamp(22px,5vw,30px)] font-black leading-tight tracking-tight text-white drop-shadow">
-                  {listing.name}
-                </h1>
-                <p className="mt-1 text-[13px] font-semibold text-white/85">
-                  {listing.age} yosh · {listing.city} · {listing.country}
+            {listing.about ? (
+              <Section id="about" title="O‘zi haqida" hint="TAVSIF" accent="sky" icon={I.note}>
+                <p className="whitespace-pre-line text-[14px] leading-relaxed text-zinc-700">
+                  {listing.about}
                 </p>
-              </div>
-            </div>
-          </div>
+              </Section>
+            ) : null}
 
-          <div className="border-t border-zinc-100 p-4 sm:p-5">
-            <div className="flex flex-wrap gap-2 text-[12px] font-semibold text-zinc-600">
-              <span className="rounded-full bg-zinc-100 px-2.5 py-1 font-extrabold text-zinc-800 ring-1 ring-zinc-200">
-                {listing.region}
-              </span>
-              <span className="rounded-full bg-zinc-100 px-2.5 py-1 ring-1 ring-zinc-200">{listing.nationality}</span>
-              <span className="rounded-full bg-zinc-100 px-2.5 py-1 ring-1 ring-zinc-200">
-                {listing.heightCm} sm · {listing.weightKg} kg
-              </span>
-            </div>
-
-            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-stretch">
-              <div className="min-w-0 flex-1 sm:min-w-[200px]">
-                <RequestButton
-                  listingId={listing.id}
-                  authed={!!user}
-                  isOwner={isOwner}
-                  initialStatus={
-                    (myRequest?.status as
-                      | "pending"
-                      | "accepted"
-                      | "rejected"
-                      | "cancelled"
-                      | undefined) || "none"
-                  }
-                  initialChatId={myRequest?.chat?.id || null}
-                />
-              </div>
-              {isOwner ? <ListingStatsDrawer listingId={listing.id} /> : null}
-              <FavoriteButton
-                listingId={listing.id}
-                initial={isFav}
-                authed={!!user}
-                variant="block"
+            <Section id="main" title="Asosiy ma’lumotlar" hint="SHAXSIY" accent="indigo" icon={I.user}>
+              <Dl
+                rows={[
+                  { k: "Yosh", v: `${listing.age}` },
+                  {
+                    k: "Bo‘y / vazn",
+                    v: `${listing.heightCm} sm · ${listing.weightKg} kg`,
+                    id: "row-physical",
+                  },
+                  { k: "Millat", v: listing.nationality },
+                  {
+                    k: "Joylashuv",
+                    v: `${listing.region}, ${listing.city}${
+                      listing.country ? " · " + listing.country : ""
+                    }`,
+                    id: "row-address",
+                  },
+                  { k: "Sigaret", v: smokesLabel(listing.smokes) },
+                  {
+                    k: "Sport",
+                    v:
+                      listing.sportPerWeek != null
+                        ? `${listing.sportPerWeek} / hafta`
+                        : "Bilinmaydi",
+                  },
+                ]}
               />
+            </Section>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Section id="marital" title="Shaxsiy holat" hint="OILA" accent="rose" icon={I.rings}>
+                <Dl
+                  rows={[
+                    { k: "Oilaviy holat", v: maritalLabel(listing.maritalStatus) },
+                    { k: "Farzand", v: childrenLabel(listing.children) },
+                    ...(listing.polygamyAllowance
+                      ? [
+                          {
+                            k: "Ko‘pxotinlik",
+                            v: `${listing.polygamyAllowance}-ro‘zg‘orgacha`,
+                          },
+                        ]
+                      : []),
+                  ]}
+                />
+              </Section>
+              <Section id="education" title="Ta’lim va kasb" hint="KASB" accent="amber" icon={I.cap}>
+                <Dl
+                  rows={[
+                    { k: "Ta’lim", v: educationLabel(listing.education) },
+                    { k: "Kasb", v: listing.jobTitle || "—" },
+                    ...(listing.incomeMonthlyUsd
+                      ? [{ k: "Daromad", v: `$${listing.incomeMonthlyUsd} / oy` }]
+                      : []),
+                  ]}
+                />
+              </Section>
+            </div>
+
+            <Section id="religion" title="Diniy ma’lumotlar" hint="DIN" accent="emerald" icon={I.mosque}>
+              <Dl
+                rows={[
+                  { k: "Aqida", v: aqeedaLabel(listing.aqeeda) },
+                  { k: "Namoz", v: prayerLabel(listing.prayer) },
+                  { k: "Qur’on", v: quranLabel(listing.quran) },
+                  { k: "Mazhab", v: madhabLabel(listing.madhab) },
+                ]}
+              />
+            </Section>
+
+            <Section id="partner" title="Juftga talablar" hint="JUFT" accent="fuchsia" icon={I.users}>
+              <Dl
+                rows={[
+                  {
+                    k: "Yosh",
+                    v:
+                      listing.partnerAgeFrom || listing.partnerAgeTo
+                        ? `${listing.partnerAgeFrom ?? "—"} – ${
+                            listing.partnerAgeTo ?? "—"
+                          }`
+                        : "Farqsiz",
+                  },
+                  { k: "Davlatlar", v: listing.partnerCountries || "Farqsiz" },
+                  { k: "Viloyatlar", v: listing.partnerRegions || "Farqsiz" },
+                  { k: "Shaharlar", v: listing.partnerCities || "Farqsiz" },
+                ]}
+              />
+            </Section>
+
+            <div className="rounded-3xl bg-amber-50/90 p-4 text-[12.5px] leading-relaxed text-amber-950 ring-1 ring-amber-200 sm:p-5">
+              <div className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-amber-900/90">
+                Eslatma
+              </div>
+              <p className="mt-2 font-medium">
+                Telefon yoki tashqi aloqa faqat ikkala tomon roziligi bilan, chat ichida.
+                Platformadan tashqarida aloqa so‘rash mumkin emas.
+              </p>
             </div>
           </div>
-        </section>
-
-        {listing.about ? (
-          <Section title="O‘zi haqida" hint="Tavsif">
-            <p className="whitespace-pre-line text-[14px] leading-relaxed text-zinc-700">{listing.about}</p>
-          </Section>
-        ) : null}
-
-        <Section title="Asosiy ma’lumotlar">
-          <Dl
-            rows={[
-              { k: "Yosh", v: `${listing.age}` },
-              { k: "Bo‘y / vazn", v: `${listing.heightCm} sm · ${listing.weightKg} kg` },
-              { k: "Millat", v: listing.nationality },
-              { k: "Joylashuv", v: `${listing.region}, ${listing.city}` },
-              { k: "Sigaret", v: smokesLabel(listing.smokes) },
-              {
-                k: "Sport",
-                v: listing.sportPerWeek != null ? `${listing.sportPerWeek} / hafta` : "Bilinmaydi",
-              },
-            ]}
-          />
-        </Section>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Section title="Shaxsiy holat">
-            <Dl
-              rows={[
-                { k: "Oilaviy holat", v: maritalLabel(listing.maritalStatus) },
-                { k: "Farzand", v: childrenLabel(listing.children) },
-                ...(listing.polygamyAllowance
-                  ? [{ k: "Ko‘pxotinlik", v: `${listing.polygamyAllowance}-ro‘zg‘orgacha` }]
-                  : []),
-              ]}
-            />
-          </Section>
-          <Section title="Ta’lim va kasb">
-            <Dl
-              rows={[
-                { k: "Ta’lim", v: educationLabel(listing.education) },
-                { k: "Kasb", v: listing.jobTitle || "—" },
-                ...(listing.incomeMonthlyUsd
-                  ? [{ k: "Daromad", v: `$${listing.incomeMonthlyUsd} / oy` }]
-                  : []),
-              ]}
-            />
-          </Section>
-        </div>
-
-        <Section title="Diniy ma’lumotlar">
-          <Dl
-            rows={[
-              { k: "Aqida", v: aqeedaLabel(listing.aqeeda) },
-              { k: "Namoz", v: prayerLabel(listing.prayer) },
-              { k: "Qur’on", v: quranLabel(listing.quran) },
-              { k: "Mazhab", v: madhabLabel(listing.madhab) },
-            ]}
-          />
-        </Section>
-
-        <Section title="Juftga talablar">
-          <Dl
-            rows={[
-              {
-                k: "Yosh",
-                v:
-                  listing.partnerAgeFrom || listing.partnerAgeTo
-                    ? `${listing.partnerAgeFrom ?? "—"} – ${listing.partnerAgeTo ?? "—"}`
-                    : "Farqsiz",
-              },
-              { k: "Davlatlar", v: listing.partnerCountries || "Farqsiz" },
-              { k: "Viloyatlar", v: listing.partnerRegions || "Farqsiz" },
-              { k: "Shaharlar", v: listing.partnerCities || "Farqsiz" },
-            ]}
-          />
-        </Section>
-
-        <div className="rounded-2xl bg-amber-50/90 p-4 text-[12.5px] leading-relaxed text-amber-950 ring-1 ring-amber-200 sm:p-5">
-          <div className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-amber-900/90">Eslatma</div>
-          <p className="mt-2 font-medium">
-            Telefon yoki tashqi aloqa faqat ikkala tomon roziligi bilan, chat ichida. Platformadan tashqarida
-            aloqa so‘rash mumkin emas.
-          </p>
         </div>
       </main>
     </div>
