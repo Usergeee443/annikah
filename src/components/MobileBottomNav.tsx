@@ -107,6 +107,7 @@ export default function MobileBottomNav() {
 
   if (pathname.startsWith("/auth/") || pathname.startsWith("/adminpanel")) return null;
   if (pathname.startsWith("/chats/") && pathname !== "/chats") return null;
+  if (pathname.startsWith("/help")) return null;
   if (hidden) return null;
 
   return (

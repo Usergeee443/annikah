@@ -12,7 +12,7 @@ export default function FavoriteButton({
   listingId: string;
   initial: boolean;
   authed: boolean;
-  variant?: "pill" | "icon" | "block";
+  variant?: "pill" | "icon" | "block" | "glyph";
 }) {
   const router = useRouter();
   const [favored, setFavored] = useState(initial);
@@ -68,6 +68,31 @@ export default function FavoriteButton({
         }
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill={favored ? "currentColor" : "none"}>
+          <path
+            d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    );
+  }
+
+  if (variant === "glyph") {
+    return (
+      <button
+        type="button"
+        onClick={toggle}
+        disabled={pending}
+        aria-label={favored ? "Sevimlilardan olib tashlash" : "Sevimlilarga qo‘shish"}
+        title={favored ? "Sevimli" : "Sevimli emas"}
+        className={
+          "inline-flex items-center justify-center text-white/90 drop-shadow-[0_10px_30px_rgba(0,0,0,.55)] transition hover:text-white disabled:opacity-60"
+        }
+      >
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill={favored ? "currentColor" : "none"}>
           <path
             d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z"
             stroke="currentColor"

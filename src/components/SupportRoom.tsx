@@ -120,7 +120,7 @@ export default function SupportRoom({
     <section className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-transparent">
       <div
         ref={scrollRef}
-        className="flex-1 min-h-0 overflow-y-auto bg-[radial-gradient(circle_at_50%_-10%,#eef2ff_0%,#f4f4f5_55%)] px-3 py-4 sm:px-6"
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain bg-[radial-gradient(circle_at_50%_-10%,#eef2ff_0%,#f4f4f5_55%)] px-3 py-4 pb-[calc(92px+env(safe-area-inset-bottom))] sm:px-6 lg:pb-4"
       >
         <div className="mx-auto w-full max-w-3xl">
           {messages.length === 0 ? (
@@ -207,11 +207,13 @@ export default function SupportRoom({
         </div>
       </div>
 
-      <div
-        className="shrink-0 border-t border-zinc-200/70 bg-white px-3 py-3 sm:px-5"
-        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
-      >
-        <div className="mx-auto flex w-full max-w-3xl items-end gap-2">
+      {/* Mobile: fixed composer — klaviatura ustida turadi */} 
+      <div className="lg:static lg:shrink-0 lg:border-t lg:border-zinc-200/70 lg:bg-white">
+        <div
+          className="fixed inset-x-0 bottom-0 z-20 border-t border-zinc-200/70 bg-white px-3 py-3 sm:px-5 lg:static lg:border-0 lg:bg-transparent lg:px-0 lg:py-0"
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
+        >
+          <div className="mx-auto flex w-full max-w-3xl items-end gap-2">
           <div className="flex flex-1 items-end rounded-2xl bg-zinc-100 px-3 py-1.5 transition focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(24,24,27,.06)] focus-within:ring-1 focus-within:ring-zinc-200">
             <textarea
               ref={taRef}
@@ -260,6 +262,7 @@ export default function SupportRoom({
             {error}
           </div>
         ) : null}
+        </div>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
+import ElonlarimDashboard from "@/components/ElonlarimDashboard";
 
 function statusPill(s: string) {
   if (s === "approved") return "bg-emerald-50 text-emerald-800 ring-emerald-200";
@@ -22,21 +23,86 @@ export default async function ProfileHubPage() {
   const authProvider = (user as any).authProvider as string | undefined;
   const phone = (user as any).phone as string | null | undefined;
 
-  const listings = await db.listing.findMany({
-    where: { ownerId: user.id },
-    orderBy: { createdAt: "desc" },
-    take: 200,
-    select: {
-      id: true,
-      name: true,
-      age: true,
-      category: true,
-      moderationStatus: true,
-      active: true,
-      expiresAt: true,
-      createdAt: true,
-    },
-  });
+  const [profile, listings] = await Promise.all([
+    db.profile.findUnique({
+      where: { userId: user.id },
+      select: {
+        category: true,
+        isComplete: true,
+        name: true,
+        age: true,
+        country: true,
+        region: true,
+        city: true,
+        nationality: true,
+        heightCm: true,
+        weightKg: true,
+        jobTitle: true,
+        prayer: true,
+        maritalStatus: true,
+      },
+    }),
+    db.listing.findMany({
+      where: { ownerId: user.id },
+      orderBy: { createdAt: "desc" },
+      take: 200,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        expiresAt: true,
+        boostUntil: true,
+        moderationStatus: true,
+        active: true,
+        plan: true,
+        category: true,
+        name: true,
+        age: true,
+        country: true,
+        region: true,
+        city: true,
+        nationality: true,
+        heightCm: true,
+        weightKg: true,
+        smokes: true,
+        sportPerWeek: true,
+        maritalStatus: true,
+        children: true,
+        polygamyAllowance: true,
+        education: true,
+        jobTitle: true,
+        incomeMonthlyUsd: true,
+        aqeeda: true,
+        prayer: true,
+        quran: true,
+        madhab: true,
+        partnerAgeFrom: true,
+        partnerAgeTo: true,
+        partnerCountries: true,
+        partnerRegions: true,
+        partnerCities: true,
+        about: true,
+      },
+    }),
+  ]);
+
+  const listingIds = listings.map((l) => l.id);
+  const [viewsAgg, likesAgg] = listingIds.length
+    ? await Promise.all([
+        db.listingView.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+        db.favorite.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+      ])
+    : [[], []];
+  const viewsById = new Map<string, number>(viewsAgg.map((x) => [x.listingId, x._count._all]));
+  const likesById = new Map<string, number>(likesAgg.map((x) => [x.listingId, x._count._all]));
 
   return (
     <div className="grid gap-5">
@@ -127,40 +193,25 @@ export default async function ProfileHubPage() {
           </Link>
         </div>
 
-        {listings.length === 0 ? (
+        {listings.length === 0 && !profile ? (
           <div className="rounded-3xl border border-dashed border-zinc-300 bg-white/60 p-8 text-center">
             <div className="text-[14px] font-extrabold text-zinc-950">Hali e’lon yo‘q</div>
             <div className="mt-1 text-[12.5px] font-medium text-zinc-600">Yangi e’lon qo‘shing.</div>
           </div>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {listings.map((l) => (
-              <Link
-                key={l.id}
-                href={`/listings/${l.id}`}
-                className="rounded-3xl border border-zinc-200/70 bg-white/80 p-4 shadow-sm backdrop-blur transition hover:bg-white"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="truncate text-[15px] font-black tracking-tight text-zinc-950">
-                      {l.name} <span className="text-zinc-500 font-extrabold">{l.age} yosh</span>
-                    </div>
-                    <div className="mt-1 text-[12.5px] font-semibold text-zinc-600">
-                      {l.category === "kelinlar" ? "Kelin" : "Kuyov"}
-                    </div>
-                  </div>
-                  <span
-                    className={
-                      "inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-[11px] font-extrabold ring-1 " +
-                      statusPill(l.moderationStatus)
-                    }
-                  >
-                    {statusLabel(l.moderationStatus)}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <ElonlarimDashboard
+            listings={listings.map((l) => ({
+              ...l,
+              viewsCount: viewsById.get(l.id) ?? 0,
+              likesCount: likesById.get(l.id) ?? 0,
+              createdAt: l.createdAt.toISOString(),
+              updatedAt: l.updatedAt.toISOString(),
+              expiresAt: l.expiresAt.toISOString(),
+              boostUntil: l.boostUntil ? l.boostUntil.toISOString() : null,
+            }))}
+            profile={profile}
+            userEmail={user.email}
+          />
         )}
       </section>
     </div>

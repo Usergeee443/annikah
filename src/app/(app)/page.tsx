@@ -92,6 +92,7 @@ export default async function ListingsPage({
   };
 
   const listings = await db.listing.findMany(where);
+  const listingIds = listings.map((l) => l.id);
 
   const myHasListing = user
     ? (await db.listing.count({ where: { ownerId: user.id } })) > 0
@@ -101,12 +102,30 @@ export default async function ListingsPage({
     ? new Set(
         (
           await db.favorite.findMany({
-            where: { userId: user.id, listingId: { in: listings.map((l) => l.id) } },
+            where: { userId: user.id, listingId: { in: listingIds } },
             select: { listingId: true },
           })
         ).map((x) => x.listingId),
       )
     : new Set<string>();
+
+  const [viewsAgg, likesAgg] = listingIds.length
+    ? await Promise.all([
+        db.listingView.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+        db.favorite.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+      ])
+    : [[], []];
+
+  const viewsById = new Map<string, number>(viewsAgg.map((x) => [x.listingId, x._count._all]));
+  const likesById = new Map<string, number>(likesAgg.map((x) => [x.listingId, x._count._all]));
 
   const hasActiveFilters = FILTER_KEYS.some((k) => {
     const v = (sp as Record<string, string | undefined>)[k];
@@ -171,7 +190,7 @@ export default async function ListingsPage({
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {listings.map((l, idx) => (
+          {listings.map((l) => (
             <ListingCard
               key={l.id}
               l={{
@@ -193,7 +212,8 @@ export default async function ListingsPage({
               }}
               isFav={favIds.has(l.id)}
               authed={!!user}
-              rank={idx + 1}
+              viewsCount={viewsById.get(l.id) ?? 0}
+              likesCount={likesById.get(l.id) ?? 0}
             />
           ))}
         </div>

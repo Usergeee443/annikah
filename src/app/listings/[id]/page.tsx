@@ -99,6 +99,13 @@ function smokesLabel(v: boolean | null) {
   return v ? "Chekadi" : "Chekmaydi";
 }
 
+function sportLabel(v: number | null) {
+  if (v == null) return "Bilinmaydi";
+  if (v >= 7) return "Har kuni";
+  if (v <= 0) return "Yo‘q";
+  return `${v} marta / hafta`;
+}
+
 type SectionAccent =
   | "indigo"
   | "rose"
@@ -183,33 +190,30 @@ function Section({
     <section
       id={id}
       className={
-        "scroll-mt-24 overflow-hidden rounded-3xl bg-white ring-1 shadow-[0_8px_28px_rgba(15,23,42,.05)] " +
+        "scroll-mt-24 overflow-hidden rounded-[32px] bg-white ring-1 shadow-[0_14px_40px_rgba(15,23,42,.08)] " +
         a.ring
       }
     >
-      <div className={"flex items-center gap-3 bg-linear-to-r p-4 sm:p-5 " + a.tint}>
+      <div className="flex items-center gap-3 px-5 pb-3 pt-5">
         <span
-          className={"grid h-11 w-11 shrink-0 place-items-center rounded-2xl " + a.iconBg}
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-sky-50 text-sky-700 ring-1 ring-sky-200/70"
           aria-hidden
         >
           {icon}
         </span>
         <div className="min-w-0">
-          {hint ? (
-            <div
-              className={
-                "text-[10px] font-extrabold uppercase tracking-[0.18em] " + a.hint
-              }
-            >
-              {hint}
-            </div>
-          ) : null}
-          <h2 className="mt-0.5 text-[15px] font-black tracking-tight text-zinc-950">
+          <h2 className="text-[13px] font-black uppercase tracking-[0.14em] text-zinc-900">
             {title}
           </h2>
+          {hint ? (
+            <div className="mt-0.5 text-[11px] font-semibold text-zinc-500">{hint}</div>
+          ) : null}
         </div>
       </div>
-      <div className="border-t border-zinc-100 p-4 sm:p-5">{children}</div>
+      <div className="px-5">
+        <div className="h-px w-full bg-zinc-200/70" />
+      </div>
+      <div className="p-5">{children}</div>
     </section>
   );
 }
@@ -222,16 +226,13 @@ function Dl({
   highlightKey?: string;
 }) {
   return (
-    <dl className="grid gap-2.5 sm:grid-cols-2">
+    <dl className="grid gap-4 sm:grid-cols-2">
       {rows.map((r) => (
-        <div
-          key={r.k}
-          id={r.id}
-          data-key={highlightKey}
-          className="scroll-mt-28 flex items-start justify-between gap-3 rounded-2xl bg-zinc-50/90 px-3.5 py-2.5 ring-1 ring-zinc-200/80"
-        >
-          <dt className="text-[11px] font-bold text-zinc-500">{r.k}</dt>
-          <dd className="max-w-[65%] text-right text-[12.5px] font-extrabold tracking-tight text-zinc-950">
+        <div key={r.k} id={r.id} data-key={highlightKey} className="scroll-mt-28">
+          <dt className="text-[12px] font-extrabold uppercase tracking-widest text-zinc-400">
+            {r.k}
+          </dt>
+          <dd className="mt-2 text-[20px] font-black tracking-tight text-zinc-950">
             {r.v}
           </dd>
         </div>
@@ -543,112 +544,97 @@ export default async function ListingDetailPage({
               </div>
             ) : null}
 
-            {listing.about ? (
-              <Section id="about" title="O‘zi haqida" hint="TAVSIF" accent="sky" icon={I.note}>
-                <p className="whitespace-pre-line text-[14px] leading-relaxed text-zinc-700">
-                  {listing.about}
-                </p>
-              </Section>
-            ) : null}
-
-            <Section id="main" title="Asosiy ma’lumotlar" hint="SHAXSIY" accent="indigo" icon={I.user}>
+            <Section
+              id="row-physical"
+              title="JISMONIY MA’LUMOTLAR"
+              hint={`${listing.heightCm} sm · ${listing.weightKg} kg`}
+              accent="sky"
+              icon={I.ruler}
+            >
               <Dl
                 rows={[
-                  { k: "Yosh", v: `${listing.age}` },
-                  {
-                    k: "Bo‘y / vazn",
-                    v: `${listing.heightCm} sm · ${listing.weightKg} kg`,
-                    id: "row-physical",
-                  },
-                  { k: "Millat", v: listing.nationality },
-                  {
-                    k: "Joylashuv",
-                    v: `${listing.region}, ${listing.city}${
-                      listing.country ? " · " + listing.country : ""
-                    }`,
-                    id: "row-address",
-                  },
+                  { k: "Bo‘yi", v: `${listing.heightCm} sm` },
+                  { k: "Vazni", v: `${listing.weightKg} kg` },
                   { k: "Sigaret", v: smokesLabel(listing.smokes) },
-                  {
-                    k: "Sport",
-                    v:
-                      listing.sportPerWeek != null
-                        ? `${listing.sportPerWeek} / hafta`
-                        : "Bilinmaydi",
-                  },
+                  { k: "Sport", v: sportLabel(listing.sportPerWeek) },
                 ]}
               />
             </Section>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Section id="marital" title="Shaxsiy holat" hint="OILA" accent="rose" icon={I.rings}>
-                <Dl
-                  rows={[
-                    { k: "Oilaviy holat", v: maritalLabel(listing.maritalStatus) },
-                    { k: "Farzand", v: childrenLabel(listing.children) },
-                    ...(listing.polygamyAllowance
-                      ? [
-                          {
-                            k: "Ko‘pxotinlik",
-                            v: `${listing.polygamyAllowance}-ro‘zg‘orgacha`,
-                          },
-                        ]
-                      : []),
-                  ]}
-                />
-              </Section>
-              <Section id="education" title="Ta’lim va kasb" hint="KASB" accent="amber" icon={I.cap}>
-                <Dl
-                  rows={[
-                    { k: "Ta’lim", v: educationLabel(listing.education) },
-                    { k: "Kasb", v: listing.jobTitle || "—" },
-                    ...(listing.incomeMonthlyUsd
-                      ? [{ k: "Daromad", v: `$${listing.incomeMonthlyUsd} / oy` }]
-                      : []),
-                  ]}
-                />
-              </Section>
-            </div>
+            <Section
+              id="row-address"
+              title="JOYASHUV"
+              hint={`${listing.region || ""}${listing.city ? " · " + listing.city : ""}`}
+              accent="indigo"
+              icon={I.pin}
+            >
+              <Dl
+                rows={[
+                  { k: "Davlat", v: listing.country || "—" },
+                  { k: "Viloyat / Shahar", v: `${listing.region || "—"} · ${listing.city || "—"}` },
+                  { k: "Millati", v: listing.nationality || "—" },
+                ]}
+              />
+            </Section>
 
-            <Section id="religion" title="Diniy ma’lumotlar" hint="DIN" accent="emerald" icon={I.mosque}>
+            <Section id="marital" title="SHAXSIY HOLATI" hint="OILA" accent="rose" icon={I.rings}>
+              <Dl
+                rows={[
+                  { k: "Oilaviy holati", v: maritalLabel(listing.maritalStatus) },
+                  { k: "Farzand", v: childrenLabel(listing.children) },
+                  ...(listing.polygamyAllowance
+                    ? [{ k: "Ko‘pxotinlik", v: `${listing.polygamyAllowance}-ro‘zg‘orgacha` }]
+                    : []),
+                ]}
+              />
+            </Section>
+
+            <Section id="education" title="ILM & KASB" hint="TA’LIM" accent="amber" icon={I.cap}>
+              <Dl
+                rows={[
+                  { k: "Ta’lim", v: educationLabel(listing.education) },
+                  { k: "Kasbi", v: listing.jobTitle || "—" },
+                  ...(listing.incomeMonthlyUsd ? [{ k: "Maosh", v: `$${listing.incomeMonthlyUsd}` }] : []),
+                ]}
+              />
+            </Section>
+
+            <Section id="religion" title="DINIY MA’LUMOTLAR" hint="DIN" accent="emerald" icon={I.mosque}>
               <Dl
                 rows={[
                   { k: "Aqida", v: aqeedaLabel(listing.aqeeda) },
                   { k: "Namoz", v: prayerLabel(listing.prayer) },
-                  { k: "Qur’on", v: quranLabel(listing.quran) },
+                  { k: "Qur’on o‘qish", v: quranLabel(listing.quran) },
                   { k: "Mazhab", v: madhabLabel(listing.madhab) },
                 ]}
               />
             </Section>
 
-            <Section id="partner" title="Juftga talablar" hint="JUFT" accent="fuchsia" icon={I.users}>
+            <Section id="partner" title="JUFTGA TALABLARI" hint="TALAB" accent="fuchsia" icon={I.users}>
               <Dl
                 rows={[
                   {
-                    k: "Yosh",
+                    k: "Yosh oralig‘i",
                     v:
                       listing.partnerAgeFrom || listing.partnerAgeTo
-                        ? `${listing.partnerAgeFrom ?? "—"} – ${
-                            listing.partnerAgeTo ?? "—"
-                          }`
+                        ? `${listing.partnerAgeFrom ?? "—"}–${listing.partnerAgeTo ?? "—"} yosh`
                         : "Farqsiz",
                   },
-                  { k: "Davlatlar", v: listing.partnerCountries || "Farqsiz" },
+                  { k: "Joylashuv", v: listing.partnerCountries || "Farqsiz" },
                   { k: "Viloyatlar", v: listing.partnerRegions || "Farqsiz" },
                   { k: "Shaharlar", v: listing.partnerCities || "Farqsiz" },
                 ]}
               />
             </Section>
 
-            <div className="rounded-3xl bg-amber-50/90 p-4 text-[12.5px] leading-relaxed text-amber-950 ring-1 ring-amber-200 sm:p-5">
-              <div className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-amber-900/90">
-                Eslatma
-              </div>
-              <p className="mt-2 font-medium">
-                Telefon yoki tashqi aloqa faqat ikkala tomon roziligi bilan, chat ichida.
-                Platformadan tashqarida aloqa so‘rash mumkin emas.
-              </p>
-            </div>
+            {listing.about ? (
+              <Section id="about" title="O‘ZIM HAQIMDA" hint="" accent="violet" icon={I.note}>
+                <p className="whitespace-pre-line text-[15px] leading-relaxed text-zinc-700">
+                  {listing.about}
+                </p>
+              </Section>
+            ) : null}
+
           </div>
         </div>
       </main>

@@ -24,13 +24,13 @@ type ListingCardProps = {
   };
   isFav: boolean;
   authed: boolean;
+  viewsCount?: number;
+  likesCount?: number;
   hideFavorite?: boolean;
   disableLink?: boolean;
   onPress?: () => void;
   /** `pin` — faqat pin belgisi (masalan, asosiy e’lon) */
   coverBadge?: "category" | "pin";
-  /** Reyting (masalan #3) */
-  rank?: number;
 };
 
 function prayerLabel(p: string) {
@@ -117,17 +117,18 @@ const IconMoon = (
 );
 
 const shellCls =
-  "block w-full overflow-hidden rounded-3xl bg-[#0b0f0e] text-left ring-1 ring-zinc-200/10 shadow-[0_10px_40px_rgba(15,23,42,.18)] transition";
+  "block w-full overflow-hidden rounded-3xl bg-[#0b0f0e] text-left ring-1 shadow-[0_10px_40px_rgba(15,23,42,.18)] transition";
 
 export default function ListingCard({
   l,
   isFav,
   authed,
+  viewsCount,
+  likesCount,
   hideFavorite,
   disableLink,
   onPress,
   coverBadge = "category",
-  rank,
 }: ListingCardProps) {
   const [asOf] = useState(() => new Date());
   const boostMs = toMs(l.boostUntil);
@@ -140,9 +141,10 @@ export default function ListingCard({
     : "from-sky-300 via-indigo-500 to-blue-800";
 
   const marital = maritalShort(l.maritalStatus);
+  const initial = (l.name?.trim()?.[0] || "?").toUpperCase();
 
   const chipCls =
-    "inline-flex min-w-0 max-w-[42cqw] items-center gap-2 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-black tracking-tight text-white ring-1 ring-white/14 backdrop-blur";
+    "inline-flex min-w-0 items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-extrabold tracking-tight text-white ring-1 ring-white/14 backdrop-blur";
 
   const cover = (
     <div
@@ -154,132 +156,143 @@ export default function ListingCard({
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,.20),transparent_55%)]"
       />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(255,255,255,.16),transparent_55%)]"
+      />
 
-      {!hideFavorite ? (
-        <div className="absolute right-4 top-4 z-10">
-          <FavoriteButton listingId={l.id} initial={isFav} authed={authed} variant="icon" />
+      {/* watermark initial */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 grid place-items-center"
+      >
+        <span className="select-none text-white/10 blur-[0.3px] drop-shadow-[0_18px_60px_rgba(0,0,0,.35)] font-black tracking-[-0.08em]"
+          style={{ fontSize: "min(54cqw, 120px)", lineHeight: 1 }}
+        >
+          {initial}
+        </span>
+      </div>
+
+      {/* name + like */}
+      <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
+        <div className="min-w-0 font-black leading-none tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,.55)] text-[clamp(22px,8cqw,34px)]">
+          <span className="truncate">{l.name}</span>
         </div>
-      ) : null}
+        {!hideFavorite ? (
+          <div className="shrink-0">
+            <FavoriteButton listingId={l.id} initial={isFav} authed={authed} variant="glyph" />
+          </div>
+        ) : null}
+      </div>
 
-      {/* top chips */}
-      <div className="absolute left-4 right-4 top-4 flex flex-wrap items-center gap-2 pr-12">
-        {typeof rank === "number" ? (
-          <span className="inline-flex items-center rounded-xl bg-lime-400 px-2.5 py-1 text-[11px] font-black text-black shadow-[0_8px_20px_rgba(163,230,53,.28)]">
-            #{rank}
+      {/* muhim ma'lumotlar: yosh + hozir yashash joyi (chip dizaynida) */}
+      <div className="absolute left-4 right-4 top-[54px] flex min-w-0 flex-wrap items-center gap-2">
+        <span className={chipCls}>
+          <span className="text-sky-200">
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+              <path
+                d="M8 7V3h8v4M6 7h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinejoin="round"
+              />
+            </svg>
           </span>
-        ) : null}
-        {isBoosted ? (
-          <span className={chipCls}>
-            <span className="text-emerald-300">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-                <path d="M12 2l2.7 6.3L22 9l-5 4.6 1.4 7.4L12 17l-6.4 4 1.4-7.4L2 9l7.3-.7z" />
-              </svg>
-            </span>
-            TOP
+          {l.age} yosh
+        </span>
+        <span className={chipCls}>
+          <span className="text-sky-200">{IconPin}</span>
+          <span className="truncate">
+            {l.region}
+            {l.city ? `, ${l.city}` : ""}
           </span>
-        ) : null}
-
-        {l.nationality ? (
-          <span className={chipCls}>
-            <span className="text-emerald-300">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-                <path
-                  d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <path d="M2 12h20" stroke="currentColor" strokeWidth="2" />
-              </svg>
-            </span>
-            <span className="truncate">{l.nationality.toUpperCase()}</span>
-          </span>
-        ) : null}
-
-        {l.country ? (
-          <span className={chipCls}>
-            <span className="text-emerald-300">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-                <path
-                  d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-                <path
-                  d="M12 2c3 3.2 3 16.8 0 20M12 2c-3 3.2-3 16.8 0 20"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  opacity=".85"
-                />
-              </svg>
-            </span>
-            <span className="truncate">{l.country.toUpperCase()}</span>
-          </span>
-        ) : null}
-
-        {l.city ? (
-          <span className={chipCls}>
-            <span className="text-emerald-300">{IconPin}</span>
-            <span className="truncate">{l.city.toUpperCase()}</span>
-          </span>
-        ) : null}
+        </span>
       </div>
 
       {/* bottom panel (name + info) */}
       <div className="absolute bottom-0 left-0 right-0 p-6 pt-0">
         <div className="grid gap-3">
-          <div className="font-black leading-none tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,.55)] text-[clamp(22px,8cqw,34px)]">
-            {l.name} <span className="text-white/65 text-[clamp(14px,5cqw,20px)]">{l.age} yosh</span>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-3 text-white/90">
-            <div className="flex flex-wrap items-center gap-5 font-extrabold text-[clamp(12px,4.3cqw,16px)]">
-              <span className="inline-flex items-center gap-2">
-                <span className="text-emerald-300">{IconRuler}</span>
-                {l.heightCm} sm • {l.weightKg} kg
+          {/* 4 ta muhim ma'lumot */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-white/92 font-extrabold text-[clamp(12px,4.1cqw,15px)]">
+            <span className="inline-flex items-center gap-2">
+              <span className="text-sky-200">{IconRuler}</span>
+              {l.heightCm} sm
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="text-sky-200">{IconScale}</span>
+              {l.weightKg} kg
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="text-sky-200">
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                  <path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                </svg>
               </span>
-            </div>
-            <div className="flex flex-wrap items-center gap-5 font-extrabold text-[clamp(12px,4.3cqw,16px)]">
-              <span className="inline-flex items-center gap-2">
-                <span className="text-emerald-300">{IconMoon}</span>
-                {prayerLabel(l.prayer)}
-              </span>
-              {marital ? (
-                <span className="inline-flex items-center gap-2">
-                  <span className="text-emerald-300">
-                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-                      <path
-                        d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                  {marital}
-                </span>
-              ) : null}
-            </div>
+              {marital || "—"}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span className="text-sky-200">{IconMoon}</span>
+              {prayerLabel(l.prayer)}
+            </span>
           </div>
         </div>
       </div>
     </div>
   );
 
+  const meta =
+    typeof viewsCount === "number" || typeof likesCount === "number" ? (
+      <div className="mt-2 flex items-center gap-4 px-1 text-[12px] font-extrabold text-zinc-600">
+        <span className="inline-flex items-center gap-2">
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" strokeWidth="2" />
+            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+          </svg>
+          {viewsCount ?? 0} ko‘rildi
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+            <path
+              d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            />
+          </svg>
+          {likesCount ?? 0} like
+        </span>
+      </div>
+    ) : null;
+
   return (
-    <article className="group relative">
+    <article
+      className={
+        "group relative " +
+        (isBoosted ? "ring-2 ring-amber-300/35 rounded-3xl" : "")
+      }
+    >
       {disableLink ? (
-        <button
-          type="button"
-          onClick={onPress}
-          aria-label={`${l.name}, ${l.age} yosh`}
-          className={shellCls}
-        >
-          {cover}
-        </button>
+        <div>
+          <button
+            type="button"
+            onClick={onPress}
+            aria-label={`${l.name}, ${l.age} yosh`}
+            className={shellCls + " " + (isBoosted ? "ring-amber-300/35 ring-2" : "ring-zinc-200/10")}
+          >
+            {cover}
+          </button>
+          {meta}
+        </div>
       ) : (
-        <Link href={`/listings/${l.id}`} aria-label={`${l.name}, ${l.age} yosh`} className={shellCls}>
-          {cover}
-        </Link>
+        <div>
+          <Link
+            href={`/listings/${l.id}`}
+            aria-label={`${l.name}, ${l.age} yosh`}
+            className={shellCls + " " + (isBoosted ? "ring-amber-300/35 ring-2" : "ring-zinc-200/10")}
+          >
+            {cover}
+          </Link>
+          {meta}
+        </div>
       )}
     </article>
   );
