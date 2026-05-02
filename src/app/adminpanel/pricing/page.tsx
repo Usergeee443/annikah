@@ -1,11 +1,9 @@
-import { redirect } from "next/navigation";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { requireFullAdminPanelAccess } from "@/lib/adminAuth";
 import { getPricingConfig } from "@/lib/pricing";
 import PricingEditor from "@/components/admin/PricingEditor";
 
 export default async function AdminPricingPage() {
-  const ok = await isAdminAuthed();
-  if (!ok) redirect("/adminpanel/login");
+  await requireFullAdminPanelAccess();
 
   const cfg = await getPricingConfig();
 

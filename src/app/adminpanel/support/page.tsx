@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { requireFullAdminPanelAccess } from "@/lib/adminAuth";
 
 type Search = { status?: string };
 
@@ -10,8 +9,7 @@ function fmtTime(d: Date) {
 }
 
 export default async function AdminSupportListPage({ searchParams }: { searchParams: Promise<Search> }) {
-  const authed = await isAdminAuthed();
-  if (!authed) redirect("/adminpanel/login");
+  await requireFullAdminPanelAccess();
 
   const sp = (await searchParams) || {};
   const status = sp.status === "closed" ? "closed" : "open";

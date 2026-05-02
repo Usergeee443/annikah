@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { clearAdminSession, getAdminSession } from "@/lib/adminAuth";
+import { clearAdminSession, getAdminSession, isModeratorOnly } from "@/lib/adminAuth";
 
-const NAV: Array<{ href: string; label: string }> = [
+const NAV_FULL: Array<{ href: string; label: string }> = [
   { href: "/adminpanel", label: "Statistika" },
   { href: "/adminpanel/users", label: "Foydalanuvchilar" },
   { href: "/adminpanel/listings", label: "E’lonlar" },
@@ -10,6 +10,10 @@ const NAV: Array<{ href: string; label: string }> = [
   { href: "/adminpanel/support", label: "Support" },
   { href: "/adminpanel/pricing", label: "Narxlar" },
   { href: "/adminpanel/admins", label: "Adminlar" },
+];
+
+const NAV_MODERATOR: Array<{ href: string; label: string }> = [
+  { href: "/adminpanel/moderation", label: "Moderatsiya" },
 ];
 
 async function logoutAction() {
@@ -20,6 +24,7 @@ async function logoutAction() {
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getAdminSession();
+  const nav = session && isModeratorOnly(session) ? NAV_MODERATOR : NAV_FULL;
 
   return (
     <div className="min-h-screen bg-[#f4f4f5]">
@@ -30,7 +35,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </Link>
           <div className="flex flex-wrap items-center gap-2">
             {session
-              ? NAV.map((it) => (
+              ? nav.map((it) => (
                   <Link
                     key={it.href}
                     href={it.href}
@@ -45,7 +50,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <form action={logoutAction}>
                 <span className="mr-2 hidden text-[11.5px] font-extrabold text-zinc-500 sm:inline">
                   {session.username}
-                  {session.role === "super" ? " · super" : ""}
+                  {session.role === "super_admin"
+                    ? " · katta admin"
+                    : session.role === "moderator"
+                      ? session.gender === "female"
+                        ? " · moderator (ayol)"
+                        : session.gender === "male"
+                          ? " · moderator (erkak)"
+                          : " · moderator"
+                      : ""}
                 </span>
                 <button
                   type="submit"

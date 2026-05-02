@@ -1,11 +1,10 @@
 import { redirect, notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { requireFullAdminPanelAccess } from "@/lib/adminAuth";
 import AdminSupportRoom from "@/components/AdminSupportRoom";
 
 export default async function AdminSupportThreadPage({ params }: { params: Promise<{ id: string }> }) {
-  const authed = await isAdminAuthed();
-  if (!authed) redirect("/adminpanel/login");
+  await requireFullAdminPanelAccess();
 
   const { id } = await params;
 

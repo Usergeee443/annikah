@@ -381,24 +381,6 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
 
           <div className="flex-1" />
 
-          {/* Promo / CTA */}
-          {!collapsed && user ? (
-            <div className="rounded-2xl bg-linear-to-br from-zinc-50 to-zinc-100 p-3.5 ring-1 ring-zinc-200">
-              <div className="text-[12.5px] font-extrabold tracking-tight text-zinc-950">
-                Yangi e’lon
-              </div>
-              <div className="mt-0.5 text-[11px] font-medium text-zinc-500">
-                Oddiy yoki boost bilan joylang.
-              </div>
-              <Link
-                href="/listings/new"
-                className="mt-3 inline-flex h-9 w-full items-center justify-center rounded-xl bg-zinc-950 text-[12px] font-extrabold text-white transition hover:bg-zinc-800"
-              >
-                E’lon yaratish
-              </Link>
-            </div>
-          ) : null}
-
           {/* User box */}
           <div className={cn(!collapsed && user ? "mt-3" : "mt-2")}>
             {user ? (

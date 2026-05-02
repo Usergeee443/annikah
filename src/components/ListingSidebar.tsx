@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition, type ReactNode } from "react";
+import ListingGenderWatermark from "@/components/ListingGenderWatermark";
 
 type RequestStatus = "none" | "pending" | "accepted" | "rejected" | "cancelled";
 
@@ -15,10 +16,7 @@ type TocItem = {
 type Props = {
   listingId: string;
   name: string;
-  age: number;
   category: "kelinlar" | "kuyovlar" | string;
-  city: string;
-  country: string;
   authed: boolean;
   isOwner: boolean;
   isFav: boolean;
@@ -30,10 +28,7 @@ type Props = {
 export default function ListingSidebar({
   listingId,
   name,
-  age,
   category,
-  city,
-  country,
   authed,
   isOwner,
   isFav,
@@ -42,7 +37,6 @@ export default function ListingSidebar({
   tocItems,
 }: Props) {
   const router = useRouter();
-  const initial = (name?.trim()[0] || "?").toUpperCase();
   const isKelin = category === "kelinlar";
   const heroGradient = isKelin
     ? "from-rose-400 via-fuchsia-500 to-rose-700"
@@ -129,35 +123,28 @@ export default function ListingSidebar({
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:grid lg:gap-3 lg:sticky lg:top-20 lg:self-start">
-        {/* Profile mini */}
-        <section className="overflow-hidden rounded-3xl bg-white ring-1 ring-zinc-200/80 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
-          <div className={"relative h-32 bg-linear-to-br " + heroGradient}>
+        {/* Profil — yagona gradient: Kelin chap-tepa, bosh harf markazda (fon), ism biroz pastroqda */}
+        <section className="overflow-hidden rounded-3xl ring-1 ring-zinc-200/80">
+          <div className={"relative min-h-[184px] w-full overflow-hidden bg-linear-to-br " + heroGradient}>
+            <span aria-hidden className="pointer-events-none absolute inset-0 bg-black/18" />
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,.35),transparent_60%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_32%_22%,rgba(255,255,255,.34),transparent_58%)]"
             />
-            <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
-              <span className="inline-flex h-6 items-center rounded-full bg-white/20 px-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/30 backdrop-blur">
+            <ListingGenderWatermark
+              category={category}
+              variant="sidebar"
+              maskId={`sidebar-${listingId}`}
+            />
+            <div className="absolute left-3 top-3 z-2">
+              <span className="inline-flex h-6 items-center rounded-full bg-white/20 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/35 backdrop-blur">
                 {isKelin ? "Kelin" : "Kuyov"}
               </span>
             </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span
-                aria-hidden
-                className="select-none font-black tracking-[-0.04em] text-white/95 drop-shadow-[0_8px_22px_rgba(0,0,0,.25)]"
-                style={{ fontSize: "84px", lineHeight: 1 }}
-              >
-                {initial}
-              </span>
-            </div>
-          </div>
-          <div className="px-5 pb-5 pt-4">
-            <div className="truncate text-[20px] font-black tracking-tight text-zinc-950">
-              {name}
-            </div>
-            <div className="mt-1 text-[12.5px] font-semibold text-zinc-500">
-              {age} yosh · {city}
-              {country ? ` · ${country}` : ""}
+            <div className="relative z-1 flex min-h-[184px] flex-col items-center justify-center px-4 pb-7 pt-14">
+              <p className="max-w-full translate-y-1 truncate text-center text-[clamp(17px,4.2vw,21px)] font-black leading-tight tracking-tight text-white drop-shadow-[0_4px_22px_rgba(0,0,0,.38)]">
+                {name}
+              </p>
             </div>
           </div>
         </section>

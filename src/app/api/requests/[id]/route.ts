@@ -11,7 +11,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const { id } = await ctx.params;
   const body = await req.json().catch(() => ({}));
   const action = String(body?.action || "");
-  if (!["accept", "reject", "cancel"].includes(action)) {
+  if (!["accept", "reject", "cancel", "end_connection"].includes(action)) {
     return NextResponse.json({ error: "BAD_ACTION" }, { status: 400 });
   }
 
@@ -24,8 +24,34 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     if (reqRow.fromUserId !== user.id) {
       return NextResponse.json({ error: "FORBIDDEN" }, { status: 403 });
     }
-    if (reqRow.status !== "pending") {
-      return NextResponse.json({ error: "ALREADY_DECIDED" }, { status: 400 });
+    if (reqRow.status === "pending") {
+      await db.request.update({ where: { id }, data: { status: "cancelled" } });
+      return NextResponse.json({ ok: true, status: "cancelled" });
+    }
+    if (reqRow.status === "accepted") {
+      const chat = reqRow.chat ?? (await db.chat.findUnique({ where: { requestId: id } }));
+      if (chat && !chat.endedAt) {
+        await db.chat.update({ where: { id: chat.id }, data: { endedAt: new Date() } });
+      }
+      await db.request.update({ where: { id }, data: { status: "cancelled" } });
+      return NextResponse.json({ ok: true, status: "cancelled" });
+    }
+    return NextResponse.json({ error: "ALREADY_DECIDED" }, { status: 400 });
+  }
+
+  if (action === "end_connection") {
+    if (reqRow.toUserId !== user.id) {
+      return NextResponse.json({ error: "FORBIDDEN" }, { status: 403 });
+    }
+    if (reqRow.status !== "accepted") {
+      return NextResponse.json({ error: "BAD_STATE" }, { status: 400 });
+    }
+    const chat = reqRow.chat ?? (await db.chat.findUnique({ where: { requestId: id } }));
+    if (!chat) {
+      return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
+    }
+    if (!chat.endedAt) {
+      await db.chat.update({ where: { id: chat.id }, data: { endedAt: new Date() } });
     }
     await db.request.update({ where: { id }, data: { status: "cancelled" } });
     return NextResponse.json({ ok: true, status: "cancelled" });

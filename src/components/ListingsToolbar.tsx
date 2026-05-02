@@ -322,14 +322,6 @@ export default function ListingsToolbar({
         : "text-zinc-600 hover:text-zinc-900",
     );
 
-  const tabBtnSm = (active: boolean) =>
-    cn(
-      "h-8 rounded-xl px-3 text-[11.5px] font-extrabold tracking-tight transition inline-flex items-center justify-center",
-      active
-        ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
-        : "text-zinc-600",
-    );
-
   return (
     <form method="GET" action="/" className="grid gap-4">
       <input type="hidden" name="cat" value={cat} />
@@ -348,11 +340,12 @@ export default function ListingsToolbar({
             searchOpen ? "hidden" : "block",
           )}
         >
-          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-zinc-100/80 p-1 ring-1 ring-zinc-200">
-            <Link href={buildHref("kelinlar", initial)} className={tabBtnSm(cat === "kelinlar")}>
+          {/* Chatlar/Faol-Tugagan bilan bir xil segment — tashqi ring yo‘q */}
+          <div className="grid grid-cols-2 gap-1 rounded-2xl bg-zinc-100/80 p-1">
+            <Link href={buildHref("kelinlar", initial)} className={tabBtn(cat === "kelinlar")}>
               Kelinlar
             </Link>
-            <Link href={buildHref("kuyovlar", initial)} className={tabBtnSm(cat === "kuyovlar")}>
+            <Link href={buildHref("kuyovlar", initial)} className={tabBtn(cat === "kuyovlar")}>
               Kuyovlar
             </Link>
           </div>
@@ -417,10 +410,10 @@ export default function ListingsToolbar({
           )}
         </button>
 
-        {/* Desktop: o'ng tomonda segment + filter (mobil: faqat filter) */}
+        {/* Desktop: o'ng tomonda segment + filter */}
         <div className="flex items-center gap-2 md:ml-auto">
           <div className="hidden md:block">
-            <div className="grid h-10 grid-cols-2 gap-1 rounded-2xl bg-zinc-100/80 p-1 ring-1 ring-zinc-200">
+            <div className="grid grid-cols-2 gap-1 rounded-2xl bg-zinc-100/80 p-1">
               <Link href={buildHref("kelinlar", initial)} className={tabBtn(cat === "kelinlar")}>
                 Kelinlar
               </Link>

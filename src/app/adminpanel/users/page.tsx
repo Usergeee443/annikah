@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { requireFullAdminPanelAccess } from "@/lib/adminAuth";
 import { db } from "@/lib/db";
 
 type Search = {
@@ -13,8 +12,7 @@ export default async function AdminUsersPage({
 }: {
   searchParams: Promise<Search>;
 }) {
-  const ok = await isAdminAuthed();
-  if (!ok) redirect("/adminpanel/login");
+  await requireFullAdminPanelAccess();
 
   const params = await searchParams;
   const q = (params.q || "").trim();

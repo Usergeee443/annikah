@@ -20,6 +20,9 @@
 # production
 /build
 
+# moderation verification uploads (not public)
+/private-uploads
+
 # misc
 .DS_Store
 *.pem

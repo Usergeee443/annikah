@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { getAdminSession } from "@/lib/adminAuth";
 import {
   getPricingConfig,
   setPricingConfig,
@@ -7,15 +7,21 @@ import {
 } from "@/lib/pricing";
 
 export async function GET() {
-  const ok = await isAdminAuthed();
-  if (!ok) return NextResponse.json({ error: "ADMIN_AUTH_REQUIRED" }, { status: 401 });
+  const session = await getAdminSession();
+  if (!session) return NextResponse.json({ error: "ADMIN_AUTH_REQUIRED" }, { status: 401 });
+  if (session.role !== "super_admin") {
+    return NextResponse.json({ error: "ADMIN_SUPER_REQUIRED" }, { status: 403 });
+  }
   const cfg = await getPricingConfig();
   return NextResponse.json({ ok: true, pricing: cfg });
 }
 
 export async function POST(req: Request) {
-  const ok = await isAdminAuthed();
-  if (!ok) return NextResponse.json({ error: "ADMIN_AUTH_REQUIRED" }, { status: 401 });
+  const session = await getAdminSession();
+  if (!session) return NextResponse.json({ error: "ADMIN_AUTH_REQUIRED" }, { status: 401 });
+  if (session.role !== "super_admin") {
+    return NextResponse.json({ error: "ADMIN_SUPER_REQUIRED" }, { status: 403 });
+  }
 
   const body = await req.json().catch(() => null);
   if (!body || typeof body !== "object") {

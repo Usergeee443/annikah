@@ -24,6 +24,24 @@ export default async function FavoritesPage() {
         l.expiresAt.getTime() > now.getTime(),
     );
 
+  const listingIds = items.map((l) => l.id);
+  const [viewsAgg, likesAgg] = listingIds.length
+    ? await Promise.all([
+        db.listingView.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+        db.favorite.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+      ])
+    : [[], []];
+  const viewsById = new Map<string, number>(viewsAgg.map((x) => [x.listingId, x._count._all]));
+  const likesById = new Map<string, number>(likesAgg.map((x) => [x.listingId, x._count._all]));
+
   return (
     <div className="grid gap-5">
       {items.length === 0 ? (
@@ -83,6 +101,8 @@ export default async function FavoritesPage() {
                 }}
                 isFav={true}
                 authed={true}
+                viewsCount={viewsById.get(l.id) ?? 0}
+                likesCount={likesById.get(l.id) ?? 0}
               />
             ))}
           </div>

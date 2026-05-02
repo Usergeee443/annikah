@@ -1,15 +1,16 @@
 import { redirect } from "next/navigation";
-import { getAdminSession } from "@/lib/adminAuth";
+import { getAdminSession, requireFullAdminPanelAccess } from "@/lib/adminAuth";
 import { db } from "@/lib/db";
 import AdminsManager from "@/components/admin/AdminsManager";
 
 export default async function AdminAdminsPage() {
+  await requireFullAdminPanelAccess();
   const session = await getAdminSession();
   if (!session) redirect("/adminpanel/login");
 
   const admins = await db.adminUser.findMany({
     orderBy: { createdAt: "desc" },
-    select: { id: true, username: true, role: true, createdAt: true },
+    select: { id: true, username: true, role: true, gender: true, createdAt: true },
   });
 
   return (
@@ -18,15 +19,11 @@ export default async function AdminAdminsPage() {
         <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">ADMINLAR</div>
         <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">Adminlarni boshqarish</h1>
         <p className="mt-1 max-w-2xl text-[13px] font-medium text-zinc-600">
-          Yangi admin qo‘shish, mavjudlarini ko‘rish va o‘chirish. Hozir kirgan admin:{" "}
+          Katta admin moderatorlar qo‘shadi (jinsi bilan); moderatorlar faqat o‘ziga tegishli e’lonlarni
+          tekshiradi. Hozir:{" "}
           <span className="font-extrabold text-zinc-900">{session.username}</span>
-          {session.role === "super" ? " · super" : ""}.
+          {session.role === "super_admin" ? " · katta admin" : session.role === "moderator" ? " · moderator" : ""}.
         </p>
-        {session.role !== "super" ? (
-          <div className="mt-3 rounded-2xl bg-amber-50 p-3 text-[12.5px] font-extrabold text-amber-900 ring-1 ring-amber-200">
-            Eslatma: faqat super-admin yangi admin qo‘shishi yoki o‘chirishi mumkin.
-          </div>
-        ) : null}
       </div>
 
       <AdminsManager
@@ -34,9 +31,10 @@ export default async function AdminAdminsPage() {
           id: a.id,
           username: a.username,
           role: a.role,
+          gender: a.gender,
           createdAt: a.createdAt.toISOString(),
         }))}
-        canManage={session.role === "super"}
+        canManage={session.role === "super_admin"}
         currentSessionId={session.id}
       />
     </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { requireFullAdminPanelAccess } from "@/lib/adminAuth";
 import { db } from "@/lib/db";
 import DeleteListingButton from "@/components/admin/DeleteListingButton";
 import DeleteUserButton from "@/components/admin/DeleteUserButton";
@@ -17,8 +17,7 @@ export default async function AdminUserDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const ok = await isAdminAuthed();
-  if (!ok) redirect("/adminpanel/login");
+  await requireFullAdminPanelAccess();
 
   const { id } = await params;
   const user = await db.user.findUnique({

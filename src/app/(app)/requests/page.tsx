@@ -1,52 +1,10 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
-import RequestActionsCompact from "@/components/RequestActionsCompact";
 import ListingCard from "@/components/ListingCard";
+import RequestRowActions from "@/components/RequestRowActions";
 
 type Search = { tab?: string; q?: string };
-
-function statusMeta(status: string) {
-  switch (status) {
-    case "pending":
-      return { label: "Kutilmoqda", tone: "amber" as const };
-    case "accepted":
-      return { label: "Tasdiqlangan", tone: "emerald" as const };
-    case "rejected":
-      return { label: "Rad etilgan", tone: "rose" as const };
-    case "cancelled":
-      return { label: "Bekor qilingan", tone: "zinc" as const };
-    default:
-      return { label: status, tone: "zinc" as const };
-  }
-}
-
-function Pill({
-  children,
-  tone,
-}: {
-  children: ReactNode;
-  tone: "rose" | "blue" | "amber" | "zinc" | "emerald";
-}) {
-  const map: Record<string, string> = {
-    rose: "bg-rose-50 text-rose-800 ring-rose-200",
-    blue: "bg-sky-50 text-sky-800 ring-sky-200",
-    amber: "bg-amber-50 text-amber-800 ring-amber-200",
-    zinc: "bg-zinc-100 text-zinc-700 ring-zinc-200",
-    emerald: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-  };
-  return (
-    <span
-      className={
-        "inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-extrabold ring-1 " +
-        map[tone]
-      }
-    >
-      {children}
-    </span>
-  );
-}
 
 export default async function RequestsPage({ searchParams }: { searchParams: Promise<Search> }) {
   const user = await requireUser();
@@ -86,20 +44,38 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
       })
     : base;
 
+  const listingIds = [...new Set(list.map((r) => r.listingId))];
+  const [viewsAgg, likesAgg] = listingIds.length
+    ? await Promise.all([
+        db.listingView.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+        db.favorite.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: listingIds } },
+          _count: { _all: true },
+        }),
+      ])
+    : [[], []];
+  const viewsById = new Map<string, number>(viewsAgg.map((x) => [x.listingId, x._count._all]));
+  const likesById = new Map<string, number>(likesAgg.map((x) => [x.listingId, x._count._all]));
+
   return (
     <div className="grid gap-5">
-      {/* Header: So'rovlar + Kelgan/Ketgan + qidiruv tugmasi (bosilganda input ochiladi) */}
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <div className="min-w-0">
           <h1 className="text-[22px] font-black tracking-tight text-zinc-950 sm:text-[26px]">So‘rovlar</h1>
         </div>
 
-        <div className="justify-self-center">
-          <div className="inline-flex rounded-2xl bg-zinc-100/80 p-1 ring-1 ring-zinc-200">
+        <div className="min-w-0 justify-self-center">
+          {/* Chatlar / Faol–Tugagan bilan bir xil segment */}
+          <div className="grid w-[min(100%,280px)] grid-cols-2 gap-1 rounded-2xl bg-zinc-100/80 p-1 sm:w-auto sm:min-w-[240px]">
             <Link
               href={`/requests?tab=received${q ? `&q=${encodeURIComponent(q)}` : ""}`}
               className={
-                "inline-flex h-9 items-center justify-center rounded-xl px-4 text-[12px] font-extrabold tracking-tight transition " +
+                "inline-flex h-9 min-w-0 items-center justify-center rounded-xl px-3 text-[12px] font-extrabold tracking-tight transition " +
                 (tab === "received"
                   ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                   : "text-zinc-600 hover:text-zinc-900")
@@ -110,7 +86,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
             <Link
               href={`/requests?tab=sent${q ? `&q=${encodeURIComponent(q)}` : ""}`}
               className={
-                "inline-flex h-9 items-center justify-center rounded-xl px-4 text-[12px] font-extrabold tracking-tight transition " +
+                "inline-flex h-9 min-w-0 items-center justify-center rounded-xl px-3 text-[12px] font-extrabold tracking-tight transition " +
                 (tab === "sent"
                   ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                   : "text-zinc-600 hover:text-zinc-900")
@@ -214,17 +190,12 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {list.map((r) => {
-            const otherProfile =
-              tab === "sent"
-                ? (r as typeof sent[number]).toUser?.profile
-                : (r as typeof received[number]).fromUser?.profile;
-            const otherName = otherProfile?.name || "Foydalanuvchi";
-            const sl = statusMeta(r.status);
+            const lid = r.listing.id;
             return (
               <div key={r.id} className="grid gap-3">
                 <ListingCard
                   l={{
-                    id: r.listing.id,
+                    id: lid,
                     name: r.listing.name,
                     age: r.listing.age,
                     heightCm: r.listing.heightCm,
@@ -232,7 +203,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
                     region: r.listing.region,
                     city: r.listing.city,
                     country: r.listing.country,
-                    nationality: (r.listing as any).nationality,
+                    nationality: r.listing.nationality,
                     category: r.listing.category,
                     jobTitle: r.listing.jobTitle,
                     prayer: r.listing.prayer,
@@ -243,40 +214,15 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
                   isFav={false}
                   authed={true}
                   hideFavorite
+                  viewsCount={viewsById.get(lid) ?? 0}
+                  likesCount={likesById.get(lid) ?? 0}
                 />
-
-                <div className="flex flex-wrap items-center justify-between gap-2 px-1">
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex h-8 items-center rounded-2xl bg-zinc-100 px-3 text-[12px] font-extrabold text-zinc-800 ring-1 ring-zinc-200">
-                        {tab === "sent" ? "Yuborilgan" : "Kelgan"}
-                      </span>
-                      <Pill tone={sl.tone}>{sl.label}</Pill>
-                    </div>
-                    <div className="mt-1 truncate text-[12.5px] font-semibold text-zinc-600">
-                      {tab === "sent"
-                        ? `Kimga: ${otherName}`
-                        : `Kimdan: ${otherName}`}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    {r.chat ? (
-                      <Link
-                        href={`/chats/${r.chat.id}`}
-                        className="inline-flex h-9 items-center justify-center rounded-2xl bg-zinc-950 px-3 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
-                      >
-                        Chat
-                      </Link>
-                    ) : (
-                      <RequestActionsCompact
-                        requestId={r.id}
-                        kind={tab === "sent" ? "sent" : "received"}
-                        initialStatus={r.status}
-                      />
-                    )}
-                  </div>
-                </div>
+                <RequestRowActions
+                  tab={tab}
+                  initialStatus={r.status}
+                  requestId={r.id}
+                  chatId={r.chat?.id ?? null}
+                />
               </div>
             );
           })}

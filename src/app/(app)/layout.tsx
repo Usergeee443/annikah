@@ -4,7 +4,7 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-dvh bg-[#f4f4f5] overflow-hidden">
-      <div className="flex h-full w-full gap-5 px-4 pt-4 sm:p-5">
+      <div className="flex h-full w-full gap-5 px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-5 sm:pt-[max(1.25rem,env(safe-area-inset-top))]">
         <div className="hidden md:block shrink-0">
           <Sidebar />
         </div>

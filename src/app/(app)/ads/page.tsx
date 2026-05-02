@@ -24,6 +24,24 @@ export default async function AdsPage() {
     return bb - ab;
   });
 
+  const sortedIds = sorted.map((l) => l.id);
+  const [viewsAgg, likesAgg] = sortedIds.length
+    ? await Promise.all([
+        db.listingView.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: sortedIds } },
+          _count: { _all: true },
+        }),
+        db.favorite.groupBy({
+          by: ["listingId"],
+          where: { listingId: { in: sortedIds } },
+          _count: { _all: true },
+        }),
+      ])
+    : [[], []];
+  const viewsById = new Map<string, number>(viewsAgg.map((x) => [x.listingId, x._count._all]));
+  const likesById = new Map<string, number>(likesAgg.map((x) => [x.listingId, x._count._all]));
+
   return (
     <div className="grid gap-6">
       {/* Reklama berishga undash (asosiy sahifadagi CTA uslubida) */}
@@ -127,6 +145,8 @@ export default async function AdsPage() {
                     isFav={false}
                     authed
                     hideFavorite
+                    viewsCount={viewsById.get(l.id) ?? 0}
+                    likesCount={likesById.get(l.id) ?? 0}
                   />
                 ))}
               </div>

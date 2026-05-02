@@ -120,6 +120,10 @@ model Listing {
   boostUntil DateTime?
   boostScore Int @default(0)
 
+  // Moderatsiya uchun yuz fotosi (saytda chiqmaydi; faqat tekshiruv)
+  verificationPhotoPath      String?
+  verificationPhotoUploadedAt DateTime?
+
   // Snapshot from profile at time of publish
   name           String
   age            Int
@@ -253,7 +257,10 @@ model AdminUser {
   updatedAt    DateTime @updatedAt
   username     String   @unique
   passwordHash String
-  role         String   @default("admin") // admin | super
+  // super_admin — hamma huquq; moderator — faqat moderatsiya (jins bo‘yicha e’lonlar)
+  role         String   @default("moderator") // super_admin | moderator (legacy: super, admin)
+  // moderator uchun: kelinlar → female, kuyovlar → male
+  gender       String?  // female | male
 }
 
 model AppSetting {

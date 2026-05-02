@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import ListingGenderWatermark from "@/components/ListingGenderWatermark";
 import ListingSidebar from "@/components/ListingSidebar";
 import ListingStatsDrawer from "@/components/ListingStatsDrawer";
 
@@ -116,73 +118,30 @@ type SectionAccent =
   | "violet"
   | "zinc";
 
-const ACCENTS: Record<
-  SectionAccent,
-  { iconBg: string; ring: string; hint: string; tint: string }
-> = {
-  indigo: {
-    iconBg: "bg-linear-to-br from-indigo-400 to-indigo-600 text-white shadow-[0_8px_18px_rgba(79,70,229,.22)]",
-    ring: "ring-indigo-100",
-    hint: "text-indigo-700",
-    tint: "from-indigo-50/60 to-white",
-  },
-  rose: {
-    iconBg: "bg-linear-to-br from-rose-400 to-rose-600 text-white shadow-[0_8px_18px_rgba(244,63,94,.22)]",
-    ring: "ring-rose-100",
-    hint: "text-rose-700",
-    tint: "from-rose-50/60 to-white",
-  },
-  amber: {
-    iconBg: "bg-linear-to-br from-amber-400 to-orange-500 text-white shadow-[0_8px_18px_rgba(251,146,60,.24)]",
-    ring: "ring-amber-100",
-    hint: "text-amber-800",
-    tint: "from-amber-50/60 to-white",
-  },
-  emerald: {
-    iconBg: "bg-linear-to-br from-emerald-400 to-emerald-600 text-white shadow-[0_8px_18px_rgba(16,185,129,.22)]",
-    ring: "ring-emerald-100",
-    hint: "text-emerald-700",
-    tint: "from-emerald-50/60 to-white",
-  },
-  sky: {
-    iconBg: "bg-linear-to-br from-sky-400 to-blue-600 text-white shadow-[0_8px_18px_rgba(14,165,233,.22)]",
-    ring: "ring-sky-100",
-    hint: "text-sky-700",
-    tint: "from-sky-50/60 to-white",
-  },
-  fuchsia: {
-    iconBg: "bg-linear-to-br from-fuchsia-400 to-purple-600 text-white shadow-[0_8px_18px_rgba(217,70,239,.22)]",
-    ring: "ring-fuchsia-100",
-    hint: "text-fuchsia-700",
-    tint: "from-fuchsia-50/60 to-white",
-  },
-  violet: {
-    iconBg: "bg-linear-to-br from-violet-400 to-violet-600 text-white shadow-[0_8px_18px_rgba(139,92,246,.22)]",
-    ring: "ring-violet-100",
-    hint: "text-violet-700",
-    tint: "from-violet-50/60 to-white",
-  },
-  zinc: {
-    iconBg: "bg-linear-to-br from-zinc-400 to-zinc-600 text-white shadow-[0_8px_18px_rgba(63,63,70,.22)]",
-    ring: "ring-zinc-100",
-    hint: "text-zinc-700",
-    tint: "from-zinc-50/60 to-white",
-  },
+/** Kartochka fondi — border yo‘q, faqat yumshoq rang gradient */
+const ACCENTS: Record<SectionAccent, { tint: string }> = {
+  indigo: { tint: "from-indigo-50/90 via-white to-indigo-50/40" },
+  rose: { tint: "from-rose-50/90 via-white to-rose-50/40" },
+  amber: { tint: "from-amber-50/90 via-white to-amber-50/40" },
+  emerald: { tint: "from-emerald-50/90 via-white to-emerald-50/40" },
+  sky: { tint: "from-sky-50/90 via-white to-sky-50/40" },
+  fuchsia: { tint: "from-fuchsia-50/90 via-white to-fuchsia-50/40" },
+  violet: { tint: "from-violet-50/90 via-white to-violet-50/40" },
+  zinc: { tint: "from-zinc-50/90 via-white to-zinc-50/40" },
 };
 
 function Section({
   id,
   title,
-  hint,
   accent,
-  icon,
+  iconSrc,
   children,
 }: {
   id?: string;
   title: string;
-  hint?: string;
   accent: SectionAccent;
-  icon: ReactNode;
+  /** `public/section-icons/*.svg` */
+  iconSrc: string;
   children: ReactNode;
 }) {
   const a = ACCENTS[accent];
@@ -190,30 +149,27 @@ function Section({
     <section
       id={id}
       className={
-        "scroll-mt-24 overflow-hidden rounded-[32px] bg-white ring-1 shadow-[0_14px_40px_rgba(15,23,42,.08)] " +
-        a.ring
+        "scroll-mt-24 overflow-hidden rounded-[32px] bg-linear-to-br " + a.tint
       }
     >
       <div className="flex items-center gap-3 px-5 pb-3 pt-5">
-        <span
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-sky-50 text-sky-700 ring-1 ring-sky-200/70"
-          aria-hidden
-        >
-          {icon}
+        <span className="inline-flex shrink-0" aria-hidden>
+          <Image
+            src={iconSrc}
+            alt=""
+            width={28}
+            height={28}
+            className="h-7 w-7 object-contain"
+            unoptimized
+          />
         </span>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h2 className="text-[13px] font-black uppercase tracking-[0.14em] text-zinc-900">
             {title}
           </h2>
-          {hint ? (
-            <div className="mt-0.5 text-[11px] font-semibold text-zinc-500">{hint}</div>
-          ) : null}
         </div>
       </div>
-      <div className="px-5">
-        <div className="h-px w-full bg-zinc-200/70" />
-      </div>
-      <div className="p-5">{children}</div>
+      <div className="px-5 pb-5 pt-0">{children}</div>
     </section>
   );
 }
@@ -395,10 +351,18 @@ export default async function ListingDetailPage({
   const now = new Date();
   const isBoosted = listing.boostUntil ? listing.boostUntil.getTime() > now.getTime() : false;
   const isKelin = listing.category === "kelinlar";
-  const initial = (listing.name?.trim()?.[0] || "?").toUpperCase();
   const heroGradient = isKelin
     ? "from-rose-300 via-fuchsia-500 to-rose-800"
     : "from-sky-300 via-indigo-500 to-blue-800";
+
+  const listingSummaryLine = [
+    `${listing.age} yosh`,
+    listing.nationality?.trim() || null,
+    listing.city?.trim() || null,
+    listing.country?.trim() || null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   const modHint =
     listing.moderationStatus === "pending"
@@ -469,10 +433,7 @@ export default async function ListingDetailPage({
           <ListingSidebar
             listingId={listing.id}
             name={listing.name}
-            age={listing.age}
             category={listing.category}
-            city={listing.city}
-            country={listing.country}
             authed={!!user}
             isOwner={isOwner}
             isFav={isFav}
@@ -490,8 +451,13 @@ export default async function ListingDetailPage({
 
           {/* Right main content */}
           <div className="grid gap-4">
-            {/* Mobile-only hero (desktopda chap sidebarda profil bor — takrorlamaymiz) */}
-            <section className="overflow-hidden rounded-3xl bg-white ring-1 ring-zinc-200/80 shadow-[0_8px_28px_rgba(15,23,42,.06)] lg:hidden">
+            {/* Asosiy joyda qisqa meta (desktop) */}
+            <p className="hidden text-[13.5px] font-semibold leading-snug text-zinc-600 lg:block">
+              {listingSummaryLine}
+            </p>
+
+            {/* Mobil: gradient banner — sidebardagi kabi (meta ostida alohida) */}
+            <section className="overflow-hidden rounded-3xl bg-white ring-1 ring-zinc-200/80 lg:hidden">
               <div
                 style={{ containerType: "inline-size" }}
                 className="relative aspect-5/4 w-full sm:aspect-video"
@@ -499,43 +465,40 @@ export default async function ListingDetailPage({
                 <div className={"absolute inset-0 bg-linear-to-br " + heroGradient}>
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_22%,rgba(255,255,255,.3),transparent_55%)]"
+                    className="pointer-events-none absolute inset-0 bg-black/18"
                   />
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,.5)_0%,transparent_50%)]"
+                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_22%,rgba(255,255,255,.32),transparent_55%)]"
                   />
-                  <div className="absolute left-3 top-3 flex flex-wrap items-center gap-2">
+                  <div className="absolute left-3 top-3 z-2 flex flex-wrap items-center gap-2">
                     {isBoosted ? (
                       <span className="inline-flex h-7 items-center gap-1 rounded-full bg-amber-400 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-950 shadow-sm ring-1 ring-amber-500">
                         Top
                       </span>
                     ) : (
-                      <span className="inline-flex h-7 items-center rounded-full bg-white/15 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/25 backdrop-blur">
+                      <span className="inline-flex h-7 items-center rounded-full bg-white/20 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/35 backdrop-blur">
                         {isKelin ? "Kelin" : "Kuyov"}
                       </span>
                     )}
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span
-                      aria-hidden
-                      className="select-none font-black tracking-[-0.04em] text-white/95 drop-shadow-[0_10px_28px_rgba(0,0,0,.28)]"
-                      style={{ fontSize: "min(38vw, 160px)" }}
-                    >
-                      {initial}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
-                    <h1 className="text-[clamp(22px,5vw,32px)] font-black leading-tight tracking-tight text-white drop-shadow">
+                  <ListingGenderWatermark
+                    category={listing.category}
+                    variant="detailHero"
+                    maskId={`hero-${listing.id}`}
+                  />
+                  <div className="relative z-1 flex h-full min-h-0 flex-col items-center justify-center px-4 pb-8 pt-16">
+                    <h1 className="translate-y-1 text-center text-[clamp(20px,5.5vw,30px)] font-black leading-tight tracking-tight text-white drop-shadow-[0_4px_22px_rgba(0,0,0,.38)]">
                       {listing.name}
                     </h1>
-                    <p className="mt-1 text-[13px] font-semibold text-white/85">
-                      {listing.age} yosh · {listing.city} · {listing.country}
-                    </p>
                   </div>
                 </div>
               </div>
             </section>
+
+            <p className="text-[13.5px] font-semibold leading-snug text-zinc-600 lg:hidden">
+              {listingSummaryLine}
+            </p>
 
             {/* Desktop owner stats action */}
             {isOwner ? (
@@ -547,9 +510,8 @@ export default async function ListingDetailPage({
             <Section
               id="row-physical"
               title="JISMONIY MA’LUMOTLAR"
-              hint={`${listing.heightCm} sm · ${listing.weightKg} kg`}
               accent="sky"
-              icon={I.ruler}
+              iconSrc="/section-icons/ruler.svg"
             >
               <Dl
                 rows={[
@@ -564,20 +526,20 @@ export default async function ListingDetailPage({
             <Section
               id="row-address"
               title="JOYASHUV"
-              hint={`${listing.region || ""}${listing.city ? " · " + listing.city : ""}`}
               accent="indigo"
-              icon={I.pin}
+              iconSrc="/section-icons/location.svg"
             >
               <Dl
                 rows={[
                   { k: "Davlat", v: listing.country || "—" },
-                  { k: "Viloyat / Shahar", v: `${listing.region || "—"} · ${listing.city || "—"}` },
+                  { k: "Viloyat", v: listing.region || "—" },
+                  { k: "Shahar", v: listing.city || "—" },
                   { k: "Millati", v: listing.nationality || "—" },
                 ]}
               />
             </Section>
 
-            <Section id="marital" title="SHAXSIY HOLATI" hint="OILA" accent="rose" icon={I.rings}>
+            <Section id="marital" title="SHAXSIY HOLATI" accent="rose" iconSrc="/section-icons/user-octagon.svg">
               <Dl
                 rows={[
                   { k: "Oilaviy holati", v: maritalLabel(listing.maritalStatus) },
@@ -589,7 +551,7 @@ export default async function ListingDetailPage({
               />
             </Section>
 
-            <Section id="education" title="ILM & KASB" hint="TA’LIM" accent="amber" icon={I.cap}>
+            <Section id="education" title="ILM & KASB" accent="amber" iconSrc="/section-icons/teacher.svg">
               <Dl
                 rows={[
                   { k: "Ta’lim", v: educationLabel(listing.education) },
@@ -599,7 +561,7 @@ export default async function ListingDetailPage({
               />
             </Section>
 
-            <Section id="religion" title="DINIY MA’LUMOTLAR" hint="DIN" accent="emerald" icon={I.mosque}>
+            <Section id="religion" title="DINIY MA’LUMOTLAR" accent="emerald" iconSrc="/section-icons/book.svg">
               <Dl
                 rows={[
                   { k: "Aqida", v: aqeedaLabel(listing.aqeeda) },
@@ -610,7 +572,7 @@ export default async function ListingDetailPage({
               />
             </Section>
 
-            <Section id="partner" title="JUFTGA TALABLARI" hint="TALAB" accent="fuchsia" icon={I.users}>
+            <Section id="partner" title="JUFTGA TALABLARI" accent="fuchsia" iconSrc="/section-icons/document-like.svg">
               <Dl
                 rows={[
                   {
@@ -628,7 +590,7 @@ export default async function ListingDetailPage({
             </Section>
 
             {listing.about ? (
-              <Section id="about" title="O‘ZIM HAQIMDA" hint="" accent="violet" icon={I.note}>
+              <Section id="about" title="O‘ZIM HAQIMDA" accent="violet" iconSrc="/section-icons/user-search.svg">
                 <p className="whitespace-pre-line text-[15px] leading-relaxed text-zinc-700">
                   {listing.about}
                 </p>

@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { isAdminAuthed } from "@/lib/adminAuth";
+import { requireFullAdminPanelAccess } from "@/lib/adminAuth";
 import { getPricingConfig } from "@/lib/pricing";
 
 function Stat({
@@ -23,8 +22,7 @@ function Stat({
 }
 
 export default async function AdminPanelPage() {
-  const authed = await isAdminAuthed();
-  if (!authed) redirect("/adminpanel/login");
+  await requireFullAdminPanelAccess();
 
   const now = new Date();
   const [
