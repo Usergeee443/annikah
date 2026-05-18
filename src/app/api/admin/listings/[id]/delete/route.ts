@@ -1,0 +1,22 @@
+import { NextResponse } from "next/server";
+import { getAdminSession } from "@/lib/adminAuth";
+import { db } from "@/lib/db";
+import { parseListingIdParam } from "@/lib/listingId";
+
+export async function POST(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  const session = await getAdminSession();
+  if (!session) return NextResponse.json({ error: "ADMIN_AUTH_REQUIRED" }, { status: 401 });
+  if (session.role !== "super_admin") {
+    return NextResponse.json({ error: "ADMIN_SUPER_REQUIRED" }, { status: 403 });
+  }
+
+  const { id: idRaw } = await ctx.params;
+  const id = parseListingIdParam(idRaw);
+  if (id === null) return NextResponse.json({ error: "BAD_ID" }, { status: 400 });
+
+  const found = await db.listing.findUnique({ where: { id }, select: { id: true } });
+  if (!found) return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
+
+  await db.listing.delete({ where: { id } });
+  return NextResponse.json({ ok: true });
+}

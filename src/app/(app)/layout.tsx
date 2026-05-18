@@ -1,0 +1,22 @@
+import Sidebar from "@/components/Sidebar";
+import MobileBottomNav from "@/components/MobileBottomNav";
+import AppPageTransition from "@/components/AppPageTransition";
+
+export default function AppLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="h-dvh bg-[#f4f4f5] overflow-hidden">
+      <div className="flex h-full w-full gap-5 px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-5 sm:pt-[max(1.25rem,env(safe-area-inset-top))]">
+        <div className="hidden md:block shrink-0">
+          <Sidebar />
+        </div>
+        <main
+          className="min-w-0 flex-1 overflow-y-auto pb-[env(safe-area-inset-bottom)] md:pb-10"
+          style={{ scrollPaddingBottom: "calc(96px + env(safe-area-inset-bottom))" }}
+        >
+          <AppPageTransition>{children}</AppPageTransition>
+        </main>
+      </div>
+      <MobileBottomNav />
+    </div>
+  );
+}

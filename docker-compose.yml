@@ -1,0 +1,12 @@
+# Mahalliy ish: docker compose up -d
+# Keyin .env da DATABASE_URL=postgresql://annikah:annikah@localhost:5432/annikah?schema=public
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: annikah
+      POSTGRES_PASSWORD: annikah
+      POSTGRES_DB: annikah
