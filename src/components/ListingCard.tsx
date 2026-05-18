@@ -305,7 +305,11 @@ export default function ListingCard({
         <div>
           <button
             type="button"
-            onClick={onPress}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onPress?.();
+            }}
             aria-label={`${l.name}, ${l.age} yosh`}
             className={wrapCls}
           >

@@ -74,13 +74,40 @@ const IconPencil = (
   </svg>
 );
 
-export default function ListingEditWorkspace({ initial }: { initial: ListingData }) {
+const SECTION_FILTERS = [
+  "Barchasi",
+  "Asosiy",
+  "Manzil",
+  "Jismoniy",
+  "Shaxsiy",
+  "Ta’lim",
+  "Diniy",
+  "Juft",
+  "Haqida",
+] as const;
+
+type SectionFilter = (typeof SECTION_FILTERS)[number];
+
+export default function ListingEditWorkspace({
+  initial,
+  embedded,
+  onSaved,
+}: {
+  initial: ListingData;
+  embedded?: boolean;
+  onSaved?: () => void;
+}) {
   const router = useRouter();
   const [draft, setDraft] = useState<ListingData>(initial);
   const [editing, setEditing] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
+  const [sectionFilter, setSectionFilter] = useState<SectionFilter>("Barchasi");
+
+  function showSection(section: string) {
+    return sectionFilter === "Barchasi" || sectionFilter === section;
+  }
 
   useEffect(() => {
     setDraft(initial);
@@ -111,11 +138,17 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         if (!res.ok) throw new Error(data?.error || "Saqlab bo‘lmadi");
         setEditing(null);
         setOk("Saqlandi.");
-        router.refresh();
+        if (embedded) onSaved?.();
+        else router.refresh();
       } catch (e) {
         setErr(e instanceof Error ? e.message : "Xatolik");
       }
     });
+  }
+
+  function SectionBlock({ section, children }: { section: string; children: ReactNode }) {
+    if (!showSection(section)) return null;
+    return <div className="grid gap-3">{children}</div>;
   }
 
   function EditableRow({
@@ -183,13 +216,99 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
     );
   }
 
+  const sectionChipCls = (active: boolean, tone: string) =>
+    "rounded-xl px-3 py-2 text-[11px] font-extrabold tracking-tight ring-1 transition " +
+    (active ? tone + " ring-transparent" : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-50");
+
+  const filterBar = (
+    <div className="sticky top-0 z-10 -mx-1 mb-1 border-b border-zinc-100 bg-white/95 pb-3 pt-1 backdrop-blur-sm">
+      <div className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-zinc-500">Bo‘limni tanlang</div>
+      <div className="flex flex-wrap gap-2">
+          <button
+            key="Barchasi"
+            type="button"
+            onClick={() => setSectionFilter("Barchasi")}
+            className={sectionChipCls(sectionFilter === "Barchasi", "bg-zinc-900 text-white")}
+          >
+            Barchasi
+          </button>
+          <button
+            key="Asosiy"
+            type="button"
+            onClick={() => setSectionFilter("Asosiy")}
+            className={sectionChipCls(sectionFilter === "Asosiy", "bg-rose-600 text-white")}
+          >
+            Asosiy
+          </button>
+          <button
+            key="Manzil"
+            type="button"
+            onClick={() => setSectionFilter("Manzil")}
+            className={sectionChipCls(sectionFilter === "Manzil", "bg-fuchsia-600 text-white")}
+          >
+            Manzil
+          </button>
+          <button
+            key="Jismoniy"
+            type="button"
+            onClick={() => setSectionFilter("Jismoniy")}
+            className={sectionChipCls(sectionFilter === "Jismoniy", "bg-amber-600 text-white")}
+          >
+            Jismoniy
+          </button>
+          <button
+            key="Shaxsiy"
+            type="button"
+            onClick={() => setSectionFilter("Shaxsiy")}
+            className={sectionChipCls(sectionFilter === "Shaxsiy", "bg-emerald-600 text-white")}
+          >
+            Shaxsiy
+          </button>
+          <button
+            key="Ta’lim"
+            type="button"
+            onClick={() => setSectionFilter("Ta’lim")}
+            className={sectionChipCls(sectionFilter === "Ta’lim", "bg-teal-600 text-white")}
+          >
+            Ta'lim
+          </button>
+          <button
+            key="Diniy"
+            type="button"
+            onClick={() => setSectionFilter("Diniy")}
+            className={sectionChipCls(sectionFilter === "Diniy", "bg-violet-600 text-white")}
+          >
+            Diniy
+          </button>
+          <button
+            key="Juft"
+            type="button"
+            onClick={() => setSectionFilter("Juft")}
+            className={sectionChipCls(sectionFilter === "Juft", "bg-sky-600 text-white")}
+          >
+            Juft
+          </button>
+          <button
+            key="Haqida"
+            type="button"
+            onClick={() => setSectionFilter("Haqida")}
+            className={sectionChipCls(sectionFilter === "Haqida", "bg-cyan-600 text-white")}
+          >
+            Haqida
+          </button>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="grid max-h-[min(85vh,900px)] gap-3 overflow-y-auto pr-1 [-webkit-overflow-scrolling:touch]">
+    <div className={"grid gap-3 " + (embedded ? "" : "max-h-[min(85vh,900px)] overflow-y-auto pr-1 [-webkit-overflow-scrolling:touch]")}>
+      {filterBar}
       <div className="rounded-2xl border border-indigo-200/70 bg-indigo-50/60 p-4 text-[12px] font-medium text-indigo-950 ring-1 ring-indigo-100">
         Barcha qatorlar ko‘rinadi. Yonidagi qalamcha orqali faqat shu maydonni tahrirlang va saqlang — bo‘lim nomi
         pastki yorliqda ko‘rsatilgan.
       </div>
 
+      <SectionBlock section="Asosiy">
       <EditableRow
         section="Asosiy"
         label="Ism"
@@ -218,7 +337,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ age: draft.age })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Manzil">
       <EditableRow
         section="Manzil"
         label="Davlat"
@@ -256,7 +377,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ nationality: draft.nationality })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Jismoniy">
       <EditableRow
         section="Jismoniy"
         label="Bo‘y (sm)"
@@ -332,7 +455,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ sportPerWeek: draft.sportPerWeek })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Shaxsiy">
       <EditableRow
         section="Shaxsiy"
         label="Oilaviy holat"
@@ -392,7 +517,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ polygamyAllowance: draft.polygamyAllowance })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Ta’lim">
       <EditableRow
         section="Ta’lim"
         label="Ta’lim darajasi"
@@ -441,7 +568,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ incomeMonthlyUsd: draft.incomeMonthlyUsd })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Diniy">
       <EditableRow
         section="Diniy"
         label="Aqida"
@@ -484,7 +613,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         childrenEdit={<input className={inputCls()} value={draft.madhab} onChange={(e) => setDraft({ ...draft, madhab: e.target.value })} />}
         onSave={() => save({ madhab: draft.madhab })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Juft">
       <EditableRow
         section="Juft"
         label="Yosh (dan)"
@@ -557,7 +688,9 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ partnerCities: draft.partnerCities })}
       />
+      </SectionBlock>
 
+      <SectionBlock section="Haqida">
       <EditableRow
         section="Haqida"
         label="Matn"
@@ -572,14 +705,24 @@ export default function ListingEditWorkspace({ initial }: { initial: ListingData
         }
         onSave={() => save({ about: draft.about })}
       />
+      </SectionBlock>
 
       <div className="flex flex-wrap items-center justify-between gap-2 pb-2">
-        <Link
-          href="/profile#elonlarim"
-          className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-        >
-          ← E’lonlarim
-        </Link>
+        {embedded ? (
+          <Link
+            href={`/listings/${initial.id}/edit`}
+            className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-100 px-4 text-[12px] font-extrabold text-zinc-800 ring-1 ring-zinc-200 hover:bg-white"
+          >
+            To‘liq tahrirlash sahifasi →
+          </Link>
+        ) : (
+          <Link
+            href="/profile#elonlarim"
+            className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+          >
+            ← E’lonlarim
+          </Link>
+        )}
         {pending && !err ? <div className="text-[12px] font-extrabold text-zinc-500">Saqlanmoqda…</div> : null}
         {ok ? <div className="text-[12px] font-extrabold text-emerald-700">{ok}</div> : null}
       </div>

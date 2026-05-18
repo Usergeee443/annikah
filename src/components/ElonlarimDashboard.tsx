@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import ListingCard from "@/components/ListingCard";
+import ListingEditWorkspace from "@/components/ListingEditWorkspace";
 import ProfileGapsPanel from "@/components/ProfileGapsPanel";
 import { computeProfileComplete } from "@/lib/profileCompleteness";
 
@@ -45,6 +47,38 @@ export type ElonlarimListingPayload = {
   partnerCities: string | null;
   about: string;
 };
+
+function listingToEditInitial(l: ElonlarimListingPayload) {
+  return {
+    id: l.id,
+    name: l.name,
+    age: l.age,
+    country: l.country,
+    region: l.region,
+    city: l.city,
+    nationality: l.nationality,
+    heightCm: l.heightCm,
+    weightKg: l.weightKg,
+    smokes: l.smokes,
+    sportPerWeek: l.sportPerWeek,
+    maritalStatus: l.maritalStatus,
+    children: l.children,
+    polygamyAllowance: l.polygamyAllowance,
+    education: l.education,
+    jobTitle: l.jobTitle,
+    incomeMonthlyUsd: l.incomeMonthlyUsd,
+    aqeeda: l.aqeeda,
+    prayer: l.prayer,
+    quran: l.quran,
+    madhab: l.madhab,
+    partnerAgeFrom: l.partnerAgeFrom,
+    partnerAgeTo: l.partnerAgeTo,
+    partnerCountries: l.partnerCountries,
+    partnerRegions: l.partnerRegions,
+    partnerCities: l.partnerCities,
+    about: l.about,
+  };
+}
 
 export type ElonlarimProfilePayload = {
   category: string | null;
@@ -134,6 +168,10 @@ export default function ElonlarimDashboard({
   const [stats, setStats] = useState<Stats | null>(null);
   const [statsErr, setStatsErr] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
+  const ignoreBackdropRef = useRef(false);
+  const [hideProfileGaps, setHideProfileGaps] = useState(false);
+  const [, setDraftListingTick] = useState(0);
 
   const ordered = useMemo(() => {
     return [...listings].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -218,20 +256,24 @@ export default function ElonlarimDashboard({
     loadStats(sel.id);
   }, [open, tab, sel, loadStats]);
 
-  function openProfileDrawer() {
-    setSel({ kind: "profile" });
+  function openDrawer(selNext: { kind: "profile" } | { kind: "listing"; id: number }) {
+    ignoreBackdropRef.current = true;
+    setSel(selNext);
     setTab("edit");
     setStats(null);
     setStatsErr(null);
     setOpen(true);
+    window.setTimeout(() => {
+      ignoreBackdropRef.current = false;
+    }, 700);
+  }
+
+  function openProfileDrawer() {
+    openDrawer({ kind: "profile" });
   }
 
   function openListingDrawer(id: number) {
-    setSel({ kind: "listing", id });
-    setTab("edit");
-    setStats(null);
-    setStatsErr(null);
-    setOpen(true);
+    openDrawer({ kind: "listing", id });
   }
 
   function close() {
@@ -266,8 +308,11 @@ export default function ElonlarimDashboard({
       disableLink: true,
       coverBadge: pin ? ("pin" as const) : ("category" as const),
       onPress: () => {
-        if (l.id === 0) openProfileDrawer();
-        else openListingDrawer(l.id);
+        if (l.id === 0) {
+          openProfileDrawer();
+          return;
+        }
+        openListingDrawer(l.id);
       },
     };
   }
@@ -354,11 +399,8 @@ export default function ElonlarimDashboard({
 
   return (
     <>
-      {profile && !computeProfileComplete(profile) ? (
-        <ProfileGapsPanel
-          profile={profile}
-          onComplete={() => window.location.reload()}
-        />
+      {profile && !hideProfileGaps && !computeProfileComplete(profile) ? (
+        <ProfileGapsPanel profile={profile} onComplete={() => setHideProfileGaps(true)} />
       ) : null}
 
       {/* Grid — asosiy sahifadagi kabi */}
@@ -369,25 +411,23 @@ export default function ElonlarimDashboard({
         {syntheticFromProfile ? <ListingCard {...cardProps(syntheticFromProfile, true)} /> : null}
       </div>
 
-      {/* Drawer */}
-      <div
-        className={
-          "fixed inset-0 z-50 transition " + (open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0")
-        }
-      >
-        <button
-          type="button"
-          aria-label="Yopish"
-          onClick={close}
-          className={"absolute inset-0 bg-black/40 backdrop-blur-[2px] transition " + (open ? "opacity-100" : "opacity-0")}
-        />
+      {open && sel ? (
+        <div
+          className="fixed inset-0 z-50"
+          onPointerDown={(e) => {
+            if (e.target !== e.currentTarget || ignoreBackdropRef.current) return;
+            close();
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" aria-hidden />
 
-        <aside
+          <aside
+            onPointerDown={(e) => e.stopPropagation()}
           className={
             // Mobile: bottomsheet, Desktop: right sidebar
             "absolute flex flex-col bg-white/95 shadow-[0_24px_80px_rgba(15,23,42,.35)] backdrop-blur-xl transition-transform duration-300 ease-out " +
             "inset-x-0 bottom-0 max-h-[88dvh] w-full rounded-t-[28px] md:inset-x-auto md:bottom-auto md:right-0 md:top-0 md:h-full md:max-h-none md:w-[min(520px,94vw)] md:rounded-none md:border-l md:border-zinc-200/70 " +
-            (open ? "translate-y-0 md:translate-x-0" : "translate-y-full md:translate-y-0 md:translate-x-full")
+            "translate-y-0 md:translate-x-0"
           }
         >
           <header className="border-b border-zinc-100 px-5 pb-4 pt-5">
@@ -450,18 +490,12 @@ export default function ElonlarimDashboard({
 
           <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
             {tab === "edit" ? (
-              sel?.kind === "listing" && activeListing ? (
-                <div className="grid gap-3">
-                  <div className="rounded-3xl bg-zinc-50 p-5 text-[13px] font-medium leading-relaxed text-zinc-600 ring-1 ring-zinc-200">
-                    Endi e’lon tahriri alohida sahifada. Istalgan bo‘limni tanlab tez va qulay o‘zgartirasiz.
-                  </div>
-                  <Link
-                    href={`/listings/${activeListing.id}/edit`}
-                    className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
-                  >
-                    E’lonni tahrirlash sahifasi →
-                  </Link>
-                </div>
+              sel?.kind === "listing" && activeListing && activeListing.id !== 0 ? (
+                <ListingEditWorkspace
+                  initial={listingToEditInitial(activeListing)}
+                  embedded
+                  onSaved={() => setDraftListingTick((t) => t + 1)}
+                />
               ) : (
                 <EditPanel
                   sel={sel}
@@ -472,7 +506,7 @@ export default function ElonlarimDashboard({
                   toNum={toNum}
                   SectionEdit={SectionEdit}
                   onSaved={() => {
-                    window.location.reload();
+                    if (!open) router.refresh();
                   }}
                 />
               )
@@ -591,7 +625,8 @@ export default function ElonlarimDashboard({
             </footer>
           ) : null}
         </aside>
-      </div>
+        </div>
+      ) : null}
     </>
   );
 }
@@ -624,6 +659,10 @@ function EditPanel({
   onSaved: () => void;
 }) {
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
+  const ignoreBackdropRef = useRef(false);
+  const [hideProfileGaps, setHideProfileGaps] = useState(false);
+  const [, setDraftListingTick] = useState(0);
   const [err, setErr] = useState<string | null>(null);
   const [editing, setEditing] = useState<string | null>(null);
   const [draft, setDraft] = useState<ElonlarimListingPayload | null>(listing);

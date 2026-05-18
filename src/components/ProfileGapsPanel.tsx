@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { COUNTRIES } from "@/lib/countries";
 import {
   computeProfileComplete,
@@ -70,10 +70,14 @@ export default function ProfileGapsPanel({ profile, compact, onComplete }: Props
 
   const gaps = useMemo(() => getProfileGaps(local), [local]);
   const complete = useMemo(() => computeProfileComplete(local), [local]);
+  const wasCompleteRef = useRef(computeProfileComplete(profile));
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
-    if (complete) onComplete?.();
-  }, [complete, onComplete]);
+    if (complete && !wasCompleteRef.current) onCompleteRef.current?.();
+    wasCompleteRef.current = complete;
+  }, [complete]);
 
   if (complete) {
     return (
