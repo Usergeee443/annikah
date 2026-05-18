@@ -1015,7 +1015,7 @@ export default function ListingCreateWizard({
                 <span className="rounded-full bg-black/30 px-2 py-0.5">{d.age} yosh</span>
               </div>
               <div className="mt-3 text-[22px] font-black leading-tight">{d.name}</div>
-              <div className="mt-1 text-[12px] font-semibold text-white/85">{d.region}, {d.city} · {d.country}</>
+              <div className="mt-1 text-[12px] font-semibold text-white/85">{d.region}, {d.city} · {d.country}</div>
               <div className="mt-2 text-[12px] text-white/80">{d.jobTitle} · {d.heightCm} sm · {d.weightKg} kg</div>
               <p className="mt-3 line-clamp-4 text-[12px] leading-relaxed text-white/90">{d.about}</p>
             </div>

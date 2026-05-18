@@ -36,6 +36,7 @@ export default async function NewListingPage() {
             </Link>
           </div>
         )}
+      </div>
     );
   }
 
