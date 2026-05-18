@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import ListingCard from "@/components/ListingCard";
+import ProfileGapsPanel from "@/components/ProfileGapsPanel";
+import { computeProfileComplete } from "@/lib/profileCompleteness";
 
 export type ElonlarimListingPayload = {
   id: number;
@@ -56,7 +58,11 @@ export type ElonlarimProfilePayload = {
   heightCm: number | null;
   weightKg: number | null;
   jobTitle: string | null;
+  about: string | null;
+  aqeeda: string | null;
   prayer: string | null;
+  quran: string | null;
+  madhab: string | null;
   maritalStatus: string | null;
 };
 
@@ -348,6 +354,13 @@ export default function ElonlarimDashboard({
 
   return (
     <>
+      {profile && !computeProfileComplete(profile) ? (
+        <ProfileGapsPanel
+          profile={profile}
+          onComplete={() => window.location.reload()}
+        />
+      ) : null}
+
       {/* Grid — asosiy sahifadagi kabi */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {ordered.map((l) => (
@@ -624,19 +637,14 @@ function EditPanel({
   if (!sel) return null;
 
   if (sel.kind === "profile") {
-    return (
-      <div className="grid gap-3">
-        <div className="rounded-3xl bg-zinc-50 p-5 text-[13px] font-medium leading-relaxed text-zinc-600 ring-1 ring-zinc-200">
-          E’lon yaratish yoki e’lon ma’lumotlarini tahrirlash uchun profilingiz to‘liq bo‘lishi kerak.
+    if (!profile) {
+      return (
+        <div className="rounded-3xl bg-zinc-50 p-5 text-[13px] font-medium text-zinc-600 ring-1 ring-zinc-200">
+          Profil topilmadi.
         </div>
-        <Link
-          href="/profile/wizard"
-          className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
-        >
-          Profilni to‘ldirish
-        </Link>
-      </div>
-    );
+      );
+    }
+    return <ProfileGapsPanel profile={profile} compact onComplete={onSaved} />;
   }
 
   if (!listing || !draft) {
