@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import ExtraListingWizard from "@/components/ExtraListingWizard";
+import ListingCreateWizard from "@/components/listing-create/ListingCreateWizard";
 import ProfileGapsPanel from "@/components/ProfileGapsPanel";
 import { getPricingConfig } from "@/lib/pricing";
 import { computeProfileComplete } from "@/lib/profileCompleteness";
@@ -41,7 +41,7 @@ export default async function ExtraListingPage() {
   }
 
   return (
-    <ExtraListingWizard
+    <ListingCreateWizard
       initialProfile={profile}
       category={profile.category}
       plans={initialPricing.listingPlans.map((p) => ({
