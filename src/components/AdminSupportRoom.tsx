@@ -143,8 +143,8 @@ export default function AdminSupportRoom({
     <section className="flex h-[calc(100dvh-10rem)] min-h-[520px] flex-col overflow-hidden rounded-3xl border border-zinc-200/70 bg-white shadow-[0_8px_28px_rgba(15,23,42,.06)]">
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-zinc-200/70 bg-white/95 px-4 py-3 backdrop-blur sm:px-5">
         <div className="min-w-0">
-          <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">SUPPORT</div>
-          <div className="mt-1 truncate text-[15px] font-extrabold tracking-tight text-zinc-950">
+          <div className="text-[11px] font-semibold tracking-wide text-zinc-500">SUPPORT</div>
+          <div className="mt-1 truncate text-[14px] font-semibold tracking-normal text-zinc-950">
             {userLabel}
           </div>
           <div className="mt-0.5 text-[11.5px] font-medium text-zinc-500">
@@ -154,7 +154,7 @@ export default function AdminSupportRoom({
         <div className="flex items-center gap-2">
           <Link
             href="/adminpanel/support"
-            className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+            className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
           >
             Ro‘yxat
           </Link>
@@ -162,7 +162,7 @@ export default function AdminSupportRoom({
             type="button"
             onClick={closeThread}
             disabled={closing}
-            className="inline-flex h-9 items-center justify-center rounded-2xl bg-zinc-100 px-3 text-[12px] font-extrabold text-zinc-700 ring-1 ring-zinc-200 hover:bg-zinc-200 disabled:opacity-60"
+            className="inline-flex h-9 items-center justify-center rounded-2xl bg-zinc-100 px-3 text-[12px] font-semibold text-zinc-700 ring-1 ring-zinc-200 hover:bg-zinc-200 disabled:opacity-60"
           >
             {closing ? "Yopilmoqda…" : "Yopish"}
           </button>
@@ -177,7 +177,7 @@ export default function AdminSupportRoom({
           {groups.map((g) => (
             <div key={g.dayKey}>
               <div className="my-3 flex justify-center">
-                <span className="rounded-full bg-white/85 px-3 py-0.5 text-[10.5px] font-extrabold uppercase tracking-[0.14em] text-zinc-600 shadow-sm ring-1 ring-zinc-200 backdrop-blur">
+                <span className="rounded-full bg-white/85 px-3 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-zinc-600 shadow-sm ring-1 ring-zinc-200 backdrop-blur">
                   {g.label}
                 </span>
               </div>
@@ -253,12 +253,12 @@ export default function AdminSupportRoom({
             type="button"
             onClick={send}
             disabled={pending || !text.trim()}
-            className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
+            className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
           >
             {pending ? "Yuborilmoqda…" : "Yuborish"}
           </button>
         </div>
-        {error ? <div className="mx-auto mt-2 max-w-3xl text-[12px] font-extrabold text-rose-700">{error}</div> : null}
+        {error ? <div className="mx-auto mt-2 max-w-3xl text-[12px] font-semibold text-rose-700">{error}</div> : null}
       </div>
     </section>
   );

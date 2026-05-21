@@ -117,7 +117,7 @@ export default function MobileBottomNav() {
                   prefetch
                   aria-current={active ? "page" : undefined}
                   className={cls(
-                    "flex flex-col items-center justify-center gap-0.5 rounded-xl py-1.5 text-[9.5px] font-extrabold tracking-tight transition active:scale-[0.97]",
+                    "flex flex-col items-center justify-center gap-0.5 rounded-xl py-1.5 text-[9.5px] font-semibold tracking-normal transition active:scale-[0.97]",
                     active ? "text-indigo-700" : "text-zinc-700/90",
                   )}
                 >

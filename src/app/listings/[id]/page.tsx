@@ -167,7 +167,7 @@ function Section({
           />
         </span>
         <div className="min-w-0 flex-1">
-          <h2 className="text-[13px] font-black uppercase tracking-[0.14em] text-zinc-900">
+          <h2 className="text-[13px] font-bold uppercase tracking-[0.14em] text-zinc-900">
             {title}
           </h2>
         </div>
@@ -188,10 +188,10 @@ function Dl({
     <dl className="grid gap-4 sm:grid-cols-2">
       {rows.map((r) => (
         <div key={r.k} id={r.id} data-key={highlightKey} className="scroll-mt-28">
-          <dt className="text-[12px] font-extrabold uppercase tracking-widest text-zinc-400">
+          <dt className="text-[12px] font-semibold uppercase tracking-wide text-zinc-400">
             {r.k}
           </dt>
-          <dd className="mt-2 text-[20px] font-black tracking-tight text-zinc-950">
+          <dd className="mt-2 text-base font-bold tracking-normal text-zinc-950">
             {r.v}
           </dd>
         </div>
@@ -394,7 +394,7 @@ export default async function ListingDetailPage({
     <div className="min-h-screen bg-[#f4f4f5] text-zinc-950">
       {/* Tozalangan, rangsiz header — orqaga · Annikah · placeholder */}
       <header className="sticky top-0 z-30 bg-transparent">
-        <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-11 max-w-[1400px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
           <Link
             href="/"
             aria-label="Orqaga"
@@ -416,7 +416,7 @@ export default async function ListingDetailPage({
                 <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z" />
               </svg>
             </span>
-            <span className="text-[19px] font-black tracking-tight bg-linear-to-r from-rose-500 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
+            <span className="text-[19px] font-bold tracking-normal bg-linear-to-r from-rose-500 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
               Annikah
             </span>
           </Link>
@@ -427,7 +427,7 @@ export default async function ListingDetailPage({
       <main className="mx-auto max-w-[1400px] px-4 pb-24 pt-2 sm:px-6 lg:px-8 lg:pb-12">
         {isOwner && listing.moderationStatus !== "approved" ? (
           <div className="mb-4 rounded-2xl bg-amber-50 px-4 py-3 text-[12.5px] font-semibold leading-relaxed text-amber-950 ring-1 ring-amber-200">
-            <span className="font-extrabold">Holat: </span>
+            <span className="font-semibold">Holat: </span>
             {modHint}
           </div>
         ) : null}
@@ -477,11 +477,11 @@ export default async function ListingDetailPage({
                   />
                   <div className="absolute left-3 top-3 z-2 flex flex-wrap items-center gap-2">
                     {isBoosted ? (
-                      <span className="inline-flex h-7 items-center gap-1 rounded-full bg-amber-400 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-amber-950 shadow-sm ring-1 ring-amber-500">
+                      <span className="inline-flex h-7 items-center gap-1 rounded-full bg-amber-400 px-2.5 text-[10px] font-semibold uppercase tracking-wide text-amber-950 shadow-sm ring-1 ring-amber-500">
                         Top
                       </span>
                     ) : (
-                      <span className="inline-flex h-7 items-center rounded-full bg-white/20 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/35 backdrop-blur">
+                      <span className="inline-flex h-7 items-center rounded-full bg-white/20 px-2.5 text-[10px] font-semibold uppercase tracking-wide text-white ring-1 ring-white/35 backdrop-blur">
                         {isKelin ? "Kelin" : "Kuyov"}
                       </span>
                     )}
@@ -492,7 +492,7 @@ export default async function ListingDetailPage({
                     maskId={`hero-${listing.id}`}
                   />
                   <div className="relative z-1 flex h-full min-h-0 flex-col items-center justify-center px-4 pb-8 pt-16">
-                    <h1 className="translate-y-1 text-center text-[clamp(20px,5.5vw,30px)] font-black leading-tight tracking-tight text-white drop-shadow-[0_4px_22px_rgba(0,0,0,.38)]">
+                    <h1 className="translate-y-1 text-center text-[clamp(20px,5.5vw,30px)] font-bold leading-tight tracking-normal text-white drop-shadow-[0_4px_22px_rgba(0,0,0,.38)]">
                       {listing.name}
                     </h1>
                   </div>
@@ -595,7 +595,7 @@ export default async function ListingDetailPage({
 
             {listing.about ? (
               <Section id="about" title="O‘ZIM HAQIMDA" accent="violet" iconSrc="/section-icons/user-search.svg">
-                <p className="whitespace-pre-line text-[15px] leading-relaxed text-zinc-700">
+                <p className="whitespace-pre-line text-[14px] leading-relaxed text-zinc-700">
                   {listing.about}
                 </p>
               </Section>

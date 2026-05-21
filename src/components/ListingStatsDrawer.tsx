@@ -64,7 +64,7 @@ export default function ListingStatsDrawer({ listingId }: { listingId: number })
           setOpen(true);
           if (!stats && !pending) load();
         }}
-        className="inline-flex h-11 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+        className="inline-flex h-11 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
       >
         Statistika
       </button>
@@ -93,8 +93,8 @@ export default function ListingStatsDrawer({ listingId }: { listingId: number })
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">E’LON</div>
-              <div className="mt-1 text-[18px] font-black tracking-tight text-zinc-950">
+              <div className="text-[11px] font-semibold tracking-wide text-zinc-500">E’LON</div>
+              <div className="mt-1 text-[14px] font-bold tracking-normal text-zinc-950">
                 Statistika
               </div>
               <div className="mt-0.5 text-[12px] font-medium text-zinc-600">
@@ -104,7 +104,7 @@ export default function ListingStatsDrawer({ listingId }: { listingId: number })
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+              className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
             >
               Yopish
             </button>
@@ -113,18 +113,18 @@ export default function ListingStatsDrawer({ listingId }: { listingId: number })
           <div className="mt-4 grid gap-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="rounded-3xl bg-zinc-50 p-4 ring-1 ring-zinc-200">
-                <div className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
                   Unique ko‘rildi
                 </div>
-                <div className="mt-1 text-[24px] font-black tracking-tight text-zinc-950">
+                <div className="mt-1 text-lg font-bold tracking-normal text-zinc-950">
                   {stats ? stats.viewsUnique : pending ? "…" : "—"}
                 </div>
               </div>
               <div className="rounded-3xl bg-zinc-50 p-4 ring-1 ring-zinc-200">
-                <div className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+                <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
                   Sevimlilar
                 </div>
-                <div className="mt-1 text-[24px] font-black tracking-tight text-zinc-950">
+                <div className="mt-1 text-lg font-bold tracking-normal text-zinc-950">
                   {stats ? stats.favorites : pending ? "…" : "—"}
                 </div>
               </div>
@@ -132,13 +132,13 @@ export default function ListingStatsDrawer({ listingId }: { listingId: number })
 
             <div className="rounded-3xl bg-white p-4 ring-1 ring-zinc-200">
               <div className="flex items-center justify-between gap-2">
-                <div className="text-[12px] font-extrabold tracking-tight text-zinc-950">
+                <div className="text-[12px] font-semibold tracking-normal text-zinc-950">
                   Oxirgi 14 kun · ko‘rilish
                 </div>
                 <button
                   type="button"
                   onClick={load}
-                  className="inline-flex h-8 items-center justify-center rounded-2xl bg-white px-3 text-[11px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                  className="inline-flex h-8 items-center justify-center rounded-2xl bg-white px-3 text-[11px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
                 >
                   Yangilash
                 </button>
@@ -159,7 +159,7 @@ export default function ListingStatsDrawer({ listingId }: { listingId: number })
             </div>
 
             <div className="rounded-3xl bg-white p-4 ring-1 ring-zinc-200">
-              <div className="text-[12px] font-extrabold tracking-tight text-zinc-950">
+              <div className="text-[12px] font-semibold tracking-normal text-zinc-950">
                 Oxirgi 14 kun · sevimlilar
               </div>
               <div className="mt-3">

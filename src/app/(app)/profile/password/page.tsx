@@ -18,8 +18,8 @@ export default async function ChangePasswordPage() {
           </svg>
         </Link>
         <div>
-          <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">AKKAUNT</div>
-          <h1 className="mt-0.5 text-[22px] font-black tracking-tight text-zinc-950">Parolni o‘zgartirish</h1>
+          <div className="text-[11px] font-semibold tracking-wide text-zinc-500">AKKAUNT</div>
+          <h1 className="mt-0.5 text-lg font-bold tracking-normal text-zinc-950">Parolni o‘zgartirish</h1>
         </div>
       </div>
 

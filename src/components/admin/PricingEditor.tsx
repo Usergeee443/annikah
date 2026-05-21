@@ -66,8 +66,8 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
   return (
     <div className="grid gap-4">
       <section className="rounded-3xl border border-zinc-200/70 bg-white p-5 ring-1 ring-zinc-200/70">
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">TARIF PAKETLARI</div>
-        <h2 className="mt-1 text-[18px] font-black tracking-tight text-zinc-950">E’lon joylash narxlari</h2>
+        <div className="text-[11px] font-semibold tracking-wide text-zinc-500">TARIF PAKETLARI</div>
+        <h2 className="mt-1 text-[14px] font-bold tracking-normal text-zinc-950">E’lon joylash narxlari</h2>
 
         <div className="mt-4 grid gap-3">
           {cfg.listingPlans.map((p, idx) => (
@@ -76,13 +76,13 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
               className="grid gap-3 rounded-2xl border border-zinc-200 bg-white p-4 sm:grid-cols-[110px_1fr_120px_140px_150px]"
             >
               <div className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">ID</span>
-                <span className="mt-1 inline-flex h-11 items-center rounded-2xl bg-zinc-100 px-3 text-[12.5px] font-extrabold text-zinc-900">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">ID</span>
+                <span className="mt-1 inline-flex h-11 items-center rounded-2xl bg-zinc-100 px-3 text-[12.5px] font-semibold text-zinc-900">
                   {p.id}
                 </span>
               </div>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Sarlavha</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Sarlavha</span>
                 <input
                   className={inputCls + " mt-1"}
                   value={p.title}
@@ -90,7 +90,7 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
                 />
               </label>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Kunlar</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Kunlar</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -100,7 +100,7 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
                 />
               </label>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Narx (so‘m)</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Narx (so‘m)</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -110,7 +110,7 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
                 />
               </label>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Belgi (badge)</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Belgi (badge)</span>
                 <input
                   className={inputCls + " mt-1"}
                   placeholder="Mashhur"
@@ -124,8 +124,8 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
       </section>
 
       <section className="rounded-3xl border border-zinc-200/70 bg-white p-5 ring-1 ring-zinc-200/70">
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">REKLAMA (BOOST)</div>
-        <h2 className="mt-1 text-[18px] font-black tracking-tight text-zinc-950">Boost paketlari</h2>
+        <div className="text-[11px] font-semibold tracking-wide text-zinc-500">REKLAMA (BOOST)</div>
+        <h2 className="mt-1 text-[14px] font-bold tracking-normal text-zinc-950">Boost paketlari</h2>
 
         <div className="mt-4 grid gap-3">
           {cfg.boosts.map((b, idx) => (
@@ -134,13 +134,13 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
               className="grid gap-3 rounded-2xl border border-zinc-200 bg-white p-4 sm:grid-cols-[110px_1fr_120px_140px]"
             >
               <div className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">ID</span>
-                <span className="mt-1 inline-flex h-11 items-center rounded-2xl bg-zinc-100 px-3 text-[12.5px] font-extrabold text-zinc-900">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">ID</span>
+                <span className="mt-1 inline-flex h-11 items-center rounded-2xl bg-zinc-100 px-3 text-[12.5px] font-semibold text-zinc-900">
                   {b.id}
                 </span>
               </div>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Nomi</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Nomi</span>
                 <input
                   className={inputCls + " mt-1"}
                   value={b.label}
@@ -148,7 +148,7 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
                 />
               </label>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Kunlar</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Kunlar</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -158,7 +158,7 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
                 />
               </label>
               <label className="grid">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">Narx (so‘m)</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Narx (so‘m)</span>
                 <input
                   type="number"
                   inputMode="numeric"
@@ -173,13 +173,13 @@ export default function PricingEditor({ initial }: { initial: PricingConfig }) {
       </section>
 
       <div className="flex flex-wrap items-center justify-end gap-3">
-        {ok ? <span className="text-[12px] font-extrabold text-emerald-700">{ok}</span> : null}
-        {err ? <span className="text-[12px] font-extrabold text-rose-700">{err}</span> : null}
+        {ok ? <span className="text-[12px] font-semibold text-emerald-700">{ok}</span> : null}
+        {err ? <span className="text-[12px] font-semibold text-rose-700">{err}</span> : null}
         <button
           type="button"
           onClick={save}
           disabled={pending}
-          className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-extrabold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
+          className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-semibold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
         >
           {pending ? "Saqlanmoqda…" : "Saqlash"}
         </button>

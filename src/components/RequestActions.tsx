@@ -47,21 +47,21 @@ export default function RequestActions({
 
   if (status === "accepted") {
     return (
-      <span className="inline-flex h-9 items-center rounded-2xl bg-emerald-50 px-3 text-[12px] font-extrabold text-emerald-800 ring-1 ring-emerald-200">
+      <span className="inline-flex h-9 items-center rounded-2xl bg-emerald-50 px-3 text-[12px] font-semibold text-emerald-800 ring-1 ring-emerald-200">
         Qabul qilingan
       </span>
     );
   }
   if (status === "rejected") {
     return (
-      <span className="inline-flex h-9 items-center rounded-2xl bg-rose-50 px-3 text-[12px] font-extrabold text-rose-800 ring-1 ring-rose-200">
+      <span className="inline-flex h-9 items-center rounded-2xl bg-rose-50 px-3 text-[12px] font-semibold text-rose-800 ring-1 ring-rose-200">
         Rad etilgan
       </span>
     );
   }
   if (status === "cancelled") {
     return (
-      <span className="inline-flex h-9 items-center rounded-2xl bg-zinc-100 px-3 text-[12px] font-extrabold text-zinc-700 ring-1 ring-zinc-200">
+      <span className="inline-flex h-9 items-center rounded-2xl bg-zinc-100 px-3 text-[12px] font-semibold text-zinc-700 ring-1 ring-zinc-200">
         Bekor qilingan
       </span>
     );
@@ -82,7 +82,7 @@ export default function RequestActions({
             <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
           </svg>
         </button>
-        {error ? <span className="text-[11px] font-extrabold text-rose-200">{error}</span> : null}
+        {error ? <span className="text-[11px] font-semibold text-rose-200">{error}</span> : null}
       </div>
     );
   }
@@ -115,7 +115,7 @@ export default function RequestActions({
           </svg>
         </button>
       </div>
-      {error ? <span className="text-[11px] font-extrabold text-rose-200">{error}</span> : null}
+      {error ? <span className="text-[11px] font-semibold text-rose-200">{error}</span> : null}
     </div>
   );
 }

@@ -134,7 +134,7 @@ export default function ListingCard({
   const marital = maritalShort(l.maritalStatus);
 
   const chipCls =
-    "inline-flex min-w-0 items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-extrabold tracking-tight text-white ring-1 ring-white/14 backdrop-blur";
+    "inline-flex min-w-0 items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-semibold tracking-normal text-white ring-1 ring-white/14 backdrop-blur";
 
   const cover = (
     <div
@@ -154,10 +154,10 @@ export default function ListingCard({
       <ListingGenderWatermark category={l.category} variant="card" maskId={`card-${l.id}`} />
 
       <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
-        <div className="min-w-0 font-black leading-none tracking-tight text-white drop-shadow-[0_10px_30px_rgba(0,0,0,.55)] text-[clamp(22px,8cqw,34px)]">
+        <div className="min-w-0 text-[clamp(17px,6.5cqw,24px)] font-bold leading-none tracking-normal text-white drop-shadow-[0_8px_24px_rgba(0,0,0,.5)]">
           <span className="truncate">{l.name}</span>
           {l.ownerId ? (
-            <div className="mt-1 text-[10px] font-extrabold tracking-[0.18em] text-white/85">
+            <div className="mt-1 text-[10px] font-semibold tracking-wide text-white/85">
               ID: {String(l.ownerId).slice(0, 8)}
             </div>
           ) : null}
@@ -214,7 +214,7 @@ export default function ListingCard({
 
       <div className="absolute bottom-0 left-0 right-0 p-6 pt-0">
         <div className="grid gap-3">
-          <div className="grid grid-cols-2 gap-x-6 gap-y-3 font-extrabold text-[clamp(12px,4.1cqw,15px)] text-white/92">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-3 font-semibold text-[clamp(12px,4.1cqw,15px)] text-white/92">
             <span className="inline-flex items-center gap-2">
               <span className="text-sky-200">{IconRuler}</span>
               {l.heightCm} sm
@@ -250,7 +250,7 @@ export default function ListingCard({
 
   const meta =
     hasStats || isBoosted ? (
-      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 px-1 text-[12px] font-extrabold text-zinc-600">
+      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 px-1 text-[12px] font-semibold text-zinc-600">
         {hasStats ? (
           <>
             <span className="inline-flex items-center gap-2">

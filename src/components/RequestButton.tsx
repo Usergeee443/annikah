@@ -26,7 +26,7 @@ export default function RequestButton({
 
   if (isOwner) {
     return (
-      <div className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-100 px-5 text-[12px] font-extrabold text-zinc-600 ring-1 ring-zinc-200">
+      <div className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-100 px-5 text-[12px] font-semibold text-zinc-600 ring-1 ring-zinc-200">
         Bu sizning e’loningiz
       </div>
     );
@@ -66,7 +66,7 @@ export default function RequestButton({
     return (
       <a
         href={`/chats/${chatId}`}
-        className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 text-[12px] font-extrabold text-white shadow-sm ring-1 ring-emerald-700 hover:bg-emerald-500"
+        className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-5 text-[12px] font-semibold text-white shadow-sm ring-1 ring-emerald-700 hover:bg-emerald-500"
       >
         Chatga o‘tish
       </a>
@@ -75,7 +75,7 @@ export default function RequestButton({
 
   if (status === "pending") {
     return (
-      <div className="inline-flex h-11 items-center justify-center rounded-2xl bg-amber-50 px-5 text-[12px] font-extrabold text-amber-800 ring-1 ring-amber-200">
+      <div className="inline-flex h-11 items-center justify-center rounded-2xl bg-amber-50 px-5 text-[12px] font-semibold text-amber-800 ring-1 ring-amber-200">
         So‘rov yuborilgan · Kutilmoqda
       </div>
     );
@@ -83,7 +83,7 @@ export default function RequestButton({
 
   if (status === "rejected") {
     return (
-      <div className="inline-flex h-11 items-center justify-center rounded-2xl bg-rose-50 px-5 text-[12px] font-extrabold text-rose-800 ring-1 ring-rose-200">
+      <div className="inline-flex h-11 items-center justify-center rounded-2xl bg-rose-50 px-5 text-[12px] font-semibold text-rose-800 ring-1 ring-rose-200">
         So‘rov rad etilgan
       </div>
     );
@@ -95,11 +95,11 @@ export default function RequestButton({
         type="button"
         onClick={send}
         disabled={pending}
-        className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white shadow-sm ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
+        className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white shadow-sm ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
       >
         {pending ? "Yuborilmoqda…" : "So‘rov yuborish"}
       </button>
-      {error ? <span className="text-[11px] font-extrabold text-rose-700">{error}</span> : null}
+      {error ? <span className="text-[11px] font-semibold text-rose-700">{error}</span> : null}
     </div>
   );
 }

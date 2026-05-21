@@ -47,7 +47,7 @@ export default async function FavoritesPage() {
       {items.length === 0 ? (
         <div className="flex min-h-[calc(100dvh-10rem)] items-center justify-center text-center">
           <div>
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-rose-50 ring-1 ring-rose-200">
+            <div className="mx-auto flex h-11 w-14 items-center justify-center rounded-3xl bg-rose-50 ring-1 ring-rose-200">
               <svg viewBox="0 0 24 24" className="h-7 w-7 text-rose-600" fill="none">
                 <path
                   d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z"
@@ -56,7 +56,7 @@ export default async function FavoritesPage() {
                 />
               </svg>
             </div>
-            <div className="mt-4 text-[16px] font-black tracking-tight text-zinc-950">
+            <div className="mt-4 text-[16px] font-bold tracking-normal text-zinc-950">
               Sevimlilar bo‘sh
             </div>
             <div className="mt-1 text-[13px] font-medium text-zinc-600">
@@ -64,7 +64,7 @@ export default async function FavoritesPage() {
             </div>
             <Link
               href="/"
-              className="mt-6 inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+              className="mt-6 inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
             >
               E’lonlarga o‘tish
             </Link>
@@ -73,7 +73,7 @@ export default async function FavoritesPage() {
       ) : (
         <>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-[28px]">
+            <h1 className="text-xl font-semibold tracking-normal text-zinc-950 sm:text-xl">
               Sevimlilar
             </h1>
           </div>

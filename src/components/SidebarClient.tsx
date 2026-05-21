@@ -257,7 +257,7 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
                   <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z" />
                 </svg>
               </span>
-              <span className="text-[15px] font-extrabold tracking-tight text-zinc-950">
+              <span className="text-[14px] font-semibold tracking-normal text-zinc-950">
                 Annikah
               </span>
             </Link>
@@ -329,7 +329,7 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
                   </span>
                   <span
                     className={cn(
-                      "truncate text-[13px] font-bold tracking-tight",
+                      "truncate text-[13px] font-bold tracking-normal",
                       collapsed && "sr-only",
                     )}
                   >
@@ -368,7 +368,7 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
                   </span>
                   <span
                     className={cn(
-                      "truncate text-[13px] font-bold tracking-tight",
+                      "truncate text-[13px] font-bold tracking-normal",
                       collapsed && "sr-only",
                     )}
                   >
@@ -390,18 +390,18 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
                   collapsed && "justify-center px-0",
                 )}
               >
-                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-rose-500 via-fuchsia-500 to-pink-700 text-[13px] font-extrabold text-white shadow-sm">
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-rose-500 via-fuchsia-500 to-pink-700 text-[13px] font-semibold text-white shadow-sm">
                   {initial}
                 </span>
                 {!collapsed ? (
                   <>
                     <div className="ml-2.5 min-w-0 flex-1">
-                      <div className="truncate text-[12px] font-extrabold text-zinc-950">
+                      <div className="truncate text-[12px] font-semibold text-zinc-950">
                         {user.email}
                       </div>
                       <span
                         className={cn(
-                          "mt-0.5 inline-flex items-center rounded-md px-1.5 py-px text-[9px] font-extrabold uppercase tracking-[0.18em]",
+                          "mt-0.5 inline-flex items-center rounded-md px-1.5 py-px text-[9px] font-semibold uppercase tracking-wide",
                           user.profileComplete
                             ? "bg-amber-100 text-amber-800"
                             : "bg-zinc-100 text-zinc-500",
@@ -440,7 +440,7 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
                 <Link
                   href="/auth/login"
                   className={cn(
-                    "inline-flex h-9 items-center justify-center rounded-xl bg-zinc-100 text-[12px] font-extrabold text-zinc-900 hover:bg-zinc-200",
+                    "inline-flex h-9 items-center justify-center rounded-xl bg-zinc-100 text-[12px] font-semibold text-zinc-900 hover:bg-zinc-200",
                     collapsed && "sr-only",
                   )}
                 >
@@ -449,7 +449,7 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
                 <Link
                   href="/auth/register"
                   className={cn(
-                    "inline-flex h-9 items-center justify-center rounded-xl bg-zinc-950 text-[12px] font-extrabold text-white hover:bg-zinc-800",
+                    "inline-flex h-9 items-center justify-center rounded-xl bg-zinc-950 text-[12px] font-semibold text-white hover:bg-zinc-800",
                     collapsed && "sr-only",
                   )}
                 >

@@ -37,7 +37,7 @@ function LoginForm() {
   return (
     <form onSubmit={onSubmit} className="mt-6 grid gap-3">
       <label className="grid gap-1.5">
-        <span className="text-[11px] font-extrabold uppercase tracking-widest text-zinc-500">Email yoki telefon</span>
+        <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Email yoki telefon</span>
         <input
           value={login}
           onChange={(e) => setLogin(e.target.value)}
@@ -50,7 +50,7 @@ function LoginForm() {
       </label>
 
       <label className="grid gap-1.5">
-        <span className="text-[11px] font-extrabold uppercase tracking-widest text-zinc-500">Parol</span>
+        <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Parol</span>
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -70,7 +70,7 @@ function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold tracking-tight text-white shadow-sm ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
+        className="mt-2 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold tracking-normal text-white shadow-sm ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
       >
         {pending ? "Kuting..." : "Kirish"}
       </button>
@@ -93,7 +93,7 @@ export default function LoginPage() {
           <div className="mb-4 flex items-center justify-between">
             <Link
               href="/"
-              className="inline-flex h-9 items-center gap-2 rounded-2xl bg-white/80 px-3 text-[12px] font-extrabold text-zinc-700 ring-1 ring-zinc-200 backdrop-blur hover:bg-white"
+              className="inline-flex h-9 items-center gap-2 rounded-2xl bg-white/80 px-3 text-[12px] font-semibold text-zinc-700 ring-1 ring-zinc-200 backdrop-blur hover:bg-white"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                 <path
@@ -108,13 +108,13 @@ export default function LoginPage() {
             </Link>
           </div>
           <div className="mb-6 text-center">
-            <Link href="/" className="text-2xl font-extrabold tracking-tight text-zinc-950">
+            <Link href="/" className="text-xl font-semibold tracking-normal text-zinc-950">
               <span className="drop-shadow-[0_0_18px_rgba(59,130,246,.45)]">Annikah</span>
             </Link>
             <div className="mt-1 text-[12px] font-bold text-zinc-600">Halol tanishuv platformasi</div>
           </div>
           <div className="rounded-3xl border border-zinc-200/70 bg-white/85 p-6 shadow-sm backdrop-blur">
-            <h1 className="text-xl font-extrabold tracking-tight text-zinc-950">Hisobingizga kiring</h1>
+            <h1 className="text-xl font-semibold tracking-normal text-zinc-950">Hisobingizga kiring</h1>
             <p className="mt-1 text-sm text-zinc-600">
               Email yoki (Telegram orqali ro‘yxatdan o‘tgan bo‘lsangiz) telefon raqamingiz va parol.
             </p>

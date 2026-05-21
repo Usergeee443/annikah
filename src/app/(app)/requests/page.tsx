@@ -66,7 +66,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
     <div className="grid gap-5">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <div className="min-w-0">
-          <h1 className="text-[22px] font-black tracking-tight text-zinc-950 sm:text-[26px]">So‘rovlar</h1>
+          <h1 className="text-lg font-bold tracking-normal text-zinc-950 sm:text-xl">So‘rovlar</h1>
         </div>
 
         <div className="min-w-0 justify-self-center">
@@ -75,7 +75,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
             <Link
               href={`/requests?tab=received${q ? `&q=${encodeURIComponent(q)}` : ""}`}
               className={
-                "inline-flex h-9 min-w-0 items-center justify-center rounded-xl px-3 text-[12px] font-extrabold tracking-tight transition " +
+                "inline-flex h-9 min-w-0 items-center justify-center rounded-xl px-3 text-[12px] font-semibold tracking-normal transition " +
                 (tab === "received"
                   ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                   : "text-zinc-600 hover:text-zinc-900")
@@ -86,7 +86,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
             <Link
               href={`/requests?tab=sent${q ? `&q=${encodeURIComponent(q)}` : ""}`}
               className={
-                "inline-flex h-9 min-w-0 items-center justify-center rounded-xl px-3 text-[12px] font-extrabold tracking-tight transition " +
+                "inline-flex h-9 min-w-0 items-center justify-center rounded-xl px-3 text-[12px] font-semibold tracking-normal transition " +
                 (tab === "sent"
                   ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                   : "text-zinc-600 hover:text-zinc-900")
@@ -135,14 +135,14 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
                 {q ? (
                   <Link
                     href={`/requests?tab=${tab}`}
-                    className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                    className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
                   >
                     Tozalash
                   </Link>
                 ) : null}
                 <button
                   type="submit"
-                  className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+                  className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
                 >
                   Qidirish
                 </button>
@@ -155,7 +155,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
       {list.length === 0 ? (
         <div className="flex min-h-[calc(100dvh-12rem)] items-center justify-center text-center">
           <div>
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-zinc-100 ring-1 ring-zinc-200">
+            <div className="mx-auto flex h-11 w-14 items-center justify-center rounded-3xl bg-zinc-100 ring-1 ring-zinc-200">
               <svg viewBox="0 0 24 24" className="h-7 w-7 text-zinc-600" fill="none">
                 <path
                   d="M22 12h-6l-2 3h-4l-2-3H2"
@@ -171,7 +171,7 @@ export default async function RequestsPage({ searchParams }: { searchParams: Pro
                 />
               </svg>
             </div>
-            <div className="mt-4 text-[16px] font-black tracking-tight text-zinc-950">
+            <div className="mt-4 text-[16px] font-bold tracking-normal text-zinc-950">
               {q
                 ? "Qidiruv bo‘yicha topilmadi"
                 : tab === "received"

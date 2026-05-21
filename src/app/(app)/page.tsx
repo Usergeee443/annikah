@@ -153,7 +153,7 @@ export default async function ListingsPage({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-[clamp(20px,4vw,28px)] font-black leading-[1.1] tracking-tight text-zinc-950">
+                  <div className="text-[clamp(20px,4vw,28px)] font-bold leading-[1.1] tracking-normal text-zinc-950">
                     E’loningizni yarating
                   </div>
                   <div className="mt-2 max-w-xl text-[13px] font-medium leading-relaxed text-zinc-600 sm:text-[14px]">
@@ -162,7 +162,7 @@ export default async function ListingsPage({
                 </div>
                 <Link
                   href="/elonlarim"
-                  className="inline-flex h-11 shrink-0 items-center justify-center self-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-extrabold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 sm:h-12 sm:px-7"
+                  className="inline-flex h-11 shrink-0 items-center justify-center self-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-semibold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 sm:h-10 sm:px-7"
                 >
                   E’lon berish
                 </Link>
@@ -174,8 +174,8 @@ export default async function ListingsPage({
 
       {listings.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-zinc-300 bg-white/60 p-10 text-center">
-          <div className="mx-auto h-14 w-14 rounded-2xl bg-zinc-100 ring-1 ring-zinc-200" />
-          <div className="mt-4 text-base font-extrabold tracking-tight text-zinc-950">
+          <div className="mx-auto h-11 w-14 rounded-2xl bg-zinc-100 ring-1 ring-zinc-200" />
+          <div className="mt-4 text-base font-semibold tracking-normal text-zinc-950">
             Hech narsa topilmadi
           </div>
           <div className="mt-1 text-sm text-zinc-600">
@@ -183,7 +183,7 @@ export default async function ListingsPage({
           </div>
           <Link
             href={`/?cat=${cat}`}
-            className="mt-5 inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+            className="mt-5 inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
           >
             Tozalash
           </Link>

@@ -234,7 +234,7 @@ export default function ChatRoom({
           {/* avatar */}
           <div
             className={
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br text-[14px] font-black text-white shadow-[0_4px_12px_rgba(15,23,42,.18)] " +
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br text-[14px] font-bold text-white shadow-[0_4px_12px_rgba(15,23,42,.18)] " +
               gradient
             }
           >
@@ -242,11 +242,11 @@ export default function ChatRoom({
           </div>
 
           <div className="min-w-0">
-            <div className="truncate text-[14.5px] font-extrabold tracking-tight text-zinc-950">
+            <div className="truncate text-[14.5px] font-semibold tracking-normal text-zinc-950">
               {otherName}
             </div>
             {otherId ? (
-              <div className="mt-0.5 text-[10px] font-extrabold tracking-[0.18em] text-zinc-400">
+              <div className="mt-0.5 text-[10px] font-semibold tracking-wide text-zinc-400">
                 ID: {String(otherId).slice(0, 8)}
               </div>
             ) : null}
@@ -274,12 +274,12 @@ export default function ChatRoom({
               type="button"
               onClick={endChat}
               disabled={endingPending}
-              className="inline-flex h-9 items-center justify-center rounded-2xl bg-rose-50 px-3 text-[12px] font-extrabold text-rose-700 ring-1 ring-rose-200 transition hover:bg-rose-100 disabled:opacity-60"
+              className="inline-flex h-9 items-center justify-center rounded-2xl bg-rose-50 px-3 text-[12px] font-semibold text-rose-700 ring-1 ring-rose-200 transition hover:bg-rose-100 disabled:opacity-60"
             >
               {endingPending ? "Tugatilmoqda…" : "Tugatish"}
             </button>
           ) : (
-            <span className="inline-flex h-9 items-center rounded-2xl bg-zinc-100 px-3 text-[11px] font-extrabold text-zinc-700 ring-1 ring-zinc-200">
+            <span className="inline-flex h-9 items-center rounded-2xl bg-zinc-100 px-3 text-[11px] font-semibold text-zinc-700 ring-1 ring-zinc-200">
               Yopildi
             </span>
           )}
@@ -294,7 +294,7 @@ export default function ChatRoom({
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
             <div className="rounded-3xl bg-white/80 px-5 py-4 text-center shadow-sm ring-1 ring-zinc-200">
-              <div className="text-[13px] font-extrabold tracking-tight text-zinc-900">
+              <div className="text-[13px] font-semibold tracking-normal text-zinc-900">
                 Suhbatni boshlang
               </div>
               <div className="mt-1 text-[11.5px] font-medium text-zinc-500">
@@ -307,7 +307,7 @@ export default function ChatRoom({
             {groups.map((g) => (
               <div key={g.dayKey}>
                 <div className="my-3 flex justify-center">
-                  <span className="rounded-full bg-white/85 px-3 py-0.5 text-[10.5px] font-extrabold uppercase tracking-[0.14em] text-zinc-600 shadow-sm ring-1 ring-zinc-200 backdrop-blur">
+                  <span className="rounded-full bg-white/85 px-3 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-zinc-600 shadow-sm ring-1 ring-zinc-200 backdrop-blur">
                     {g.label}
                   </span>
                 </div>
@@ -411,7 +411,7 @@ export default function ChatRoom({
           style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
         >
         {isEnded ? (
-          <div className="flex items-center justify-center rounded-2xl bg-zinc-100 px-4 py-3 text-[12.5px] font-extrabold text-zinc-600 ring-1 ring-zinc-200">
+          <div className="flex items-center justify-center rounded-2xl bg-zinc-100 px-4 py-3 text-[12.5px] font-semibold text-zinc-600 ring-1 ring-zinc-200">
             Suhbat tugagan — yangi xabar yuborib bo‘lmaydi
           </div>
         ) : (
@@ -491,7 +491,7 @@ export default function ChatRoom({
           </div>
         )}
         {error ? (
-          <div className="mx-auto mt-2 max-w-3xl text-[12px] font-extrabold text-rose-700">
+          <div className="mx-auto mt-2 max-w-3xl text-[12px] font-semibold text-rose-700">
             {error}
           </div>
         ) : null}

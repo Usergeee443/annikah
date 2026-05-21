@@ -516,17 +516,17 @@ function NumberPicker({
           type="button"
           onClick={dec}
           disabled={value <= min}
-          className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white text-2xl font-extrabold text-zinc-900 ring-1 ring-zinc-200 shadow-sm transition hover:bg-zinc-50 disabled:opacity-40"
+          className="inline-flex h-10 w-12 items-center justify-center rounded-full bg-white text-xl font-semibold text-zinc-900 ring-1 ring-zinc-200 shadow-sm transition hover:bg-zinc-50 disabled:opacity-40"
           aria-label="Kamaytirish"
         >
           −
         </button>
         <div className="grid place-items-center rounded-3xl bg-white px-8 py-5 ring-1 ring-zinc-200/80 shadow-[0_2px_18px_rgba(15,23,42,.05)]">
-          <div className="text-[64px] font-black leading-none tracking-tight text-zinc-950 tabular-nums">
+          <div className="text-2xl font-bold leading-none tracking-normal text-zinc-950 tabular-nums">
             {value}
           </div>
           {unit ? (
-            <div className="mt-2 text-[12px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+            <div className="mt-2 text-[12px] font-semibold uppercase tracking-wide text-zinc-500">
               {unit}
             </div>
           ) : null}
@@ -535,7 +535,7 @@ function NumberPicker({
           type="button"
           onClick={inc}
           disabled={value >= max}
-          className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-white text-2xl font-extrabold text-zinc-900 ring-1 ring-zinc-200 shadow-sm transition hover:bg-zinc-50 disabled:opacity-40"
+          className="inline-flex h-10 w-12 items-center justify-center rounded-full bg-white text-xl font-semibold text-zinc-900 ring-1 ring-zinc-200 shadow-sm transition hover:bg-zinc-50 disabled:opacity-40"
           aria-label="Oshirish"
         >
           +
@@ -552,7 +552,7 @@ function NumberPicker({
           onChange={(e) => setValue(Number(e.target.value))}
           className="w-full accent-zinc-950"
         />
-        <div className="mt-1.5 flex items-center justify-between text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-400">
+        <div className="mt-1.5 flex items-center justify-between text-[10.5px] font-semibold uppercase tracking-wide text-zinc-400">
           <span>{min}</span>
           <span>{max}</span>
         </div>
@@ -588,7 +588,7 @@ function CountryPicker({
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Davlat qidiring..."
-          className="h-12 w-full rounded-2xl bg-white pl-11 pr-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none transition focus:ring-zinc-300"
+          className="h-10 w-full rounded-2xl bg-white pl-11 pr-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none transition focus:ring-zinc-300"
         />
       </label>
 
@@ -611,8 +611,8 @@ function CountryPicker({
                     }`}
                   >
                     <span className="flex items-center gap-3">
-                      <span className="text-[22px] leading-none">{c.flag}</span>
-                      <span className="text-[14px] font-extrabold tracking-tight">
+                      <span className="text-lg leading-none">{c.flag}</span>
+                      <span className="text-[14px] font-semibold tracking-normal">
                         {c.name}
                       </span>
                     </span>
@@ -657,9 +657,9 @@ function Chips({
             }`}
           >
             <span className="flex items-center gap-3">
-              {c.emoji ? <span className="text-[22px] leading-none">{c.emoji}</span> : null}
+              {c.emoji ? <span className="text-lg leading-none">{c.emoji}</span> : null}
               <span>
-                <span className="block text-[15px] font-extrabold tracking-tight">
+                <span className="block text-[14px] font-semibold tracking-normal">
                   {c.label}
                 </span>
                 {c.sub ? (
@@ -708,19 +708,19 @@ function RangeAge({
     <div className="grid gap-5">
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-2xl bg-white px-4 py-3.5 ring-1 ring-zinc-200">
-          <div className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">
             Dan
           </div>
-          <div className="mt-1 text-[28px] font-black leading-none tracking-tight text-zinc-950 tabular-nums">
+          <div className="mt-1 text-xl font-bold leading-none tracking-normal text-zinc-950 tabular-nums">
             {f}
             <span className="ml-1 text-[12px] font-bold text-zinc-500">yosh</span>
           </div>
         </div>
         <div className="rounded-2xl bg-white px-4 py-3.5 ring-1 ring-zinc-200">
-          <div className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">
             Gacha
           </div>
-          <div className="mt-1 text-[28px] font-black leading-none tracking-tight text-zinc-950 tabular-nums">
+          <div className="mt-1 text-xl font-bold leading-none tracking-normal text-zinc-950 tabular-nums">
             {t}
             <span className="ml-1 text-[12px] font-bold text-zinc-500">yosh</span>
           </div>
@@ -728,7 +728,7 @@ function RangeAge({
       </div>
 
       <div className="grid gap-2">
-        <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">Eng kichik yosh</div>
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Eng kichik yosh</div>
         <input
           type="range"
           min={18}
@@ -744,7 +744,7 @@ function RangeAge({
         />
       </div>
       <div className="grid gap-2">
-        <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">Eng katta yosh</div>
+        <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Eng katta yosh</div>
         <input
           type="range"
           min={18}
@@ -777,17 +777,17 @@ function ReviewRow({
   return (
     <div className="flex items-center justify-between gap-3 px-4 py-3.5">
       <div className="min-w-0">
-        <div className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+        <div className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">
           {label}
         </div>
-        <div className="mt-0.5 truncate text-[14px] font-extrabold tracking-tight text-zinc-950">
+        <div className="mt-0.5 truncate text-[14px] font-semibold tracking-normal text-zinc-950">
           {value || "—"}
         </div>
       </div>
       <button
         type="button"
         onClick={onEdit}
-        className="inline-flex h-8 items-center gap-1.5 rounded-full bg-zinc-100 px-3 text-[11px] font-extrabold tracking-tight text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200"
+        className="inline-flex h-8 items-center gap-1.5 rounded-full bg-zinc-100 px-3 text-[11px] font-semibold tracking-normal text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200"
       >
         {I.edit} O‘zgartirish
       </button>
@@ -897,8 +897,8 @@ export default function ProfileWizard({
     <div className="flex min-h-screen flex-col bg-[#f4f4f5]">
       {/* TOP BAR */}
       <header className="sticky top-0 z-30 w-full border-b border-zinc-200/70 bg-white/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-3 px-5">
-          <Link href="/" className="inline-flex items-center gap-2 text-[14px] font-extrabold tracking-tight text-zinc-950">
+        <div className="mx-auto flex h-11 max-w-3xl items-center justify-between gap-3 px-5">
+          <Link href="/" className="inline-flex items-center gap-2 text-[14px] font-semibold tracking-normal text-zinc-950">
             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-linear-to-br from-rose-500 to-fuchsia-600 text-white shadow-sm">
               <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor">
                 <path d="M12 21s-7-4.35-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12c-2.5 4.65-9.5 9-9.5 9z" />
@@ -910,7 +910,7 @@ export default function ProfileWizard({
           <form action={onExit}>
             <button
               type="submit"
-              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full bg-white px-3 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
             >
               {I.close}
               <span className="hidden sm:inline">Yopish</span>
@@ -927,7 +927,7 @@ export default function ProfileWizard({
               return (
                 <span
                   key={g}
-                  className={`inline-flex h-7 items-center rounded-full px-2.5 text-[10.5px] font-extrabold uppercase tracking-[0.16em] transition ${
+                  className={`inline-flex h-7 items-center rounded-full px-2.5 text-[10.5px] font-semibold uppercase tracking-wide transition ${
                     active
                       ? "bg-zinc-950 text-white"
                       : done
@@ -947,7 +947,7 @@ export default function ProfileWizard({
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="mt-1 flex items-center justify-between text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="mt-1 flex items-center justify-between text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">
             <span>
               Bosqich {Math.min(step + 1, total)} / {total}
             </span>
@@ -960,14 +960,14 @@ export default function ProfileWizard({
       <main ref={stepRef} className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-5 pb-32 pt-8 sm:pt-12">
         {/* Step header */}
         <div className="grid gap-2">
-          <div className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+          <div className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">
             {cur.group}
           </div>
-          <h1 className="text-[28px] font-extrabold leading-[1.15] tracking-tight text-zinc-950 sm:text-[36px]">
+          <h1 className="text-xl font-semibold leading-[1.15] tracking-normal text-zinc-950 sm:text-2xl">
             {cur.title}
           </h1>
           {cur.subtitle ? (
-            <p className="text-[14px] font-medium text-zinc-600 sm:text-[15px]">
+            <p className="text-[14px] font-medium text-zinc-600 sm:text-[14px]">
               {cur.subtitle}
             </p>
           ) : null}
@@ -981,7 +981,7 @@ export default function ProfileWizard({
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-600">
                   {I.spark}
                 </span>
-                <div className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+                <div className="text-[12px] font-semibold uppercase tracking-wide text-zinc-500">
                   Tezkor anketa
                 </div>
               </div>
@@ -1008,7 +1008,7 @@ export default function ProfileWizard({
                   next();
                 }
               }}
-              className="h-14 w-full rounded-2xl bg-white px-5 text-[18px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none transition focus:ring-zinc-300"
+              className="h-11 w-full rounded-2xl bg-white px-5 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none transition focus:ring-zinc-300"
             />
           ) : null}
 
@@ -1016,30 +1016,30 @@ export default function ProfileWizard({
             cur.key === "partnerLocation" ? (
               <div className="grid gap-3">
                 <label className="grid gap-1.5">
-                  <span className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">Davlatlar</span>
+                  <span className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">Davlatlar</span>
                   <input
                     value={data.partnerCountries}
                     onChange={(e) => update("partnerCountries", e.target.value)}
                     placeholder="O‘zbekiston, Qozog‘iston"
-                    className="h-12 w-full rounded-2xl bg-white px-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none focus:ring-zinc-300"
+                    className="h-10 w-full rounded-2xl bg-white px-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none focus:ring-zinc-300"
                   />
                 </label>
                 <label className="grid gap-1.5">
-                  <span className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">Viloyatlar</span>
+                  <span className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">Viloyatlar</span>
                   <input
                     value={data.partnerRegions}
                     onChange={(e) => update("partnerRegions", e.target.value)}
                     placeholder="Toshkent, Farg‘ona"
-                    className="h-12 w-full rounded-2xl bg-white px-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none focus:ring-zinc-300"
+                    className="h-10 w-full rounded-2xl bg-white px-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none focus:ring-zinc-300"
                   />
                 </label>
                 <label className="grid gap-1.5">
-                  <span className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">Shaharlar</span>
+                  <span className="text-[10.5px] font-semibold uppercase tracking-wide text-zinc-500">Shaharlar</span>
                   <input
                     value={data.partnerCities}
                     onChange={(e) => update("partnerCities", e.target.value)}
                     placeholder="Toshkent, Samarqand"
-                    className="h-12 w-full rounded-2xl bg-white px-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none focus:ring-zinc-300"
+                    className="h-10 w-full rounded-2xl bg-white px-4 text-[14px] font-semibold text-zinc-950 ring-1 ring-zinc-200 outline-none focus:ring-zinc-300"
                   />
                 </label>
               </div>
@@ -1050,7 +1050,7 @@ export default function ProfileWizard({
                 onChange={(e) => update(cur.field as keyof ProfileData, e.target.value as never)}
                 placeholder={cur.placeholder}
                 rows={6}
-                className="w-full rounded-2xl bg-white p-4 text-[15px] font-medium text-zinc-950 ring-1 ring-zinc-200 outline-none transition focus:ring-zinc-300"
+                className="w-full rounded-2xl bg-white p-4 text-[14px] font-medium text-zinc-950 ring-1 ring-zinc-200 outline-none transition focus:ring-zinc-300"
               />
             )
           ) : null}
@@ -1106,7 +1106,7 @@ export default function ProfileWizard({
                 <div className="rounded-3xl bg-emerald-50 p-6 ring-1 ring-emerald-200">
                   <div className="flex items-center gap-2 text-emerald-700">
                     {I.check}
-                    <strong className="text-[14px] font-extrabold tracking-tight">
+                    <strong className="text-[14px] font-semibold tracking-normal">
                       Saqlandi! Bosh sahifaga o‘tilmoqda...
                     </strong>
                   </div>
@@ -1278,14 +1278,14 @@ export default function ProfileWizard({
         {/* Currently selected country preview */}
         {cur.kind === "country" && data.country ? (
           <div className="mt-5 rounded-2xl bg-zinc-950 px-4 py-3 text-white">
-            <div className="text-[10.5px] font-extrabold uppercase tracking-[0.18em] text-white/70">
+            <div className="text-[10.5px] font-semibold uppercase tracking-wide text-white/70">
               Tanlandi
             </div>
             <div className="mt-1 flex items-center gap-2">
-              <span className="text-[22px] leading-none">
+              <span className="text-lg leading-none">
                 {findCountryByName(data.country)?.flag ?? "🏳️"}
               </span>
-              <span className="text-[15px] font-extrabold tracking-tight">
+              <span className="text-[14px] font-semibold tracking-normal">
                 {data.country}
               </span>
             </div>
@@ -1300,7 +1300,7 @@ export default function ProfileWizard({
             type="button"
             onClick={back}
             disabled={isFirst}
-            className="inline-flex h-11 items-center gap-1.5 rounded-full bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50 disabled:opacity-40"
+            className="inline-flex h-11 items-center gap-1.5 rounded-full bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50 disabled:opacity-40"
           >
             {I.back} Orqaga
           </button>
@@ -1310,7 +1310,7 @@ export default function ProfileWizard({
               <button
                 type="button"
                 onClick={next}
-                className="inline-flex h-11 items-center gap-1 rounded-full bg-zinc-100 px-4 text-[12px] font-extrabold text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200"
+                className="inline-flex h-11 items-center gap-1 rounded-full bg-zinc-100 px-4 text-[12px] font-semibold text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-200"
               >
                 O‘tkazib yuborish
               </button>
@@ -1321,7 +1321,7 @@ export default function ProfileWizard({
                 type="button"
                 onClick={handleSubmit}
                 disabled={pending || savedOk}
-                className="inline-flex h-11 items-center gap-1.5 rounded-full bg-emerald-600 px-5 text-[12.5px] font-extrabold tracking-tight text-white shadow-[0_8px_22px_rgba(16,185,129,.32)] transition hover:bg-emerald-700 disabled:opacity-60"
+                className="inline-flex h-11 items-center gap-1.5 rounded-full bg-emerald-600 px-5 text-[12.5px] font-semibold tracking-normal text-white shadow-[0_8px_22px_rgba(16,185,129,.32)] transition hover:bg-emerald-700 disabled:opacity-60"
               >
                 {pending ? "Saqlanmoqda..." : savedOk ? "Saqlandi!" : "Tasdiqlash va saqlash"}
                 {!pending && !savedOk ? I.check : null}
@@ -1331,7 +1331,7 @@ export default function ProfileWizard({
                 type="button"
                 onClick={next}
                 disabled={!valid && !cur.optional}
-                className="inline-flex h-11 items-center gap-1.5 rounded-full bg-zinc-950 px-5 text-[12.5px] font-extrabold tracking-tight text-white shadow-[0_8px_22px_rgba(15,23,42,.20)] transition hover:bg-zinc-900 disabled:opacity-40"
+                className="inline-flex h-11 items-center gap-1.5 rounded-full bg-zinc-950 px-5 text-[12.5px] font-semibold tracking-normal text-white shadow-[0_8px_22px_rgba(15,23,42,.20)] transition hover:bg-zinc-900 disabled:opacity-40"
               >
                 Davom etish {I.forward}
               </button>

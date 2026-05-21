@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "WATCHPACK_POLLING=true CHOKIDAR_USEPOLLING=1 next dev -H 127.0.0.1",
+    "dev": "next dev -H 127.0.0.1",
+    "dev:poll": "WATCHPACK_POLLING=true CHOKIDAR_USEPOLLING=1 next dev -H 127.0.0.1",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",

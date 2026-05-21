@@ -39,8 +39,8 @@ export default function PasswordChangeCard() {
 
   return (
     <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-sm backdrop-blur">
-      <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">AKKAUNT</div>
-      <div className="mt-2 text-[16px] font-black tracking-tight text-zinc-950">Parolni o‘zgartirish</div>
+      <div className="text-[11px] font-semibold tracking-wide text-zinc-500">AKKAUNT</div>
+      <div className="mt-2 text-[16px] font-bold tracking-normal text-zinc-950">Parolni o‘zgartirish</div>
       <form onSubmit={submit} className="mt-4 grid gap-3">
         <input
           value={currentPassword}
@@ -62,12 +62,12 @@ export default function PasswordChangeCard() {
           <button
             type="submit"
             disabled={pending || !currentPassword || newPassword.length < 6}
-            className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
+            className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
           >
             {pending ? "Saqlanmoqda…" : "Saqlash"}
           </button>
-          {ok ? <div className="text-[12px] font-extrabold text-emerald-700">{ok}</div> : null}
-          {err ? <div className="text-[12px] font-extrabold text-rose-700">{err}</div> : null}
+          {ok ? <div className="text-[12px] font-semibold text-emerald-700">{ok}</div> : null}
+          {err ? <div className="text-[12px] font-semibold text-rose-700">{err}</div> : null}
         </div>
       </form>
     </div>

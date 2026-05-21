@@ -43,8 +43,8 @@ export default async function ModerationPage() {
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">MODERATSIYA</div>
-            <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">
+            <div className="text-[11px] font-semibold tracking-wide text-zinc-500">MODERATSIYA</div>
+            <h1 className="mt-2 text-xl font-bold tracking-normal text-zinc-950">
               Tasdiqlash uchun e’lonlar
             </h1>
             <p className="mt-1 text-[13px] font-medium text-zinc-600">
@@ -53,7 +53,7 @@ export default async function ModerationPage() {
               chiqadi (katta admin hammasini ko‘radi).
             </p>
           </div>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-extrabold tracking-widest text-zinc-600 ring-1 ring-zinc-200">
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-semibold tracking-wide text-zinc-600 ring-1 ring-zinc-200">
             {pending.length} ta pending
           </span>
         </div>
@@ -67,7 +67,7 @@ export default async function ModerationPage() {
       {pending.length === 0 ? (
         <div className="flex min-h-[calc(100dvh-14rem)] items-center justify-center text-center">
           <div>
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-zinc-100 ring-1 ring-zinc-200">
+            <div className="mx-auto flex h-11 w-14 items-center justify-center rounded-3xl bg-zinc-100 ring-1 ring-zinc-200">
               <svg viewBox="0 0 24 24" className="h-7 w-7 text-zinc-600" fill="none">
                 <path
                   d="M12 2 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"
@@ -84,7 +84,7 @@ export default async function ModerationPage() {
                 />
               </svg>
             </div>
-            <div className="mt-4 text-[16px] font-black tracking-tight text-zinc-950">
+            <div className="mt-4 text-[16px] font-bold tracking-normal text-zinc-950">
               Pending e’lonlar yo‘q
             </div>
             <div className="mt-1 text-[13px] font-medium text-zinc-600">
@@ -102,12 +102,12 @@ export default async function ModerationPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <div className="truncate text-[16px] font-black tracking-tight text-zinc-950">
+                    <div className="truncate text-[16px] font-bold tracking-normal text-zinc-950">
                       {l.name} · {l.age} yosh
                     </div>
                     <span
                       className={
-                        "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] ring-1 " +
+                        "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ring-1 " +
                         badge(l.moderationStatus)
                       }
                     >
@@ -115,7 +115,7 @@ export default async function ModerationPage() {
                     </span>
                     <span
                       className={
-                        "inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-extrabold ring-1 " +
+                        "inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 " +
                         (l.category === "kelinlar"
                           ? "bg-rose-50 text-rose-800 ring-rose-200"
                           : "bg-sky-50 text-sky-800 ring-sky-200")
@@ -133,7 +133,7 @@ export default async function ModerationPage() {
 
                   {l.verificationPhotoPath ? (
                     <div className="mt-4">
-                      <div className="text-[11px] font-extrabold uppercase tracking-widest text-zinc-500">
+                      <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
                         Moderatsiya uchun yuz fotosi
                       </div>
                       <p className="mt-1 text-[11px] font-medium text-zinc-500">
@@ -155,14 +155,14 @@ export default async function ModerationPage() {
                 <div className="flex flex-wrap items-center gap-2">
                   <Link
                     href={`/listings/${l.id}`}
-                    className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                    className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
                   >
                     Ko‘rish
                   </Link>
                   <form action={approveListingAction.bind(null, l.id)}>
                     <button
                       type="submit"
-                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-[12px] font-extrabold text-white ring-1 ring-emerald-700/20 hover:bg-emerald-700"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-emerald-600 px-4 text-[12px] font-semibold text-white ring-1 ring-emerald-700/20 hover:bg-emerald-700"
                     >
                       Tasdiqlash
                     </button>
@@ -170,7 +170,7 @@ export default async function ModerationPage() {
                   <form action={rejectListingAction.bind(null, l.id)}>
                     <button
                       type="submit"
-                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-rose-600 px-4 text-[12px] font-extrabold text-white ring-1 ring-rose-700/20 hover:bg-rose-700"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-rose-600 px-4 text-[12px] font-semibold text-white ring-1 ring-rose-700/20 hover:bg-rose-700"
                     >
                       Rad etish
                     </button>

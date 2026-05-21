@@ -35,15 +35,15 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-[calc(100dvh-8rem)] items-center justify-center">
       <div className="w-full max-w-md rounded-3xl border border-zinc-200/70 bg-white p-6 shadow-[0_18px_36px_rgba(15,23,42,.10)]">
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">ADMINPANEL</div>
-        <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">Kirish</h1>
+        <div className="text-[11px] font-semibold tracking-wide text-zinc-500">ADMINPANEL</div>
+        <h1 className="mt-2 text-xl font-bold tracking-normal text-zinc-950">Kirish</h1>
         <p className="mt-1 text-[13px] font-medium text-zinc-600">
           Login/parol bilan kiring. Hozircha demo.
         </p>
 
         <div className="mt-5 grid gap-3">
           <label className="grid gap-1.5">
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
               Login
             </span>
             <input
@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
             />
           </label>
           <label className="grid gap-1.5">
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">
+            <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
               Parol
             </span>
             <input
@@ -75,11 +75,11 @@ export default function AdminLoginPage() {
             type="button"
             onClick={submit}
             disabled={pending || !username.trim() || !password.trim()}
-            className="mt-1 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
+            className="mt-1 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
           >
             {pending ? "Kirilmoqda…" : "Kirish"}
           </button>
-          {error ? <div className="text-[12px] font-extrabold text-rose-700">{error}</div> : null}
+          {error ? <div className="text-[12px] font-semibold text-rose-700">{error}</div> : null}
         </div>
       </div>
     </div>

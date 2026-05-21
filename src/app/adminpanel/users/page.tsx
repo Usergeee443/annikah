@@ -51,10 +51,10 @@ export default async function AdminUsersPage({
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">FOYDALANUVCHILAR</div>
-            <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">Foydalanuvchilar</h1>
+            <div className="text-[11px] font-semibold tracking-wide text-zinc-500">FOYDALANUVCHILAR</div>
+            <h1 className="mt-2 text-xl font-bold tracking-normal text-zinc-950">Foydalanuvchilar</h1>
             <p className="mt-1 text-[13px] font-medium text-zinc-600">
-              Jami: <span className="font-extrabold text-zinc-900">{total}</span>. Mos
+              Jami: <span className="font-semibold text-zinc-900">{total}</span>. Mos
               keladigan natijalar shu yerda.
             </p>
           </div>
@@ -78,7 +78,7 @@ export default async function AdminUsersPage({
           </select>
           <button
             type="submit"
-            className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+            className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
           >
             Qidirish
           </button>
@@ -87,7 +87,7 @@ export default async function AdminUsersPage({
 
       {users.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-zinc-300 bg-white p-8 text-center">
-          <div className="text-[14px] font-extrabold text-zinc-950">Foydalanuvchi topilmadi</div>
+          <div className="text-[14px] font-semibold text-zinc-950">Foydalanuvchi topilmadi</div>
         </div>
       ) : (
         <div className="grid gap-2">
@@ -99,12 +99,12 @@ export default async function AdminUsersPage({
             >
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-[14px] font-black tracking-tight text-zinc-950">
+                  <span className="text-[14px] font-bold tracking-normal text-zinc-950">
                     {u.profile?.name || u.email || u.phone || "—"}
                   </span>
                   <span
                     className={
-                      "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] ring-1 " +
+                      "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ring-1 " +
                       (u.authProvider === "telegram"
                         ? "bg-sky-50 text-sky-800 ring-sky-200"
                         : "bg-zinc-100 text-zinc-700 ring-zinc-200")
@@ -113,7 +113,7 @@ export default async function AdminUsersPage({
                     {u.authProvider}
                   </span>
                   {u.profile?.category ? (
-                    <span className="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-amber-800 ring-1 ring-amber-200">
+                    <span className="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-800 ring-1 ring-amber-200">
                       {u.profile.category}
                     </span>
                   ) : null}
@@ -127,10 +127,10 @@ export default async function AdminUsersPage({
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-3">
-                <span className="text-[11.5px] font-extrabold text-zinc-700">
+                <span className="text-[11.5px] font-semibold text-zinc-700">
                   E’lon: <span className="text-zinc-950">{u._count.listings}</span>
                 </span>
-                <span className="text-[11.5px] font-extrabold text-zinc-700">
+                <span className="text-[11.5px] font-semibold text-zinc-700">
                   So‘rov: <span className="text-zinc-950">{u._count.requestsSent}</span>
                 </span>
                 <span className="text-zinc-300">›</span>

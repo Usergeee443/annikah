@@ -17,8 +17,8 @@ export default async function ListingEditPage({ params }: { params: Promise<{ id
   return (
     <div className="grid gap-4">
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">E’LON TAHRIRI</div>
-        <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">E’lonni bo‘limlar bo‘yicha tahrirlash</h1>
+        <div className="text-[11px] font-semibold tracking-wide text-zinc-500">E’LON TAHRIRI</div>
+        <h1 className="mt-2 text-xl font-bold tracking-normal text-zinc-950">E’lonni bo‘limlar bo‘yicha tahrirlash</h1>
         <p className="mt-1 text-[13px] font-medium text-zinc-600">
           Istalgan bo‘limni tanlab «O‘zgartirish» bosing va faqat shu bo‘limni saqlang.
         </p>

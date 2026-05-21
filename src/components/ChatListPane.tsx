@@ -77,8 +77,8 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
       <div className="sticky top-0 z-10 shrink-0 border-b border-zinc-200/70 bg-white/95 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+12px)] backdrop-blur lg:static lg:rounded-t-3xl lg:pt-4">
         {/* Desktop title (mobilda yashirin) */}
         <div className="hidden items-center justify-between lg:flex">
-          <h2 className="text-[18px] font-black tracking-tight text-zinc-950">Chatlar</h2>
-          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-extrabold tracking-widest text-zinc-600">
+          <h2 className="text-[14px] font-bold tracking-normal text-zinc-950">Chatlar</h2>
+          <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10.5px] font-semibold tracking-wide text-zinc-600">
             {chats.length}
           </span>
         </div>
@@ -112,7 +112,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             type="button"
             onClick={() => setTab("active")}
             className={
-              "h-9 rounded-xl text-[12px] font-extrabold tracking-tight transition " +
+              "h-9 rounded-xl text-[12px] font-semibold tracking-normal transition " +
               (tab === "active"
                 ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                 : "text-zinc-600 hover:text-zinc-900")
@@ -121,7 +121,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             Faol
             <span
               className={
-                "ml-1.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-extrabold " +
+                "ml-1.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-semibold " +
                 (tab === "active"
                   ? "bg-emerald-100 text-emerald-800"
                   : "bg-white text-zinc-600")
@@ -134,7 +134,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             type="button"
             onClick={() => setTab("ended")}
             className={
-              "h-9 rounded-xl text-[12px] font-extrabold tracking-tight transition " +
+              "h-9 rounded-xl text-[12px] font-semibold tracking-normal transition " +
               (tab === "ended"
                 ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                 : "text-zinc-600 hover:text-zinc-900")
@@ -143,7 +143,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
             Tugagan
             <span
               className={
-                "ml-1.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-extrabold " +
+                "ml-1.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-semibold " +
                 (tab === "ended"
                   ? "bg-zinc-200 text-zinc-700"
                   : "bg-white text-zinc-600")
@@ -159,7 +159,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
       <div className="flex-1 min-h-0 overflow-y-auto pb-[calc(env(safe-area-inset-bottom)+96px)] lg:pb-2">
         {visible.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-2 px-6 py-12 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400">
+            <div className="flex h-10 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400">
               <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none">
                 <path
                   d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"
@@ -168,7 +168,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                 />
               </svg>
             </div>
-            <div className="text-[13px] font-extrabold text-zinc-900">
+            <div className="text-[13px] font-semibold text-zinc-900">
               {tab === "active" ? "Faol chat yo‘q" : "Tugagan chat yo‘q"}
             </div>
             <div className="max-w-[220px] text-[11.5px] font-medium text-zinc-500">
@@ -200,7 +200,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                     {/* Avatar */}
                     <div
                       className={
-                        "flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br text-[16px] font-black text-white shadow-[0_6px_14px_rgba(15,23,42,.18)] " +
+                        "flex h-10 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-br text-[16px] font-bold text-white shadow-[0_6px_14px_rgba(15,23,42,.18)] " +
                         gradient
                       }
                     >
@@ -210,7 +210,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                     {/* Texts */}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <div className="min-w-0 truncate text-[14px] font-extrabold tracking-tight text-zinc-950">
+                        <div className="min-w-0 truncate text-[14px] font-semibold tracking-normal text-zinc-950">
                           {c.otherName}
                         </div>
                         <div className="shrink-0 text-[10.5px] font-bold text-zinc-400">
@@ -232,7 +232,7 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                         </div>
                         <span
                           className={
-                            "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-extrabold ring-1 " +
+                            "inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold ring-1 " +
                             (c.ended
                               ? "bg-zinc-100 text-zinc-600 ring-zinc-200"
                               : "bg-emerald-50 text-emerald-700 ring-emerald-200")

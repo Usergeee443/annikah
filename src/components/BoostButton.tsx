@@ -48,7 +48,7 @@ export default function BoostButton({
     <div className="rounded-2xl border border-zinc-200 bg-white p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-[12px] font-extrabold tracking-tight text-zinc-950">{label}</div>
+          <div className="text-[12px] font-semibold tracking-normal text-zinc-950">{label}</div>
           <div className="mt-0.5 text-[11px] font-bold text-zinc-600">
             {days} kun · {priceUzs.toLocaleString()} so‘m (demo)
           </div>
@@ -57,7 +57,7 @@ export default function BoostButton({
           type="button"
           onClick={go}
           disabled={pending || done || disabledProp}
-          className="inline-flex h-9 items-center justify-center rounded-2xl bg-amber-500 px-3 text-[12px] font-extrabold text-white ring-1 ring-amber-600 hover:bg-amber-400 disabled:opacity-60"
+          className="inline-flex h-9 items-center justify-center rounded-2xl bg-amber-500 px-3 text-[12px] font-semibold text-white ring-1 ring-amber-600 hover:bg-amber-400 disabled:opacity-60"
         >
           {disabledProp
             ? "Mavjud emas"
@@ -68,7 +68,7 @@ export default function BoostButton({
                 : "Boost"}
         </button>
       </div>
-      {error ? <div className="mt-2 text-[11px] font-extrabold text-rose-700">{error}</div> : null}
+      {error ? <div className="mt-2 text-[11px] font-semibold text-rose-700">{error}</div> : null}
     </div>
   );
 }

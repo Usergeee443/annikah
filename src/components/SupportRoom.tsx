@@ -138,12 +138,12 @@ export default function SupportRoom({
             </svg>
           </Link>
 
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-indigo-400 to-violet-600 text-[14px] font-black text-white shadow-[0_4px_12px_rgba(15,23,42,.18)]">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-indigo-400 to-violet-600 text-[14px] font-bold text-white shadow-[0_4px_12px_rgba(15,23,42,.18)]">
             ?
           </div>
 
           <div className="min-w-0">
-            <div className="truncate text-[14.5px] font-extrabold tracking-tight text-zinc-950">Yordam</div>
+            <div className="truncate text-[14.5px] font-semibold tracking-normal text-zinc-950">Yordam</div>
             <div className="mt-0.5 text-[11px] font-bold text-zinc-500">Admin bilan chat</div>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function SupportRoom({
         {messages.length === 0 ? (
           <div className="flex h-full items-center justify-center">
             <div className="rounded-3xl bg-white/80 px-5 py-4 text-center shadow-sm ring-1 ring-zinc-200">
-              <div className="text-[13px] font-extrabold tracking-tight text-zinc-900">Suhbatni boshlang</div>
+              <div className="text-[13px] font-semibold tracking-normal text-zinc-900">Suhbatni boshlang</div>
               <div className="mt-1 text-[11.5px] font-medium text-zinc-500">
                 Masalan: “To‘lov”, “E’lon”, “Chat” bo‘yicha savolim bor.
               </div>
@@ -167,7 +167,7 @@ export default function SupportRoom({
             {groups.map((g) => (
               <div key={g.dayKey}>
                 <div className="my-3 flex justify-center">
-                  <span className="rounded-full bg-white/85 px-3 py-0.5 text-[10.5px] font-extrabold uppercase tracking-[0.14em] text-zinc-600 shadow-sm ring-1 ring-zinc-200 backdrop-blur">
+                  <span className="rounded-full bg-white/85 px-3 py-0.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-zinc-600 shadow-sm ring-1 ring-zinc-200 backdrop-blur">
                     {g.label}
                   </span>
                 </div>
@@ -292,7 +292,7 @@ export default function SupportRoom({
             </button>
           </div>
           {error ? (
-            <div className="mx-auto mt-2 max-w-3xl text-[12px] font-extrabold text-rose-700">{error}</div>
+            <div className="mx-auto mt-2 max-w-3xl text-[12px] font-semibold text-rose-700">{error}</div>
           ) : null}
         </div>
       </div>

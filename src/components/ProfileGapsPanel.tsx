@@ -44,7 +44,7 @@ function inputCls() {
 
 function chipBtn(active: boolean) {
   return [
-    "inline-flex h-9 items-center justify-center rounded-2xl px-3 text-[11.5px] font-extrabold ring-1 transition",
+    "inline-flex h-9 items-center justify-center rounded-2xl px-3 text-[11.5px] font-semibold ring-1 transition",
     active
       ? "bg-zinc-950 text-white ring-zinc-950"
       : "bg-white text-zinc-800 ring-zinc-200 hover:bg-zinc-50",
@@ -251,7 +251,7 @@ export default function ProfileGapsPanel({ profile, compact, onComplete }: Props
   return (
     <div className={compact ? "grid gap-3" : "grid gap-4"}>
       <div className="rounded-3xl bg-amber-50/80 p-4 ring-1 ring-amber-200/80">
-        <div className="text-[12px] font-extrabold text-amber-950">
+        <div className="text-[12px] font-semibold text-amber-950">
           Profil to‘liq emas — {gaps.length} ta maydon qoldi
         </div>
         <p className="mt-1 text-[12px] font-medium leading-relaxed text-amber-900/90">
@@ -268,12 +268,12 @@ export default function ProfileGapsPanel({ profile, compact, onComplete }: Props
       <div className="max-h-[min(60vh,420px)] space-y-4 overflow-y-auto pr-1">
         {Object.entries(grouped).map(([group, items]) => (
           <div key={group}>
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-zinc-500">{group}</div>
+            <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">{group}</div>
             <div className="mt-2 grid gap-3">
               {items.map((gap) => (
                 <div key={gap.field} className="rounded-2xl bg-white p-3.5 ring-1 ring-zinc-200">
                   <div className="flex items-center justify-between gap-2">
-                    <label className="text-[12px] font-extrabold text-zinc-950">{gap.label}</label>
+                    <label className="text-[12px] font-semibold text-zinc-950">{gap.label}</label>
                     {savedField === gap.field && !pending ? (
                       <span className="text-[10px] font-bold text-emerald-600">Saqlandi</span>
                     ) : null}
@@ -284,7 +284,7 @@ export default function ProfileGapsPanel({ profile, compact, onComplete }: Props
                       type="button"
                       disabled={pending}
                       onClick={() => parseAndSave(gap.field)}
-                      className="mt-2.5 inline-flex h-9 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[11px] font-extrabold text-white hover:bg-zinc-900 disabled:opacity-60"
+                      className="mt-2.5 inline-flex h-9 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[11px] font-semibold text-white hover:bg-zinc-900 disabled:opacity-60"
                     >
                       {pending ? "…" : "Saqlash"}
                     </button>

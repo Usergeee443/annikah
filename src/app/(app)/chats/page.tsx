@@ -24,7 +24,7 @@ export default function ChatsIndexPage() {
         </div>
 
         <div>
-          <div className="text-[18px] font-black tracking-tight text-zinc-950">
+          <div className="text-[14px] font-bold tracking-normal text-zinc-950">
             Suhbatni tanlang
           </div>
           <p className="mt-1 max-w-[340px] text-[13px] font-medium text-zinc-600">
@@ -34,7 +34,7 @@ export default function ChatsIndexPage() {
 
         <Link
           href="/"
-          className="mt-1 inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+          className="mt-1 inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
         >
           E’lonlarga o‘tish
         </Link>

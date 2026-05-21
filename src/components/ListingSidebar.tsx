@@ -137,12 +137,12 @@ export default function ListingSidebar({
               maskId={`sidebar-${listingId}`}
             />
             <div className="absolute left-3 top-3 z-2">
-              <span className="inline-flex h-6 items-center rounded-full bg-white/20 px-2.5 text-[10px] font-extrabold uppercase tracking-[0.16em] text-white ring-1 ring-white/35 backdrop-blur">
+              <span className="inline-flex h-6 items-center rounded-full bg-white/20 px-2.5 text-[10px] font-semibold uppercase tracking-wide text-white ring-1 ring-white/35 backdrop-blur">
                 {isKelin ? "Kelin" : "Kuyov"}
               </span>
             </div>
             <div className="relative z-1 flex min-h-[184px] flex-col items-center justify-center px-4 pb-7 pt-14">
-              <p className="max-w-full translate-y-1 truncate text-center text-[clamp(17px,4.2vw,21px)] font-black leading-tight tracking-tight text-white drop-shadow-[0_4px_22px_rgba(0,0,0,.38)]">
+              <p className="max-w-full translate-y-1 truncate text-center text-[clamp(17px,4.2vw,21px)] font-bold leading-tight tracking-normal text-white drop-shadow-[0_4px_22px_rgba(0,0,0,.38)]">
                 {name}
               </p>
             </div>
@@ -153,11 +153,11 @@ export default function ListingSidebar({
         {!isOwner ? (
           <section className="rounded-3xl bg-linear-to-br from-indigo-50 via-white to-sky-50 p-4 ring-1 ring-indigo-100/80 shadow-[0_8px_28px_rgba(79,70,229,.06)]">
             <div className="flex items-center gap-3">
-              <div className="relative h-14 w-14 shrink-0">
+              <div className="relative h-11 w-14 shrink-0">
                 <Image src="/mail.svg" alt="So'rov" fill sizes="56px" className="object-contain" />
               </div>
               <div className="min-w-0">
-                <div className="text-[15px] font-black tracking-tight text-zinc-950">
+                <div className="text-[14px] font-bold tracking-normal text-zinc-950">
                   So‘rov yuboring
                 </div>
                 <div className="mt-0.5 text-[11.5px] font-medium leading-snug text-zinc-600">
@@ -167,12 +167,12 @@ export default function ListingSidebar({
             </div>
             <div className="mt-3">{renderRequestAction()}</div>
             {reqError ? (
-              <div className="mt-2 text-[11px] font-extrabold text-rose-700">{reqError}</div>
+              <div className="mt-2 text-[11px] font-semibold text-rose-700">{reqError}</div>
             ) : null}
           </section>
         ) : (
           <section className="rounded-3xl bg-zinc-100 p-4 ring-1 ring-zinc-200">
-            <div className="text-[12px] font-extrabold text-zinc-700">Bu sizning e’loningiz</div>
+            <div className="text-[12px] font-semibold text-zinc-700">Bu sizning e’loningiz</div>
             <p className="mt-1 text-[11.5px] font-medium text-zinc-500">
               Boshqalar shu yerdan sizga so‘rov yuboradi.
             </p>
@@ -183,7 +183,7 @@ export default function ListingSidebar({
         {!isOwner ? (
           <section className="rounded-3xl bg-linear-to-br from-rose-50 via-white to-pink-50 p-4 ring-1 ring-rose-100 shadow-[0_8px_28px_rgba(244,63,94,.06)]">
             <div className="flex items-center gap-3">
-              <div className="relative h-14 w-14 shrink-0">
+              <div className="relative h-11 w-14 shrink-0">
                 <Image
                   src="/flower.svg"
                   alt="Sevimli"
@@ -193,7 +193,7 @@ export default function ListingSidebar({
                 />
               </div>
               <div className="min-w-0">
-                <div className="text-[15px] font-black tracking-tight text-zinc-950">
+                <div className="text-[14px] font-bold tracking-normal text-zinc-950">
                   {favored ? "Sevimlilarda" : "Sevimliga saqlang"}
                 </div>
                 <div className="mt-0.5 text-[11.5px] font-medium leading-snug text-zinc-600">
@@ -208,7 +208,7 @@ export default function ListingSidebar({
               onClick={toggleFavorite}
               disabled={favPending}
               className={
-                "mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl px-4 text-[12px] font-extrabold tracking-tight transition disabled:opacity-70 " +
+                "mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl px-4 text-[12px] font-semibold tracking-normal transition disabled:opacity-70 " +
                 (favored
                   ? "bg-white text-rose-700 ring-1 ring-rose-200 hover:bg-rose-50"
                   : "bg-linear-to-r from-rose-500 via-pink-500 to-rose-600 text-white ring-1 ring-rose-700/30 shadow-[0_14px_30px_rgba(244,63,94,.22)] hover:from-rose-400 hover:via-pink-500 hover:to-rose-600")
@@ -236,7 +236,7 @@ export default function ListingSidebar({
         {/* TOC anchor links — kompakt matn ro'yxati */}
         {tocItems.length > 0 ? (
           <section className="px-1">
-            <div className="mb-1 px-2 text-[9.5px] font-extrabold uppercase tracking-[0.2em] text-zinc-400">
+            <div className="mb-1 px-2 text-[9.5px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
               Bo‘limlar
             </div>
             <nav className="grid">
@@ -278,7 +278,7 @@ export default function ListingSidebar({
           className="mx-3 rounded-3xl border border-white/40 bg-white/90 p-2 shadow-[0_18px_40px_rgba(15,23,42,.18),inset_0_1px_0_rgba(255,255,255,.7)] [backdrop-filter:blur(20px)_saturate(180%)] [-webkit-backdrop-filter:blur(20px)_saturate(180%)]"
         >
           {isOwner ? (
-            <div className="grid h-12 place-items-center rounded-2xl bg-zinc-100 text-[12.5px] font-extrabold text-zinc-700 ring-1 ring-zinc-200">
+            <div className="grid h-10 place-items-center rounded-2xl bg-zinc-100 text-[12.5px] font-semibold text-zinc-700 ring-1 ring-zinc-200">
               Bu sizning e’loningiz
             </div>
           ) : (
@@ -289,7 +289,7 @@ export default function ListingSidebar({
                 disabled={favPending}
                 aria-label={favored ? "Sevimlilardan olib tashlash" : "Sevimliga qo‘shish"}
                 className={
-                  "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ring-1 transition disabled:opacity-70 " +
+                  "inline-flex h-10 w-12 shrink-0 items-center justify-center rounded-2xl ring-1 transition disabled:opacity-70 " +
                   (favored
                     ? "bg-rose-500 text-white ring-rose-600 shadow-[0_10px_24px_rgba(244,63,94,.30)] hover:bg-rose-600"
                     : "bg-white text-rose-600 ring-rose-200 hover:bg-rose-50")
@@ -315,7 +315,7 @@ export default function ListingSidebar({
             </div>
           )}
           {reqError ? (
-            <div className="mt-2 px-2 text-center text-[11px] font-extrabold text-rose-700">
+            <div className="mt-2 px-2 text-center text-[11px] font-semibold text-rose-700">
               {reqError}
             </div>
           ) : null}
@@ -329,7 +329,7 @@ export default function ListingSidebar({
       return (
         <a
           href={`/chats/${chatId}`}
-          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-500 to-emerald-600 px-4 text-[12px] font-extrabold text-white ring-1 ring-emerald-700/30 shadow-[0_10px_24px_rgba(16,185,129,.22)] transition hover:from-emerald-400 hover:to-emerald-500"
+          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-500 to-emerald-600 px-4 text-[12px] font-semibold text-white ring-1 ring-emerald-700/30 shadow-[0_10px_24px_rgba(16,185,129,.22)] transition hover:from-emerald-400 hover:to-emerald-500"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
             <path
@@ -344,14 +344,14 @@ export default function ListingSidebar({
     }
     if (reqStatus === "pending") {
       return (
-        <div className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-amber-50 px-4 text-[12px] font-extrabold text-amber-800 ring-1 ring-amber-200">
+        <div className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-amber-50 px-4 text-[12px] font-semibold text-amber-800 ring-1 ring-amber-200">
           So‘rov yuborilgan · Kutilmoqda
         </div>
       );
     }
     if (reqStatus === "rejected") {
       return (
-        <div className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-rose-50 px-4 text-[12px] font-extrabold text-rose-800 ring-1 ring-rose-200">
+        <div className="inline-flex h-11 w-full items-center justify-center rounded-2xl bg-rose-50 px-4 text-[12px] font-semibold text-rose-800 ring-1 ring-rose-200">
           So‘rov rad etilgan
         </div>
       );
@@ -361,7 +361,7 @@ export default function ListingSidebar({
         type="button"
         onClick={sendRequest}
         disabled={reqPending}
-        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-indigo-500 via-violet-500 to-sky-500 px-4 text-[12px] font-extrabold text-white ring-1 ring-indigo-600/30 shadow-[0_14px_30px_rgba(99,102,241,.22)] transition hover:from-indigo-400 hover:via-violet-500 hover:to-sky-500 disabled:opacity-70"
+        className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-indigo-500 via-violet-500 to-sky-500 px-4 text-[12px] font-semibold text-white ring-1 ring-indigo-600/30 shadow-[0_14px_30px_rgba(99,102,241,.22)] transition hover:from-indigo-400 hover:via-violet-500 hover:to-sky-500 disabled:opacity-70"
       >
         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
           <path
@@ -382,7 +382,7 @@ export default function ListingSidebar({
       return (
         <a
           href={`/chats/${chatId}`}
-          className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-500 to-emerald-600 px-4 text-[13px] font-extrabold text-white ring-1 ring-emerald-700/30 shadow-[0_10px_24px_rgba(16,185,129,.28)] transition hover:from-emerald-400 hover:to-emerald-500"
+          className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-500 to-emerald-600 px-4 text-[13px] font-semibold text-white ring-1 ring-emerald-700/30 shadow-[0_10px_24px_rgba(16,185,129,.28)] transition hover:from-emerald-400 hover:to-emerald-500"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
             <path
@@ -397,14 +397,14 @@ export default function ListingSidebar({
     }
     if (reqStatus === "pending") {
       return (
-        <div className="inline-flex h-12 flex-1 items-center justify-center rounded-2xl bg-amber-50 px-4 text-[12.5px] font-extrabold text-amber-800 ring-1 ring-amber-200">
+        <div className="inline-flex h-10 flex-1 items-center justify-center rounded-2xl bg-amber-50 px-4 text-[12.5px] font-semibold text-amber-800 ring-1 ring-amber-200">
           So‘rov yuborilgan · Kutilmoqda
         </div>
       );
     }
     if (reqStatus === "rejected") {
       return (
-        <div className="inline-flex h-12 flex-1 items-center justify-center rounded-2xl bg-rose-50 px-4 text-[12.5px] font-extrabold text-rose-800 ring-1 ring-rose-200">
+        <div className="inline-flex h-10 flex-1 items-center justify-center rounded-2xl bg-rose-50 px-4 text-[12.5px] font-semibold text-rose-800 ring-1 ring-rose-200">
           So‘rov rad etilgan
         </div>
       );
@@ -414,7 +414,7 @@ export default function ListingSidebar({
         type="button"
         onClick={sendRequest}
         disabled={reqPending}
-        className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-indigo-500 via-violet-500 to-sky-500 px-4 text-[13px] font-extrabold text-white ring-1 ring-indigo-600/30 shadow-[0_14px_30px_rgba(99,102,241,.30)] transition hover:from-indigo-400 hover:via-violet-500 hover:to-sky-500 disabled:opacity-70"
+        className="inline-flex h-10 flex-1 items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-indigo-500 via-violet-500 to-sky-500 px-4 text-[13px] font-semibold text-white ring-1 ring-indigo-600/30 shadow-[0_14px_30px_rgba(99,102,241,.30)] transition hover:from-indigo-400 hover:via-violet-500 hover:to-sky-500 disabled:opacity-70"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden>
           <path

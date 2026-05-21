@@ -33,11 +33,11 @@ export default function DeleteListingButton({ listingId }: { listingId: number }
         type="button"
         onClick={go}
         disabled={pending}
-        className="inline-flex h-9 items-center justify-center rounded-2xl bg-rose-600 px-3 text-[12px] font-extrabold text-white ring-1 ring-rose-700/20 hover:bg-rose-700 disabled:opacity-60"
+        className="inline-flex h-9 items-center justify-center rounded-2xl bg-rose-600 px-3 text-[12px] font-semibold text-white ring-1 ring-rose-700/20 hover:bg-rose-700 disabled:opacity-60"
       >
         {pending ? "O‘chirilmoqda…" : "O‘chirish"}
       </button>
-      {err ? <span className="text-[11px] font-extrabold text-rose-700">{err}</span> : null}
+      {err ? <span className="text-[11px] font-semibold text-rose-700">{err}</span> : null}
     </div>
   );
 }

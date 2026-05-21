@@ -163,7 +163,7 @@ function Section({
           </span>
         ) : null}
         <div className="min-w-0 flex-1">
-          <h3 className="text-[12.5px] font-extrabold tracking-tight text-zinc-950">{title}</h3>
+          <h3 className="text-[12.5px] font-semibold tracking-normal text-zinc-950">{title}</h3>
           {hint ? <p className="text-[10.5px] font-semibold text-zinc-500">{hint}</p> : null}
         </div>
       </div>
@@ -209,7 +209,7 @@ function Range({
             className={cn(inputCls, "w-full pr-8")}
           />
           {unit ? (
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-extrabold text-zinc-400">
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-zinc-400">
               {unit}
             </span>
           ) : null}
@@ -224,7 +224,7 @@ function Range({
             className={cn(inputCls, "w-full pr-8")}
           />
           {unit ? (
-            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-extrabold text-zinc-400">
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold text-zinc-400">
               {unit}
             </span>
           ) : null}
@@ -255,7 +255,7 @@ function Chips({
             defaultChecked={v === opt.value}
             className="peer sr-only"
           />
-          <span className="cursor-pointer rounded-full bg-white px-3 py-1.5 text-[11.5px] font-extrabold text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-50 peer-checked:bg-zinc-950 peer-checked:text-white peer-checked:ring-zinc-950">
+          <span className="cursor-pointer rounded-full bg-white px-3 py-1.5 text-[11.5px] font-semibold text-zinc-700 ring-1 ring-zinc-200 transition hover:bg-zinc-50 peer-checked:bg-zinc-950 peer-checked:text-white peer-checked:ring-zinc-950">
             {opt.label}
           </span>
         </label>
@@ -267,7 +267,7 @@ function Chips({
 function Logo() {
   return (
     <Link href="/" aria-label="Annikah" className="shrink-0 inline-flex items-center">
-      <span className="text-[19px] font-black tracking-tight bg-linear-to-r from-rose-500 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
+      <span className="text-[19px] font-bold tracking-normal bg-linear-to-r from-rose-500 via-fuchsia-500 to-indigo-500 bg-clip-text text-transparent">
         Annikah
       </span>
     </Link>
@@ -316,7 +316,7 @@ export default function ListingsToolbar({
 
   const tabBtn = (active: boolean) =>
     cn(
-      "h-9 rounded-xl px-3 text-[12px] font-extrabold tracking-tight transition duration-200 inline-flex items-center justify-center motion-safe:transform-gpu",
+      "h-9 rounded-xl px-3 text-[12px] font-semibold tracking-normal transition duration-200 inline-flex items-center justify-center motion-safe:transform-gpu",
       active
         ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80 motion-safe:scale-[1.02]"
         : "text-zinc-600 hover:text-zinc-900 hover:bg-white/60",
@@ -438,7 +438,7 @@ export default function ListingsToolbar({
             <svg viewBox="0 0 24 24" className="h-5 w-5 md:h-4 md:w-4" fill="none" aria-hidden="true">
               <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            <span className="hidden text-[12px] font-extrabold tracking-tight md:inline">Filter</span>
+            <span className="hidden text-[12px] font-semibold tracking-normal md:inline">Filter</span>
             {hasActiveFilters ? (
               <span className="absolute right-1.5 top-1.5 inline-flex h-2 w-2 rounded-full bg-amber-400 md:static md:ml-1" />
             ) : null}
@@ -480,10 +480,10 @@ export default function ListingsToolbar({
         {/* Drawer header */}
         <header className="flex items-start justify-between gap-3 border-b border-zinc-100 px-5 pb-4 pt-2 md:px-6 md:pt-5">
           <div>
-            <div className="text-[10.5px] font-extrabold uppercase tracking-[0.22em] text-zinc-500">
+            <div className="text-[10.5px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
               Filter
             </div>
-            <div className="mt-1 text-[18px] font-extrabold tracking-tight text-zinc-950">
+            <div className="mt-1 text-[14px] font-semibold tracking-normal text-zinc-950">
               Mukammal qidiruv
             </div>
             <div className="mt-1 text-[12px] font-medium text-zinc-600">
@@ -616,7 +616,7 @@ export default function ListingsToolbar({
 
             {/* Diniy ma'lumotlar */}
             <div className="rounded-3xl bg-emerald-50/50 p-3 ring-1 ring-emerald-200/60">
-              <div className="px-1 pt-1 text-[11px] font-extrabold uppercase tracking-[0.18em] text-emerald-700">
+              <div className="px-1 pt-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-700">
                 Diniy ma’lumotlar
               </div>
               <div className="mt-2 grid gap-3">
@@ -700,13 +700,13 @@ export default function ListingsToolbar({
             <Link
               href={`/?cat=${cat}`}
               onClick={() => setOpen(false)}
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
+              className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
             >
               Tozalash
             </Link>
             <button
               type="submit"
-              className="inline-flex h-11 flex-[1.4] items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold tracking-tight text-white ring-1 ring-black/10 transition hover:bg-zinc-900"
+              className="inline-flex h-11 flex-[1.4] items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold tracking-normal text-white ring-1 ring-black/10 transition hover:bg-zinc-900"
             >
               Qidirishni qo‘llash
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">

@@ -102,12 +102,12 @@ export default async function ProfileHubPage() {
   return (
     <div className="grid gap-5">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="mt-1 text-[26px] font-black tracking-tight text-zinc-950">Profil</h1>
+        <h1 className="mt-1 text-xl font-bold tracking-normal text-zinc-950">Profil</h1>
         <Link
           href="/help"
           aria-label="Yordam — admin bilan chat"
           title="Yordam"
-          className="inline-flex h-10 shrink-0 items-center gap-2 rounded-2xl border border-zinc-200 bg-transparent px-3.5 text-[12px] font-extrabold text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98]"
+          className="inline-flex h-10 shrink-0 items-center gap-2 rounded-2xl border border-zinc-200 bg-transparent px-3.5 text-[12px] font-semibold text-zinc-900 transition hover:bg-zinc-50 active:scale-[0.98]"
         >
           <svg viewBox="0 0 24 24" className="h-[18px] w-[18px] text-zinc-700" fill="none" aria-hidden="true">
             <path
@@ -125,7 +125,7 @@ export default async function ProfileHubPage() {
       <div className="rounded-3xl bg-white p-5 backdrop-blur">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <div className="mt-2 truncate text-[17px] font-black tracking-tight text-zinc-950">{displayName}</div>
+            <div className="mt-2 truncate text-[17px] font-bold tracking-normal text-zinc-950">{displayName}</div>
             <div className="mt-1 text-[13px] font-semibold text-zinc-600">
               {authProvider === "telegram"
                 ? `Telefon: ${phone || "—"}`
@@ -149,7 +149,7 @@ export default async function ProfileHubPage() {
                 </svg>
               </span>
               <div className="min-w-0">
-                <div className="text-[13.5px] font-extrabold tracking-tight text-zinc-950">Parolni o‘zgartirish</div>
+                <div className="text-[13.5px] font-semibold tracking-normal text-zinc-950">Parolni o‘zgartirish</div>
                 <div className="text-[11.5px] font-semibold text-zinc-500">Akkauntingiz parolini yangilash</div>
               </div>
             </div>
@@ -163,19 +163,19 @@ export default async function ProfileHubPage() {
       {/* E’lonlarim */}
       <section id="elonlarim" className="grid gap-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="text-[18px] font-black tracking-tight text-zinc-950">E’lonlarim</div>
+          <div className="text-[14px] font-bold tracking-normal text-zinc-950">E’lonlarim</div>
           <Link
             href="/listings/new/extra"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
           >
-            <span className="text-[15px] leading-none">+</span>
+            <span className="text-[14px] leading-none">+</span>
             E’lon qo‘shish
           </Link>
         </div>
 
         {listings.length === 0 && !profile ? (
           <div className="rounded-3xl border border-dashed border-zinc-300 bg-white/60 p-8 text-center">
-            <div className="text-[14px] font-extrabold text-zinc-950">Hali e’lon yo‘q</div>
+            <div className="text-[14px] font-semibold text-zinc-950">Hali e’lon yo‘q</div>
             <div className="mt-1 text-[12.5px] font-medium text-zinc-600">Yangi e’lon qo‘shing.</div>
           </div>
         ) : (

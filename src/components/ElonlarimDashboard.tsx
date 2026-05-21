@@ -140,7 +140,7 @@ function RowLink({ href, label, value }: { href: string; label: string; value: s
       className="flex items-center justify-between gap-3 rounded-2xl bg-white px-4 py-3 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
     >
       <span className="text-[12px] font-bold text-zinc-500">{label}</span>
-      <span className="max-w-[58%] truncate text-right text-[12.5px] font-extrabold text-zinc-950">{value}</span>
+      <span className="max-w-[58%] truncate text-right text-[12.5px] font-semibold text-zinc-950">{value}</span>
     </Link>
   );
 }
@@ -347,7 +347,7 @@ export default function ElonlarimDashboard({
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-4 shadow-[0_8px_28px_rgba(15,23,42,.05)] sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">{title}</div>
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">{title}</div>
             {subtitle ? <div className="mt-1 text-[12.5px] font-semibold text-zinc-600">{subtitle}</div> : null}
           </div>
           {!editing ? (
@@ -378,14 +378,14 @@ export default function ElonlarimDashboard({
               <button
                 type="button"
                 onClick={onCancel}
-                className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
               >
                 Bekor
               </button>
               <button
                 type="button"
                 onClick={onSave}
-                className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+                className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
               >
                 Saqlash
               </button>
@@ -433,10 +433,10 @@ export default function ElonlarimDashboard({
           <header className="border-b border-zinc-100 px-5 pb-4 pt-5">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">
+                <div className="text-[11px] font-semibold tracking-wide text-zinc-500">
                   {sel?.kind === "profile" ? "PROFIL" : "E’LON"}
                 </div>
-                <div className="mt-1 truncate text-[20px] font-black tracking-tight text-zinc-950">
+                <div className="mt-1 truncate text-base font-bold tracking-normal text-zinc-950">
                   {sel?.kind === "profile"
                     ? profile?.name || userEmail
                     : activeListing?.name || "—"}
@@ -452,7 +452,7 @@ export default function ElonlarimDashboard({
               <button
                 type="button"
                 onClick={close}
-                className="inline-flex h-10 shrink-0 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                className="inline-flex h-10 shrink-0 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
               >
                 Yopish
               </button>
@@ -464,7 +464,7 @@ export default function ElonlarimDashboard({
                   type="button"
                   onClick={() => setTab("edit")}
                   className={
-                    "h-9 rounded-xl px-5 text-[12px] font-extrabold tracking-tight transition " +
+                    "h-9 rounded-xl px-5 text-[12px] font-semibold tracking-normal transition " +
                     (tab === "edit"
                       ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                       : "text-zinc-600 hover:text-zinc-900")
@@ -476,7 +476,7 @@ export default function ElonlarimDashboard({
                   type="button"
                   onClick={() => setTab("stats")}
                   className={
-                    "h-9 rounded-xl px-5 text-[12px] font-extrabold tracking-tight transition " +
+                    "h-9 rounded-xl px-5 text-[12px] font-semibold tracking-normal transition " +
                     (tab === "stats"
                       ? "bg-white text-zinc-950 shadow-sm ring-1 ring-zinc-200/80"
                       : "text-zinc-600 hover:text-zinc-900")
@@ -515,7 +515,7 @@ export default function ElonlarimDashboard({
                 {sel?.kind === "profile" || sel?.kind !== "listing" || !activeListing ? (
                   <div className="rounded-3xl bg-zinc-50 p-5 text-[13px] font-medium leading-relaxed text-zinc-600 ring-1 ring-zinc-200">
                     Statistika faqat joylangan e’lon uchun mavjud. Avval{" "}
-                    <Link href="/listings/new" className="font-extrabold text-zinc-950 underline-offset-2 hover:underline">
+                    <Link href="/listings/new" className="font-semibold text-zinc-950 underline-offset-2 hover:underline">
                       asosiy e’lonni joylang
                     </Link>
                     .
@@ -524,18 +524,18 @@ export default function ElonlarimDashboard({
                   <>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded-3xl bg-zinc-50 p-4 ring-1 ring-zinc-200">
-                        <div className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+                        <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
                           Unique ko‘rildi
                         </div>
-                        <div className="mt-1 text-[22px] font-black tracking-tight text-zinc-950">
+                        <div className="mt-1 text-lg font-bold tracking-normal text-zinc-950">
                           {stats ? stats.viewsUnique : pending ? "…" : "—"}
                         </div>
                       </div>
                       <div className="rounded-3xl bg-zinc-50 p-4 ring-1 ring-zinc-200">
-                        <div className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-zinc-500">
+                        <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">
                           Sevimlilar
                         </div>
-                        <div className="mt-1 text-[22px] font-black tracking-tight text-zinc-950">
+                        <div className="mt-1 text-lg font-bold tracking-normal text-zinc-950">
                           {stats ? stats.favorites : pending ? "…" : "—"}
                         </div>
                       </div>
@@ -546,17 +546,17 @@ export default function ElonlarimDashboard({
                       </div>
                     ) : null}
                     <div className="rounded-3xl bg-white p-4 ring-1 ring-zinc-200">
-                      <div className="text-[12px] font-extrabold text-zinc-950">14 kun · ko‘rilish</div>
+                      <div className="text-[12px] font-semibold text-zinc-950">14 kun · ko‘rilish</div>
                       <div className="mt-3">{stats ? <MiniBars points={stats.views14d} /> : null}</div>
                     </div>
                     <div className="rounded-3xl bg-white p-4 ring-1 ring-zinc-200">
-                      <div className="text-[12px] font-extrabold text-zinc-950">14 kun · sevimlilar</div>
+                      <div className="text-[12px] font-semibold text-zinc-950">14 kun · sevimlilar</div>
                       <div className="mt-3">{stats ? <MiniBars points={stats.favorites14d} /> : null}</div>
                     </div>
                     <button
                       type="button"
                       onClick={() => activeListing && loadStats(activeListing.id)}
-                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+                      className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
                     >
                       Yangilash
                     </button>
@@ -571,19 +571,19 @@ export default function ElonlarimDashboard({
               <div className="flex flex-wrap gap-2">
                 <Link
                   href={`/listings/${activeListing.id}`}
-                  className="inline-flex h-10 min-w-[calc(50%-0.25rem)] flex-1 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50 sm:min-w-0"
+                  className="inline-flex h-10 min-w-[calc(50%-0.25rem)] flex-1 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50 sm:min-w-0"
                 >
                   Ko‘rish
                 </Link>
                 {activeListing.boostUntil &&
                 new Date(activeListing.boostUntil).getTime() > Date.now() ? (
-                  <span className="inline-flex h-10 min-w-[calc(50%-0.25rem)] flex-1 items-center justify-center rounded-2xl bg-zinc-100 px-3 text-[11px] font-extrabold text-zinc-600 ring-1 ring-zinc-200 sm:min-w-0">
+                  <span className="inline-flex h-10 min-w-[calc(50%-0.25rem)] flex-1 items-center justify-center rounded-2xl bg-zinc-100 px-3 text-[11px] font-semibold text-zinc-600 ring-1 ring-zinc-200 sm:min-w-0">
                     Reklama faol
                   </span>
                 ) : (
                   <Link
                     href={`/reklama/${activeListing.id}`}
-                    className="inline-flex h-10 min-w-[calc(50%-0.25rem)] flex-1 items-center justify-center rounded-2xl bg-amber-50 px-3 text-[12px] font-extrabold text-amber-900 ring-1 ring-amber-200 hover:bg-amber-100 sm:min-w-0"
+                    className="inline-flex h-10 min-w-[calc(50%-0.25rem)] flex-1 items-center justify-center rounded-2xl bg-amber-50 px-3 text-[12px] font-semibold text-amber-900 ring-1 ring-amber-200 hover:bg-amber-100 sm:min-w-0"
                   >
                     Boost
                   </Link>
@@ -591,7 +591,7 @@ export default function ElonlarimDashboard({
                 <form action={`/api/listings/${activeListing.id}/refresh`} method="post" className="min-w-[calc(50%-0.25rem)] flex-1 sm:min-w-0">
                   <button
                     type="submit"
-                    className="inline-flex h-10 w-full items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                    className="inline-flex h-10 w-full items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
                   >
                     Yangilash
                   </button>
@@ -599,7 +599,7 @@ export default function ElonlarimDashboard({
                 <form action={`/api/listings/${activeListing.id}/delete`} method="post" className="min-w-[calc(50%-0.25rem)] flex-1 sm:min-w-0">
                   <button
                     type="submit"
-                    className="inline-flex h-10 w-full items-center justify-center rounded-2xl bg-rose-50 px-3 text-[12px] font-extrabold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100"
+                    className="inline-flex h-10 w-full items-center justify-center rounded-2xl bg-rose-50 px-3 text-[12px] font-semibold text-rose-700 ring-1 ring-rose-200 hover:bg-rose-100"
                   >
                     O‘chirish
                   </button>
@@ -611,13 +611,13 @@ export default function ElonlarimDashboard({
               <div className="flex flex-wrap gap-2">
                 <Link
                   href="/listings/new"
-                  className="inline-flex h-10 flex-1 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+                  className="inline-flex h-10 flex-1 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
                 >
                   E’lon berish
                 </Link>
                 <Link
                   href="/listings/new/extra"
-                  className="inline-flex h-10 flex-1 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                  className="inline-flex h-10 flex-1 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
                 >
                   + Qo‘shimcha
                 </Link>
@@ -750,9 +750,9 @@ function EditPanel({
           </div>
         ) : (
           <div className="grid gap-2 text-[13px] font-semibold text-zinc-700">
-            <div>Davlat: <span className="font-extrabold text-zinc-950">{listing.country}</span></div>
-            <div>Joy: <span className="font-extrabold text-zinc-950">{listing.region}, {listing.city}</span></div>
-            <div>Millat: <span className="font-extrabold text-zinc-950">{listing.nationality}</span></div>
+            <div>Davlat: <span className="font-semibold text-zinc-950">{listing.country}</span></div>
+            <div>Joy: <span className="font-semibold text-zinc-950">{listing.region}, {listing.city}</span></div>
+            <div>Millat: <span className="font-semibold text-zinc-950">{listing.nationality}</span></div>
           </div>
         )}
       </S>
@@ -788,7 +788,7 @@ function EditPanel({
           </div>
         ) : (
           <div className="grid gap-2 text-[13px] font-semibold text-zinc-700">
-            <div>Bo‘y/vazn: <span className="font-extrabold text-zinc-950">{listing.heightCm} sm · {listing.weightKg} kg</span></div>
+            <div>Bo‘y/vazn: <span className="font-semibold text-zinc-950">{listing.heightCm} sm · {listing.weightKg} kg</span></div>
           </div>
         )}
       </S>
@@ -813,8 +813,8 @@ function EditPanel({
           </div>
         ) : (
           <div className="grid gap-2 text-[13px] font-semibold text-zinc-700">
-            <div>Aqida: <span className="font-extrabold text-zinc-950">{listing.aqeeda}</span></div>
-            <div>Namoz: <span className="font-extrabold text-zinc-950">{listing.prayer}</span></div>
+            <div>Aqida: <span className="font-semibold text-zinc-950">{listing.aqeeda}</span></div>
+            <div>Namoz: <span className="font-semibold text-zinc-950">{listing.prayer}</span></div>
           </div>
         )}
       </S>
@@ -848,7 +848,7 @@ function EditPanel({
           </div>
         ) : (
           <div className="grid gap-2 text-[13px] font-semibold text-zinc-700">
-            <div>Yosh: <span className="font-extrabold text-zinc-950">{listing.partnerAgeFrom ?? "—"}–{listing.partnerAgeTo ?? "—"}</span></div>
+            <div>Yosh: <span className="font-semibold text-zinc-950">{listing.partnerAgeFrom ?? "—"}–{listing.partnerAgeTo ?? "—"}</span></div>
           </div>
         )}
       </S>
@@ -879,7 +879,7 @@ function EditPanel({
       </S>
 
       {pending && !err ? (
-        <div className="text-center text-[12px] font-extrabold text-zinc-500">Saqlanmoqda…</div>
+        <div className="text-center text-[12px] font-semibold text-zinc-500">Saqlanmoqda…</div>
       ) : null}
       {err ? <div className="rounded-2xl bg-rose-50 p-3 text-[12px] font-semibold text-rose-900 ring-1 ring-rose-200">{err}</div> : null}
     </div>

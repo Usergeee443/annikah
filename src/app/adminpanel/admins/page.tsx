@@ -16,12 +16,12 @@ export default async function AdminAdminsPage() {
   return (
     <div className="grid gap-4">
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">ADMINLAR</div>
-        <h1 className="mt-2 text-[26px] font-black tracking-tight text-zinc-950">Adminlarni boshqarish</h1>
+        <div className="text-[11px] font-semibold tracking-wide text-zinc-500">ADMINLAR</div>
+        <h1 className="mt-2 text-xl font-bold tracking-normal text-zinc-950">Adminlarni boshqarish</h1>
         <p className="mt-1 max-w-2xl text-[13px] font-medium text-zinc-600">
           Katta admin moderatorlar qo‘shadi (jinsi bilan); moderatorlar faqat o‘ziga tegishli e’lonlarni
           tekshiradi. Hozir:{" "}
-          <span className="font-extrabold text-zinc-900">{session.username}</span>
+          <span className="font-semibold text-zinc-900">{session.username}</span>
           {session.role === "super_admin" ? " · katta admin" : session.role === "moderator" ? " · moderator" : ""}.
         </p>
       </div>

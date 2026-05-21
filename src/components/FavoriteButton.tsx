@@ -112,7 +112,7 @@ export default function FavoriteButton({
         onClick={toggle}
         disabled={pending}
         className={
-          "inline-flex h-11 items-center justify-center gap-2 rounded-2xl px-5 text-[12px] font-extrabold tracking-tight ring-1 transition " +
+          "inline-flex h-11 items-center justify-center gap-2 rounded-2xl px-5 text-[12px] font-semibold tracking-normal ring-1 transition " +
           (favored
             ? "bg-rose-600 text-white ring-rose-700 hover:bg-rose-500"
             : "bg-white text-zinc-950 ring-zinc-200 hover:bg-zinc-50")
@@ -138,7 +138,7 @@ export default function FavoriteButton({
       onClick={toggle}
       disabled={pending}
       className={
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-extrabold ring-1 transition " +
+        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 transition " +
         (favored
           ? "bg-rose-50 text-rose-700 ring-rose-200 hover:bg-rose-100"
           : "bg-white/80 text-zinc-800 ring-zinc-200 hover:bg-white")

@@ -44,7 +44,7 @@ export default async function AdminUserDetail({
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)]">
         <Link
           href="/adminpanel/users"
-          className="inline-flex items-center gap-1.5 text-[12px] font-extrabold text-zinc-600 transition hover:text-zinc-950"
+          className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-zinc-600 transition hover:text-zinc-950"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
             <path
@@ -59,8 +59,8 @@ export default async function AdminUserDetail({
         </Link>
         <div className="mt-3 flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
-            <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">PROFIL</div>
-            <h1 className="mt-1 text-[24px] font-black tracking-tight text-zinc-950">
+            <div className="text-[11px] font-semibold tracking-wide text-zinc-500">PROFIL</div>
+            <h1 className="mt-1 text-lg font-bold tracking-normal text-zinc-950">
               {user.profile?.name || user.email || user.phone || "—"}
             </h1>
             <div className="mt-1 text-[13px] font-medium text-zinc-600">
@@ -69,7 +69,7 @@ export default async function AdminUserDetail({
               {user.authProvider ? (
                 <span
                   className={
-                    "ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] ring-1 " +
+                    "ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ring-1 " +
                     (user.authProvider === "telegram"
                       ? "bg-sky-50 text-sky-800 ring-sky-200"
                       : "bg-zinc-100 text-zinc-700 ring-zinc-200")
@@ -98,8 +98,8 @@ export default async function AdminUserDetail({
       </div>
 
       <div className="rounded-3xl border border-zinc-200/70 bg-white p-5">
-        <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">E’LONLAR</div>
-        <h2 className="mt-1 text-[18px] font-black tracking-tight text-zinc-950">
+        <div className="text-[11px] font-semibold tracking-wide text-zinc-500">E’LONLAR</div>
+        <h2 className="mt-1 text-[14px] font-bold tracking-normal text-zinc-950">
           Foydalanuvchi e’lonlari ({user.listings.length})
         </h2>
 
@@ -116,22 +116,22 @@ export default async function AdminUserDetail({
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[14px] font-black tracking-tight text-zinc-950">
+                    <span className="text-[14px] font-bold tracking-normal text-zinc-950">
                       {l.name} · {l.age} yosh
                     </span>
                     <span
                       className={
-                        "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] ring-1 " +
+                        "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] ring-1 " +
                         listingStatusPill(l.moderationStatus)
                       }
                     >
                       {l.moderationStatus}
                     </span>
-                    <span className="inline-flex items-center rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-zinc-700 ring-1 ring-zinc-200">
+                    <span className="inline-flex items-center rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-700 ring-1 ring-zinc-200">
                       {l.category}
                     </span>
                     {l.boostUntil && l.boostUntil > new Date() ? (
-                      <span className="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-amber-800 ring-1 ring-amber-200">
+                      <span className="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-amber-800 ring-1 ring-amber-200">
                         BOOST
                       </span>
                     ) : null}
@@ -146,7 +146,7 @@ export default async function AdminUserDetail({
                 <div className="flex flex-wrap items-center gap-2">
                   <Link
                     href={`/listings/${l.id}`}
-                    className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+                    className="inline-flex h-9 items-center justify-center rounded-2xl bg-white px-3 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
                   >
                     Ko‘rish
                   </Link>
@@ -164,8 +164,8 @@ export default async function AdminUserDetail({
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="rounded-2xl bg-white p-3 ring-1 ring-zinc-200">
-      <div className="text-[10px] font-extrabold uppercase tracking-widest text-zinc-500">{label}</div>
-      <div className="mt-1 text-[16px] font-black tracking-tight text-zinc-950">{value}</div>
+      <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">{label}</div>
+      <div className="mt-1 text-[16px] font-bold tracking-normal text-zinc-950">{value}</div>
     </div>
   );
 }

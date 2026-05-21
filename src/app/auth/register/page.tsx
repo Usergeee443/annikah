@@ -73,7 +73,7 @@ export default function RegisterPage() {
           <div className="mb-4 flex items-center justify-between">
             <Link
               href="/"
-              className="inline-flex h-9 items-center gap-2 rounded-2xl bg-white/80 px-3 text-[12px] font-extrabold text-zinc-700 ring-1 ring-zinc-200 backdrop-blur hover:bg-white"
+              className="inline-flex h-9 items-center gap-2 rounded-2xl bg-white/80 px-3 text-[12px] font-semibold text-zinc-700 ring-1 ring-zinc-200 backdrop-blur hover:bg-white"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
                 <path
@@ -88,14 +88,14 @@ export default function RegisterPage() {
             </Link>
           </div>
           <div className="mb-6 text-center">
-            <Link href="/" className="text-2xl font-extrabold tracking-tight text-zinc-950">
+            <Link href="/" className="text-xl font-semibold tracking-normal text-zinc-950">
               <span className="drop-shadow-[0_0_18px_rgba(59,130,246,.45)]">Annikah</span>
             </Link>
             <div className="mt-1 text-[12px] font-bold text-zinc-600">Halol tanishuv platformasi</div>
           </div>
 
           <div className="rounded-3xl border border-zinc-200/70 bg-white/85 p-6 shadow-sm backdrop-blur">
-            <h1 className="text-xl font-extrabold tracking-tight text-zinc-950">Ro‘yxatdan o‘tish</h1>
+            <h1 className="text-xl font-semibold tracking-normal text-zinc-950">Ro‘yxatdan o‘tish</h1>
             <p className="mt-1 text-sm text-zinc-600">
               E’lon saqlash, so‘rov yuborish va e’lon berish uchun hisob yarating.
             </p>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
                   type="button"
                   disabled={pending}
                   onClick={() => setMode("telegram")}
-                  className="inline-flex h-12 items-center justify-center rounded-2xl bg-sky-600 px-5 text-[12px] font-extrabold tracking-tight text-white shadow-sm ring-1 ring-sky-700/20 transition hover:bg-sky-700 disabled:opacity-60"
+                  className="inline-flex h-10 items-center justify-center rounded-2xl bg-sky-600 px-5 text-[12px] font-semibold tracking-normal text-white shadow-sm ring-1 ring-sky-700/20 transition hover:bg-sky-700 disabled:opacity-60"
                 >
                   Telegram orqali kirish
                 </button>
@@ -115,7 +115,7 @@ export default function RegisterPage() {
                   type="button"
                   disabled={pending}
                   onClick={() => setMode("email")}
-                  className="inline-flex h-12 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-[12px] font-extrabold tracking-tight text-zinc-900 shadow-sm transition hover:bg-zinc-50 disabled:opacity-60"
+                  className="inline-flex h-10 items-center justify-center rounded-2xl border border-zinc-200 bg-white px-5 text-[12px] font-semibold tracking-normal text-zinc-900 shadow-sm transition hover:bg-zinc-50 disabled:opacity-60"
                 >
                   Email orqali kirish
                 </button>
@@ -141,14 +141,14 @@ export default function RegisterPage() {
                   ← Orqaga
                 </button>
                 <div className="rounded-2xl bg-sky-50/90 px-4 py-3 text-[13px] font-medium leading-relaxed text-sky-950 ring-1 ring-sky-100">
-                  <p className="font-extrabold">Telegram orqali ro‘yxatdan o‘tish</p>
+                  <p className="font-semibold">Telegram orqali ro‘yxatdan o‘tish</p>
                   <p className="mt-2">
                     Botda <span className="font-bold">/start</span> bosiladi, keyin telefon raqamingizni tugma
                     orqali yuborasiz, so‘ngra parol tanlaysiz. Yakunda bot sizga saytga kirish havolasini yuboradi —
                     bosgach avtomatik kirasiz.
                   </p>
                   <p className="mt-2">
-                    <span className="font-extrabold">Push xabarlar:</span> yangi chat xabarlari, so‘rovlar va boshqa
+                    <span className="font-semibold">Push xabarlar:</span> yangi chat xabarlari, so‘rovlar va boshqa
                     xabarnomalar Telegram bot orqali yetkaziladi. Hisob Telegram va telefon orqali tasdiqlangan
                     foydalanuvchi hisoblanadi.
                   </p>
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                   type="button"
                   disabled={pending}
                   onClick={openTelegramFlow}
-                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold tracking-tight text-white shadow-sm ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
+                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold tracking-normal text-white shadow-sm ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
                 >
                   {pending ? "Kuting..." : "Botga o‘tish"}
                 </button>
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                 </p>
                 <form onSubmit={onSubmitEmail} className="mt-4 grid gap-3">
                   <label className="grid gap-1.5">
-                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-zinc-500">Email</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Email</span>
                     <input
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -202,7 +202,7 @@ export default function RegisterPage() {
                   </label>
 
                   <label className="grid gap-1.5">
-                    <span className="text-[11px] font-extrabold uppercase tracking-widest text-zinc-500">Parol</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Parol</span>
                     <input
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -223,7 +223,7 @@ export default function RegisterPage() {
                   <button
                     type="submit"
                     disabled={pending}
-                    className="mt-2 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold tracking-tight text-white shadow-sm ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
+                    className="mt-2 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold tracking-normal text-white shadow-sm ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-60"
                   >
                     {pending ? "Kuting..." : "Ro‘yxatdan o‘tish"}
                   </button>

@@ -5,14 +5,14 @@ import { CHIP, type ListingFormState } from "./constants";
 import type { QuestionDef } from "./questions";
 
 function inputCls() {
-  return "h-14 w-full rounded-2xl border-2 border-zinc-200 bg-white px-4 text-center text-[18px] font-bold text-zinc-950 outline-none transition focus:border-indigo-400 focus:shadow-[0_0_0_4px_rgba(99,102,241,.12)]";
+  return "h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-center text-[14px] font-semibold text-zinc-950 outline-none transition focus:border-indigo-400 focus:shadow-[0_0_0_3px_rgba(99,102,241,.1)]";
 }
 
 function chipCls(active: boolean) {
   return (
-    "w-full rounded-2xl px-4 py-3.5 text-left text-[14px] font-extrabold ring-2 transition active:scale-[0.99] " +
+    "w-full rounded-xl px-3 py-2.5 text-left text-[14px] font-semibold ring-1 transition active:scale-[0.99] " +
     (active
-      ? "bg-zinc-950 text-white ring-zinc-950 shadow-md"
+      ? "bg-zinc-950 text-white ring-zinc-950"
       : "bg-white text-zinc-900 ring-zinc-200 hover:bg-zinc-50 hover:ring-zinc-300")
   );
 }
@@ -111,7 +111,7 @@ export default function QuestionScreen({
     case "country":
       return (
         <select
-          className={inputCls() + " text-left text-[15px] font-semibold"}
+          className={inputCls() + " text-left text-[14px] font-semibold"}
           value={d.country}
           onChange={(e) => setD({ ...d, country: e.target.value })}
         >
@@ -290,7 +290,7 @@ export default function QuestionScreen({
     case "about":
       return (
         <textarea
-          className="min-h-[140px] w-full resize-none rounded-2xl border-2 border-zinc-200 bg-white px-4 py-3 text-[15px] font-medium leading-relaxed text-zinc-900 outline-none focus:border-indigo-400 focus:shadow-[0_0_0_4px_rgba(99,102,241,.12)]"
+          className="min-h-[110px] w-full resize-none rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-[14px] font-medium leading-relaxed text-zinc-900 outline-none focus:border-indigo-400 focus:shadow-[0_0_0_3px_rgba(99,102,241,.1)]"
           value={d.about}
           autoFocus
           placeholder="O'zingiz haqingizda yozing..."

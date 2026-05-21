@@ -18,7 +18,7 @@ export default async function ReklamaChoosePage() {
         <div>
           <Link
             href="/ads"
-            className="inline-flex items-center gap-1.5 text-[12px] font-extrabold text-zinc-600 transition hover:text-zinc-950"
+            className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-zinc-600 transition hover:text-zinc-950"
           >
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
               <path
@@ -31,7 +31,7 @@ export default async function ReklamaChoosePage() {
             </svg>
             Reklama
           </Link>
-          <h1 className="mt-2 text-[22px] font-black tracking-tight sm:text-[26px]">E’lonni tanlang</h1>
+          <h1 className="mt-2 text-lg font-bold tracking-normal sm:text-xl">E’lonni tanlang</h1>
           <p className="mt-1 max-w-xl text-[13px] font-medium text-zinc-600">
             Boost qilinadigan e’lonni tanlang — keyingi qadamda tariflarni ko‘rasiz.
           </p>
@@ -40,7 +40,7 @@ export default async function ReklamaChoosePage() {
 
       {listings.length === 0 ? (
         <div className="flex min-h-[calc(100dvh-12rem)] flex-col items-center justify-center text-center">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-amber-50 ring-1 ring-amber-200">
+          <div className="mx-auto flex h-11 w-14 items-center justify-center rounded-3xl bg-amber-50 ring-1 ring-amber-200">
             <svg viewBox="0 0 24 24" className="h-7 w-7 text-amber-700" fill="none">
               <path
                 d="M12 2c1 4 6 5 6 11a6 6 0 1 1-12 0c0-3 1.5-4 3-5 1.5-1 2-3 3-6z"
@@ -50,20 +50,20 @@ export default async function ReklamaChoosePage() {
               />
             </svg>
           </div>
-          <div className="mt-4 text-[16px] font-black tracking-tight text-zinc-950">E’lon topilmadi</div>
+          <div className="mt-4 text-[16px] font-bold tracking-normal text-zinc-950">E’lon topilmadi</div>
           <p className="mt-1 max-w-sm text-[13px] font-medium text-zinc-600">
             Avval e’lon yarating, so‘ng reklama (boost) xizmatidan foydalaning.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
             <Link
               href="/listings/new/extra"
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900"
+              className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
             >
               E’lon qo‘shish
             </Link>
             <Link
               href="/listings/new"
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-5 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-5 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
             >
               Asosiy e’lon
             </Link>

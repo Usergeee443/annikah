@@ -17,8 +17,8 @@ export default async function ExtraListingPage() {
     return (
       <div className="grid gap-5">
         <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-6 shadow-sm backdrop-blur">
-          <div className="text-[11px] font-extrabold tracking-widest text-zinc-500">QO‘SHIMCHA E‘LON</div>
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950">Profilni yakunlang</h1>
+          <div className="text-[11px] font-semibold tracking-wide text-zinc-500">QO‘SHIMCHA E‘LON</div>
+          <h1 className="mt-2 text-xl font-semibold tracking-normal text-zinc-950">Profilni yakunlang</h1>
           <p className="mt-1 max-w-2xl text-sm text-zinc-600">
             Faqat yetishmayotgan maydonlarni to‘ldiring — keyin qo‘shimcha e‘lon yaratishingiz mumkin.
           </p>
@@ -30,7 +30,7 @@ export default async function ExtraListingPage() {
             <p className="text-[13px] font-medium text-zinc-600">Avval asosiy profil ma’lumotlarini kiriting.</p>
             <Link
               href="/profile/wizard"
-              className="mt-4 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-extrabold text-white"
+              className="mt-4 inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[12px] font-semibold text-white"
             >
               Profilni boshlash
             </Link>

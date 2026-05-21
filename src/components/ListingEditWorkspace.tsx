@@ -41,7 +41,7 @@ function inputCls() {
 
 function chipCls(active: boolean) {
   return (
-    "rounded-xl px-3 py-2 text-[11.5px] font-extrabold tracking-tight ring-1 transition " +
+    "rounded-xl px-3 py-2 text-[11.5px] font-semibold tracking-normal ring-1 transition " +
     (active ? "bg-zinc-950 text-white ring-zinc-950" : "bg-white text-zinc-800 ring-zinc-200 hover:bg-zinc-50")
   );
 }
@@ -175,10 +175,10 @@ export default function ListingEditWorkspace({
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className={`rounded-md px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${tone}`}>
+              <span className={`rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${tone}`}>
                 {section}
               </span>
-              <span className="text-[11px] font-extrabold text-zinc-500">{label}</span>
+              <span className="text-[11px] font-semibold text-zinc-500">{label}</span>
             </div>
             {hint ? <p className="mt-0.5 text-[10px] font-medium text-zinc-400">{hint}</p> : null}
             <div className="mt-2">{on ? childrenEdit : childrenView}</div>
@@ -198,7 +198,7 @@ export default function ListingEditWorkspace({
             <button
               type="button"
               onClick={cancelEdit}
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
             >
               Bekor
             </button>
@@ -206,7 +206,7 @@ export default function ListingEditWorkspace({
               type="button"
               onClick={onSave}
               disabled={pending}
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
+              className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
             >
               Saqlash
             </button>
@@ -217,12 +217,12 @@ export default function ListingEditWorkspace({
   }
 
   const sectionChipCls = (active: boolean, tone: string) =>
-    "rounded-xl px-3 py-2 text-[11px] font-extrabold tracking-tight ring-1 transition " +
+    "rounded-xl px-3 py-2 text-[11px] font-semibold tracking-normal ring-1 transition " +
     (active ? tone + " ring-transparent" : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-50");
 
   const filterBar = (
     <div className="sticky top-0 z-10 -mx-1 mb-1 border-b border-zinc-100 bg-white/95 pb-3 pt-1 backdrop-blur-sm">
-      <div className="mb-2 text-[10px] font-extrabold uppercase tracking-[0.16em] text-zinc-500">Bo‘limni tanlang</div>
+      <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Bo‘limni tanlang</div>
       <div className="flex flex-wrap gap-2">
           <button
             key="Barchasi"
@@ -313,7 +313,7 @@ export default function ListingEditWorkspace({
         section="Asosiy"
         label="Ism"
         rowKey="name"
-        childrenView={<div className="text-[15px] font-extrabold text-zinc-950">{draft.name}</div>}
+        childrenView={<div className="text-[14px] font-semibold text-zinc-950">{draft.name}</div>}
         childrenEdit={
           <input className={inputCls()} value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
         }
@@ -324,7 +324,7 @@ export default function ListingEditWorkspace({
         section="Asosiy"
         label="Yosh"
         rowKey="age"
-        childrenView={<div className="text-[15px] font-extrabold text-zinc-950">{draft.age}</div>}
+        childrenView={<div className="text-[14px] font-semibold text-zinc-950">{draft.age}</div>}
         childrenEdit={
           <input
             className={inputCls()}
@@ -711,20 +711,20 @@ export default function ListingEditWorkspace({
         {embedded ? (
           <Link
             href={`/listings/${initial.id}/edit`}
-            className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-100 px-4 text-[12px] font-extrabold text-zinc-800 ring-1 ring-zinc-200 hover:bg-white"
+            className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-100 px-4 text-[12px] font-semibold text-zinc-800 ring-1 ring-zinc-200 hover:bg-white"
           >
             To‘liq tahrirlash sahifasi →
           </Link>
         ) : (
           <Link
             href="/profile#elonlarim"
-            className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+            className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
           >
             ← E’lonlarim
           </Link>
         )}
-        {pending && !err ? <div className="text-[12px] font-extrabold text-zinc-500">Saqlanmoqda…</div> : null}
-        {ok ? <div className="text-[12px] font-extrabold text-emerald-700">{ok}</div> : null}
+        {pending && !err ? <div className="text-[12px] font-semibold text-zinc-500">Saqlanmoqda…</div> : null}
+        {ok ? <div className="text-[12px] font-semibold text-emerald-700">{ok}</div> : null}
       </div>
       {err ? <div className="rounded-2xl bg-rose-50 p-3 text-[12px] font-semibold text-rose-900 ring-1 ring-rose-200">{err}</div> : null}
     </div>

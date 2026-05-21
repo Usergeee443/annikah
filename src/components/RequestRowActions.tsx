@@ -119,7 +119,7 @@ export default function RequestRowActions({
             </button>
           </div>
           <dialog ref={warnEndRef} className={dialogCls}>
-            <p className="text-[14px] font-extrabold tracking-tight text-zinc-950">Ogohlantirish</p>
+            <p className="text-[14px] font-semibold tracking-normal text-zinc-950">Ogohlantirish</p>
             <p className="mt-2 text-[13px] font-medium leading-relaxed text-zinc-600">
               Chat tugatiladi va aloqa yakunlanadi. Keyin qayta yozish uchun yangi so‘rov yuborishingiz kerak bo‘ladi.
               Davom etasizmi?
@@ -127,7 +127,7 @@ export default function RequestRowActions({
             <div className="mt-4 flex flex-wrap justify-end gap-2">
               <button
                 type="button"
-                className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200"
+                className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200"
                 onClick={() => warnEndRef.current?.close()}
               >
                 Bekor qilish
@@ -135,7 +135,7 @@ export default function RequestRowActions({
               <button
                 type="button"
                 disabled={pending}
-                className="inline-flex h-10 items-center justify-center rounded-2xl bg-rose-600 px-4 text-[12px] font-extrabold text-white ring-1 ring-rose-500/30"
+                className="inline-flex h-10 items-center justify-center rounded-2xl bg-rose-600 px-4 text-[12px] font-semibold text-white ring-1 ring-rose-500/30"
                 onClick={() => {
                   warnEndRef.current?.close();
                   post({ action: "end_connection" });
@@ -176,7 +176,7 @@ export default function RequestRowActions({
           Bekor qilish
         </button>
         <dialog ref={warnCancelRef} className={dialogCls}>
-          <p className="text-[14px] font-extrabold tracking-tight text-zinc-950">Ogohlantirish</p>
+          <p className="text-[14px] font-semibold tracking-normal text-zinc-950">Ogohlantirish</p>
           <p className="mt-2 text-[13px] font-medium leading-relaxed text-zinc-600">
             Chat tugatiladi va so‘rov bekor qilinadi. Qabul qilgan tomonda ham aloqa yopiladi. Keyin qayta yozish uchun
             yangi so‘rov kerak bo‘ladi. Davom etasizmi?
@@ -184,7 +184,7 @@ export default function RequestRowActions({
           <div className="mt-4 flex flex-wrap justify-end gap-2">
             <button
               type="button"
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-extrabold text-zinc-900 ring-1 ring-zinc-200"
+              className="inline-flex h-10 items-center justify-center rounded-2xl bg-white px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200"
               onClick={() => warnCancelRef.current?.close()}
             >
               Orqaga
@@ -192,7 +192,7 @@ export default function RequestRowActions({
             <button
               type="button"
               disabled={pending}
-              className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-extrabold text-white ring-1 ring-black/10"
+              className="inline-flex h-10 items-center justify-center rounded-2xl bg-zinc-950 px-4 text-[12px] font-semibold text-white ring-1 ring-black/10"
               onClick={() => {
                 warnCancelRef.current?.close();
                 post({ action: "cancel" });
