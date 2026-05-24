@@ -1,3 +1,4 @@
+import type { ListingSectionAccent } from "@/components/ListingDetailSection";
 import type { FormStepId, ListingCategory, ListingFormState } from "./constants";
 import { STEP_UI } from "./constants";
 
@@ -27,9 +28,41 @@ export type QuestionId =
   | "partnerAge"
   | "partnerLocation";
 
+export type QuestionSectionMeta = {
+  title: string;
+  iconSrc: string;
+  accent: ListingSectionAccent;
+};
+
+export const QUESTION_SECTION: Record<QuestionId, QuestionSectionMeta> = {
+  category: { title: "E’LON TURI", iconSrc: "/section-icons/user-octagon.svg", accent: "rose" },
+  name: { title: "ASOSIY", iconSrc: "/section-icons/user-search.svg", accent: "violet" },
+  age: { title: "ASOSIY", iconSrc: "/section-icons/user-search.svg", accent: "violet" },
+  country: { title: "JOYASHUV", iconSrc: "/section-icons/location.svg", accent: "indigo" },
+  region: { title: "JOYASHUV", iconSrc: "/section-icons/location.svg", accent: "indigo" },
+  city: { title: "JOYASHUV", iconSrc: "/section-icons/location.svg", accent: "indigo" },
+  nationality: { title: "JOYASHUV", iconSrc: "/section-icons/location.svg", accent: "indigo" },
+  heightCm: { title: "JISMONIY MA’LUMOTLAR", iconSrc: "/section-icons/ruler.svg", accent: "sky" },
+  weightKg: { title: "JISMONIY MA’LUMOTLAR", iconSrc: "/section-icons/ruler.svg", accent: "sky" },
+  smokes: { title: "JISMONIY MA’LUMOTLAR", iconSrc: "/section-icons/ruler.svg", accent: "sky" },
+  sportPerWeek: { title: "JISMONIY MA’LUMOTLAR", iconSrc: "/section-icons/ruler.svg", accent: "sky" },
+  jobTitle: { title: "ILM & KASB", iconSrc: "/section-icons/teacher.svg", accent: "amber" },
+  education: { title: "ILM & KASB", iconSrc: "/section-icons/teacher.svg", accent: "amber" },
+  incomeMonthlyUsd: { title: "ILM & KASB", iconSrc: "/section-icons/teacher.svg", accent: "amber" },
+  maritalStatus: { title: "SHAXSIY HOLATI", iconSrc: "/section-icons/user-octagon.svg", accent: "rose" },
+  children: { title: "SHAXSIY HOLATI", iconSrc: "/section-icons/user-octagon.svg", accent: "rose" },
+  polygamyAllowance: { title: "SHAXSIY HOLATI", iconSrc: "/section-icons/user-octagon.svg", accent: "rose" },
+  aqeeda: { title: "DINIY MA’LUMOTLAR", iconSrc: "/section-icons/book.svg", accent: "emerald" },
+  prayer: { title: "DINIY MA’LUMOTLAR", iconSrc: "/section-icons/book.svg", accent: "emerald" },
+  quran: { title: "DINIY MA’LUMOTLAR", iconSrc: "/section-icons/book.svg", accent: "emerald" },
+  madhab: { title: "DINIY MA’LUMOTLAR", iconSrc: "/section-icons/book.svg", accent: "emerald" },
+  about: { title: "O‘ZIM HAQIMDA", iconSrc: "/section-icons/user-search.svg", accent: "violet" },
+  partnerAge: { title: "JUFTGA TALABLARI", iconSrc: "/section-icons/document-like.svg", accent: "fuchsia" },
+  partnerLocation: { title: "JUFTGA TALABLARI", iconSrc: "/section-icons/document-like.svg", accent: "fuchsia" },
+};
+
 export type QuestionDef = {
   id: QuestionId;
-  emoji: string;
   title: string;
   subtitle: string;
   optional?: boolean;
@@ -45,7 +78,6 @@ function req(cond: boolean, msg: string, d: ListingFormState): string | null {
 export const ALL_QUESTIONS: QuestionDef[] = [
   {
     id: "category",
-    emoji: "💍",
     title: "Siz kuyovmisiz yoki kelinmi?",
     subtitle: "E’lon turiga qarab keyingi savollar biroz o‘zgaradi.",
     isValid: (d) => d.listingCategory === "kelinlar" || d.listingCategory === "kuyovlar",
@@ -53,7 +85,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "name",
-    emoji: "👤",
     title: "Ismingiz nima?",
     subtitle: "E’londa shu ism ko‘rinadi — taxallus ham bo‘ladi.",
     isValid: (d) => d.name.trim().length >= 2,
@@ -61,7 +92,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "age",
-    emoji: "🎂",
     title: "Yoshingiz nechada?",
     subtitle: "E’lon uchun kamida 18 yosh kerak.",
     isValid: (d) => d.age >= 18 && d.age <= 80,
@@ -69,7 +99,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "country",
-    emoji: "🌍",
     title: "Qaysi davlatda yashaysiz?",
     subtitle: "Ro‘yxatdan tanlang.",
     isValid: (d) => !!d.country.trim(),
@@ -77,7 +106,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "region",
-    emoji: "📍",
     title: "Qaysi viloyatda?",
     subtitle: "Masalan: Toshkent viloyati.",
     isValid: (d) => d.region.trim().length >= 2,
@@ -85,7 +113,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "city",
-    emoji: "🏙️",
     title: "Qaysi shaharda yoki tumanda?",
     subtitle: "Masalan: Chirchiq, Samarqand.",
     isValid: (d) => d.city.trim().length >= 2,
@@ -93,7 +120,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "nationality",
-    emoji: "🤝",
     title: "Millatingiz?",
     subtitle: "Masalan: o‘zbek, tojik, qozoq…",
     isValid: (d) => !!d.nationality.trim(),
@@ -101,7 +127,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "heightCm",
-    emoji: "📏",
     title: "Bo‘yingiz necha santimetr?",
     subtitle: "Taxminan ham bo‘ladi — masalan 175.",
     isValid: (d) => d.heightCm >= 140 && d.heightCm <= 220,
@@ -109,7 +134,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "weightKg",
-    emoji: "⚖️",
     title: "Vazningiz necha kilogramm?",
     subtitle: "Taxminan ham bo‘ladi — masalan 70.",
     isValid: (d) => d.weightKg >= 35 && d.weightKg <= 180,
@@ -117,7 +141,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "jobTitle",
-    emoji: "💼",
     title: "Kasbingiz nima?",
     subtitle: "Ish, o‘qish yoki kasbingizni qisqacha yozing.",
     isValid: (d) => d.jobTitle.trim().length >= 2,
@@ -125,7 +148,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "smokes",
-    emoji: "🚭",
     title: "Chekasanizmi?",
     subtitle: "Halol tanlov — shunchaki rostini tanlang.",
     isValid: (d) => d.smokes === "yes" || d.smokes === "no",
@@ -133,7 +155,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "sportPerWeek",
-    emoji: "🏃",
     title: "Haftasiga sport qancha?",
     subtitle: "Ixtiyoriy. Bilmasangiz «O‘tkazib yuborish» bosing.",
     optional: true,
@@ -142,7 +163,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "maritalStatus",
-    emoji: "💒",
     title: "Oilaviy holatingiz?",
     subtitle: "Hozirgi turmush holatingizni tanlang.",
     isValid: (d) => !!d.maritalStatus && d.maritalStatus !== "bilinmaydi",
@@ -150,7 +170,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "children",
-    emoji: "👶",
     title: "Farzandingiz bormi?",
     subtitle: "Halol javob yetarli.",
     isValid: (d) => d.children === "yoq" || d.children === "bor",
@@ -158,7 +177,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "polygamyAllowance",
-    emoji: "📿",
     title: "Ko‘pxotinlikka rozimisiz?",
     subtitle: "Faqat ayol (kelin) e’lonlari uchun so‘raladi.",
     show: (d) => d.listingCategory === "kelinlar",
@@ -167,7 +185,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "education",
-    emoji: "🎓",
     title: "Ta’lim darajangiz?",
     subtitle: "Eng yaqin variantni tanlang.",
     isValid: (d) => !!d.education && d.education !== "bilinmaydi",
@@ -175,7 +192,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "incomeMonthlyUsd",
-    emoji: "💵",
     title: "Oylik daromad (USD)?",
     subtitle: "Ixtiyoriy. Ko‘rsatmasangiz ham bo‘ladi.",
     optional: true,
@@ -184,7 +200,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "aqeeda",
-    emoji: "☪️",
     title: "Aqidangiz qaysi?",
     subtitle: "Diniy e’tiqodingizni tanlang.",
     isValid: (d) => !!d.aqeeda && d.aqeeda !== "bilinmaydi",
@@ -192,7 +207,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "prayer",
-    emoji: "🕌",
     title: "Namoz o‘qiysizmi?",
     subtitle: "Shaxsiy — faqat tanlov uchun.",
     isValid: (d) => !!d.prayer && d.prayer !== "bilinmaydi",
@@ -200,7 +214,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "quran",
-    emoji: "📖",
     title: "Qur’on tilovatingiz qanday?",
     subtitle: "O‘zingizga mos darajani tanlang.",
     isValid: (d) => !!d.quran && d.quran !== "bilinmaydi",
@@ -208,7 +221,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "madhab",
-    emoji: "📚",
     title: "Mazhabingiz?",
     subtitle: "Odatdagi mazhabingizni tanlang.",
     isValid: (d) => !!d.madhab && d.madhab !== "bilinmaydi",
@@ -216,7 +228,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "about",
-    emoji: "✍️",
     title: "O‘zingiz haqingizda",
     subtitle: "Qisqa va samimiy yozing — kamida 2–3 jumla (12+ belgi).",
     isValid: (d) => d.about.trim().length >= 12,
@@ -227,7 +238,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "partnerAge",
-    emoji: "💑",
     title: "Juft uchun yosh oralig‘i?",
     subtitle: "Ixtiyoriy. Bo‘sh qoldirsangiz ham bo‘ladi.",
     optional: true,
@@ -236,7 +246,6 @@ export const ALL_QUESTIONS: QuestionDef[] = [
   },
   {
     id: "partnerLocation",
-    emoji: "🗺️",
     title: "Juft uchun joy (ixtiyoriy)",
     subtitle: "Davlat, viloyat yoki shahar — vergul bilan. Masalan: O‘zbekiston, Toshkent.",
     optional: true,
@@ -282,6 +291,10 @@ export function questionStep(q: QuestionDef): FormStepId {
 
 export function stepUiForQuestion(q: QuestionDef) {
   return STEP_UI[questionStep(q)];
+}
+
+export function sectionForQuestion(q: QuestionDef): QuestionSectionMeta {
+  return QUESTION_SECTION[q.id];
 }
 
 export function profileToForm(

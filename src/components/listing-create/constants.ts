@@ -48,35 +48,31 @@ export const FORM_STEPS: FormStepId[] = ["personal", "body", "din", "story"];
 
 export const STEP_UI: Record<
   FormStepId,
-  { title: string; sub: string; bar: string; ring: string; icon: string }
+  { title: string; sub: string; bar: string; iconSrc: string }
 > = {
   personal: {
     title: "Kim va qayerda",
     sub: "Ism, yosh, manzil",
-    bar: "from-rose-500 to-fuchsia-500",
-    ring: "ring-rose-200/90",
-    icon: "📍",
+    bar: "from-indigo-500 to-violet-500",
+    iconSrc: "/section-icons/location.svg",
   },
   body: {
     title: "Jismoniy",
     sub: "Bo‘y, kasb, odat",
-    bar: "from-amber-500 to-orange-500",
-    ring: "ring-amber-200/90",
-    icon: "💪",
+    bar: "from-sky-500 to-cyan-500",
+    iconSrc: "/section-icons/ruler.svg",
   },
   din: {
     title: "Din va oila",
     sub: "Aqida, turmush",
-    bar: "from-violet-500 to-indigo-500",
-    ring: "ring-violet-200/90",
-    icon: "🌙",
+    bar: "from-emerald-500 to-teal-500",
+    iconSrc: "/section-icons/book.svg",
   },
   story: {
     title: "Hikoya",
     sub: "O‘zingiz va juft",
-    bar: "from-sky-500 to-cyan-500",
-    ring: "ring-sky-200/90",
-    icon: "✨",
+    bar: "from-violet-500 to-fuchsia-500",
+    iconSrc: "/section-icons/user-search.svg",
   },
 };
 

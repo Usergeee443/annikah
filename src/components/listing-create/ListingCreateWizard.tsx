@@ -1,12 +1,32 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState, useTransition } from "react";
+import { ListingDetailDl, ListingDetailSection } from "@/components/ListingDetailSection";
+import {
+  aqeedaLabel,
+  childrenLabel,
+  educationLabel,
+  madhabLabel,
+  maritalLabel,
+  prayerLabel,
+  quranLabel,
+  smokesLabel,
+  sportLabel,
+} from "@/lib/listingDisplayLabels";
 import QuestionScreen from "./QuestionScreen";
 import type { ListingCategory, ListingFormState } from "./constants";
-import { FORM_STEPS, STEP_BADGE, STEP_UI, type FormStepId } from "./constants";
-import { profileToForm, questionStep, stepUiForQuestion, visibleQuestions, type QuestionDef } from "./questions";
+import { STEP_UI, type FormStepId } from "./constants";
+import {
+  profileToForm,
+  questionStep,
+  sectionForQuestion,
+  visibleQuestions,
+  type QuestionDef,
+  type QuestionId,
+} from "./questions";
 
 export type WizardPlan = {
   id: ListingFormState["plan"];
@@ -36,7 +56,153 @@ const CHIP_AUTO: Set<string> = new Set([
   "madhab",
 ]);
 
-type Phase = "welcome" | "questions" | "review" | "plan" | "verify";
+type Phase = "questions" | "review" | "plan" | "verify";
+
+function IconCamera({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden>
+      <path
+        d="M4 8h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="13" r="3.5" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
+function IconUpload({ className = "h-6 w-6" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden>
+      <path d="M12 16V4m0 0 7 7M12 4 5 11" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M4 20h16" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconCheck({ className = "h-6 w-6" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden>
+      <path d="M5 12.5 9.5 17 19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+type ReviewBlock = {
+  title: string;
+  iconSrc: string;
+  accent: "indigo" | "rose" | "amber" | "emerald" | "sky" | "fuchsia" | "violet";
+  rows: Array<{ k: string; v: string }>;
+  jumpId?: QuestionId;
+};
+
+function reviewBlocks(d: ListingFormState): ReviewBlock[] {
+  const cat = d.listingCategory === "kuyovlar" ? "Kuyov" : "Kelin";
+  const blocks: ReviewBlock[] = [
+    {
+      title: "ASOSIY",
+      iconSrc: "/section-icons/user-search.svg",
+      accent: "violet",
+      jumpId: "name",
+      rows: [
+        { k: "Tur", v: cat },
+        { k: "Ism", v: d.name.trim() || "—" },
+        { k: "Yosh", v: d.age ? `${d.age} yosh` : "—" },
+      ],
+    },
+    {
+      title: "JOYASHUV",
+      iconSrc: "/section-icons/location.svg",
+      accent: "indigo",
+      jumpId: "country",
+      rows: [
+        { k: "Davlat", v: d.country || "—" },
+        { k: "Viloyat", v: d.region || "—" },
+        { k: "Shahar", v: d.city || "—" },
+        { k: "Millati", v: d.nationality || "—" },
+      ],
+    },
+    {
+      title: "JISMONIY MA’LUMOTLAR",
+      iconSrc: "/section-icons/ruler.svg",
+      accent: "sky",
+      jumpId: "heightCm",
+      rows: [
+        { k: "Bo‘yi", v: `${d.heightCm} sm` },
+        { k: "Vazni", v: `${d.weightKg} kg` },
+        { k: "Sigaret", v: smokesLabel(d.smokes) },
+        { k: "Sport", v: sportLabel(d.sportPerWeek) },
+      ],
+    },
+    {
+      title: "ILM & KASB",
+      iconSrc: "/section-icons/teacher.svg",
+      accent: "amber",
+      jumpId: "jobTitle",
+      rows: [
+        { k: "Kasbi", v: d.jobTitle || "—" },
+        { k: "Ta’lim", v: educationLabel(d.education) },
+        ...(d.incomeMonthlyUsd
+          ? [{ k: "Maosh", v: `$${d.incomeMonthlyUsd}` }]
+          : []),
+      ],
+    },
+    {
+      title: "SHAXSIY HOLATI",
+      iconSrc: "/section-icons/user-octagon.svg",
+      accent: "rose",
+      jumpId: "maritalStatus",
+      rows: [
+        { k: "Oilaviy holati", v: maritalLabel(d.maritalStatus) },
+        { k: "Farzand", v: childrenLabel(d.children) },
+        ...(d.polygamyAllowance
+          ? [{ k: "Ko‘pxotinlik", v: `${d.polygamyAllowance}-ro‘zg‘orgacha` }]
+          : []),
+      ],
+    },
+    {
+      title: "DINIY MA’LUMOTLAR",
+      iconSrc: "/section-icons/book.svg",
+      accent: "emerald",
+      jumpId: "aqeeda",
+      rows: [
+        { k: "Aqida", v: aqeedaLabel(d.aqeeda) },
+        { k: "Namoz", v: prayerLabel(d.prayer) },
+        { k: "Qur’on o‘qish", v: quranLabel(d.quran) },
+        { k: "Mazhab", v: madhabLabel(d.madhab) },
+      ],
+    },
+    {
+      title: "JUFTGA TALABLARI",
+      iconSrc: "/section-icons/document-like.svg",
+      accent: "fuchsia",
+      jumpId: "partnerAge",
+      rows: [
+        {
+          k: "Yosh oralig‘i",
+          v:
+            d.partnerAgeFrom || d.partnerAgeTo
+              ? `${d.partnerAgeFrom ?? "—"}–${d.partnerAgeTo ?? "—"} yosh`
+              : "Farqsiz",
+        },
+        { k: "Joylashuv", v: d.partnerCountries || "Farqsiz" },
+        { k: "Viloyatlar", v: d.partnerRegions || "Farqsiz" },
+        { k: "Shaharlar", v: d.partnerCities || "Farqsiz" },
+      ],
+    },
+  ];
+  if (d.about.trim()) {
+    blocks.push({
+      title: "O‘ZIM HAQIMDA",
+      iconSrc: "/section-icons/user-search.svg",
+      accent: "violet",
+      jumpId: "about",
+      rows: [{ k: "Matn", v: d.about.trim() }],
+    });
+  }
+  return blocks;
+}
 
 export default function ListingCreateWizard({
   initialProfile,
@@ -53,7 +219,7 @@ export default function ListingCreateWizard({
   const PLANS = plans && plans.length > 0 ? plans : DEFAULT_PLANS;
   const initialCat: ListingCategory = category === "kuyovlar" ? "kuyovlar" : "kelinlar";
 
-  const [phase, setPhase] = useState<Phase>("welcome");
+  const [phase, setPhase] = useState<Phase>("questions");
   const [qIndex, setQIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [pending, start] = useTransition();
@@ -78,17 +244,10 @@ export default function ListingCreateWizard({
   }
 
   function overallProgress() {
-    if (phase === "welcome") return 4;
     if (phase === "questions" && totalQ > 0) return 8 + Math.round(((qIndex + 1) / totalQ) * 58);
     if (phase === "review") return 72;
     if (phase === "plan") return 86;
     return 96;
-  }
-
-  function goQuestions(startAt = 0) {
-    setQIndex(startAt);
-    setPhase("questions");
-    scrollTop();
   }
 
   function questionNext(skipValidation = false) {
@@ -105,10 +264,18 @@ export default function ListingCreateWizard({
 
   function questionBack() {
     if (qIndex <= 0) {
-      setPhase("welcome");
-    } else {
-      setQIndex((i) => i - 1);
+      router.push("/ads");
+      return;
     }
+    setQIndex((i) => i - 1);
+    scrollTop();
+  }
+
+  function jumpToQuestion(id: QuestionId) {
+    const i = questions.findIndex((q) => q.id === id);
+    if (i < 0) return;
+    setQIndex(i);
+    setPhase("questions");
     scrollTop();
   }
 
@@ -176,15 +343,15 @@ export default function ListingCreateWizard({
   }
 
   const headerTitle =
-    phase === "welcome"
-      ? "Yangi e‘lon"
-      : phase === "questions" && currentQ
-        ? currentQ.title
-        : phase === "review"
-          ? "Hammasi to‘g‘rimi?"
-          : phase === "plan"
-            ? "Tarifni tanlang"
-            : "Tasdiq fotosi";
+    phase === "questions" && currentQ
+      ? currentQ.title
+      : phase === "review"
+        ? "Hammasi to‘g‘rimi?"
+        : phase === "plan"
+          ? "Tarifni tanlang"
+          : phase === "verify"
+            ? "Tasdiq fotosi"
+            : "Yangi e‘lon";
 
   const hint = currentQ?.hint(d) ?? null;
   const canNext = currentQ ? currentQ.optional || currentQ.isValid(d) : false;
@@ -211,10 +378,10 @@ export default function ListingCreateWizard({
               <p className="mt-2 text-[14px] font-medium leading-relaxed text-zinc-600">{currentQ.subtitle}</p>
             ) : (
               <p className="mt-1 text-[13px] font-medium text-zinc-600">
-                {phase === "welcome"
-                  ? "Har bir savol alohida — tez va tushunarli."
-                  : phase === "verify"
-                    ? "Foto faqat moderatsiya uchun; boshqalarga ko‘rinmaydi."
+                {phase === "verify"
+                  ? "Foto faqat moderatsiya uchun; boshqalarga ko‘rinmaydi."
+                  : phase === "plan"
+                    ? "E’lon qancha vaqt ko‘rinsin?"
                     : "Ma’lumotlaringiz moderatsiyadan o‘tadi."}
               </p>
             )}
@@ -246,75 +413,36 @@ export default function ListingCreateWizard({
         </div>
       </div>
 
-      {phase === "welcome" ? (
-        <div className="grid gap-4">
-          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
-            <p className="text-center text-[14px] font-semibold leading-relaxed text-zinc-700">
-              Har bir savol alohida — taxminan <span className="font-bold text-zinc-950">3–5 daqiqa</span>.
-            </p>
-            <div className="mt-5 grid gap-2 sm:grid-cols-2">
-              {FORM_STEPS.map((step) => {
-                const ui = STEP_UI[step];
-                return (
-                  <div
-                    key={step}
-                    className={`flex items-start gap-3 rounded-2xl bg-zinc-50 p-4 ring-1 ${ui.ring}`}
-                  >
-                    <span className="text-2xl leading-none" aria-hidden>
-                      {ui.icon}
-                    </span>
-                    <div className="min-w-0">
-                      <div className={`inline-flex rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${STEP_BADGE[step]}`}>
-                        {ui.title}
-                      </div>
-                      <div className="mt-1 text-[13px] font-semibold text-zinc-950">{ui.sub}</div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="mt-4 grid gap-2 rounded-2xl bg-zinc-50 p-4 ring-1 ring-zinc-200">
-              <div className="flex items-center gap-2 text-[13px] font-semibold text-zinc-800">
-                <span className="text-lg">📋</span> Tarif tanlash
-              </div>
-              <div className="flex items-center gap-2 text-[13px] font-semibold text-zinc-800">
-                <span className="text-lg">📷</span> Tasdiq fotosi (moderatsiya uchun)
-              </div>
-            </div>
-          </div>
-          <button type="button" onClick={() => goQuestions(0)} className={btnPrimary + " w-full"}>
-            Boshlash →
-          </button>
-        </div>
-      ) : null}
-
       {phase === "questions" && currentQ ? (
         <div className="grid gap-5">
           {(() => {
-            const step = questionStep(currentQ);
-            const ui = stepUiForQuestion(currentQ);
+            const section = sectionForQuestion(currentQ);
             return (
-              <div className={`rounded-3xl border bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)] ring-1 ${ui.ring}`}>
-                <div className="mb-5 flex flex-col items-center text-center">
-                  <span
-                    className={`mb-3 inline-flex rounded-md px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${STEP_BADGE[step]}`}
-                  >
-                    {ui.title}
-                  </span>
-                  <span className="text-4xl leading-none" aria-hidden>
-                    {currentQ.emoji}
-                  </span>
-                  {currentQ.optional ? (
-                    <span className="mt-3 rounded-full bg-zinc-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-600">
-                      Ixtiyoriy
-                    </span>
+              <ListingDetailSection
+                title={section.title}
+                accent={section.accent}
+                iconSrc={section.iconSrc}
+              >
+                <div className="grid gap-4">
+                  <div>
+                    <p className="text-[12px] font-semibold uppercase tracking-wide text-zinc-400">
+                      {currentQ.title}
+                    </p>
+                    <p className="mt-1 text-[13px] font-medium leading-relaxed text-zinc-600">
+                      {currentQ.subtitle}
+                    </p>
+                    {currentQ.optional ? (
+                      <span className="mt-2 inline-flex rounded-full bg-zinc-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-600">
+                        Ixtiyoriy
+                      </span>
+                    ) : null}
+                  </div>
+                  <QuestionScreen q={currentQ} d={d} setD={setD} onChipPick={onChipPick} />
+                  {hint ? (
+                    <p className="text-[12px] font-semibold text-rose-600">{hint}</p>
                   ) : null}
                 </div>
-                <QuestionScreen q={currentQ} d={d} setD={setD} onChipPick={onChipPick} />
-                {hint ? (
-                  <p className="mt-4 text-center text-[12px] font-semibold text-rose-600">{hint}</p>
-                ) : null}
-              </div>
+              </ListingDetailSection>
             );
           })()}
 
@@ -348,59 +476,28 @@ export default function ListingCreateWizard({
       {phase === "review" ? (
         <div className="grid gap-4">
           <div className="rounded-2xl border border-emerald-200/70 bg-emerald-50/60 p-4 text-[13px] font-semibold text-emerald-950 ring-1 ring-emerald-100">
-            Hammasi to‘g‘rimi? Pastdan istalgan bo‘limga qaytishingiz mumkin.
+            Hammasi to‘g‘rimi? Bo‘lim ustidagi «Tahrirlash» orqali qaytishingiz mumkin.
           </div>
-          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
-            <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">E‘lon kartochkasi</div>
-            <div className="mt-3 overflow-hidden rounded-2xl bg-linear-to-br from-rose-400 via-fuchsia-600 to-rose-900 p-5 text-white shadow-[0_8px_28px_rgba(15,23,42,.12)]">
-              <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
-                <span className="rounded-full bg-black/30 px-2 py-0.5">
-                  {d.listingCategory === "kuyovlar" ? "Kuyov" : "Kelin"}
-                </span>
-                <span className="rounded-full bg-black/30 px-2 py-0.5">{d.age} yosh</span>
-              </div>
-              <div className="mt-3 text-lg font-bold leading-tight">{d.name}</div>
-              <div className="mt-1 text-[12px] font-semibold text-white/85">
-                {d.region}, {d.city} · {d.country}
-              </div>
-              <div className="mt-2 text-[12px] text-white/80">
-                {d.jobTitle} · {d.heightCm} sm · {d.weightKg} kg
-              </div>
-              <p className="mt-3 line-clamp-4 text-[12px] leading-relaxed text-white/90">{d.about}</p>
-            </div>
-          </div>
-          <div className="grid gap-3">
-            {FORM_STEPS.map((step) => {
-              const ui = STEP_UI[step];
-              const stepQuestions = questions.filter((q) => questionStep(q) === step);
-              if (stepQuestions.length === 0) return null;
-              return (
-                <div key={step} className={`rounded-2xl bg-zinc-50 p-3 ring-1 ${ui.ring}`}>
-                  <div className={`mb-2 inline-flex rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${STEP_BADGE[step]}`}>
-                    {ui.icon} {ui.title}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {stepQuestions.map((q) => {
-                      const i = questions.findIndex((x) => x.id === q.id);
-                      return (
-                        <button
-                          key={q.id}
-                          type="button"
-                          onClick={() => {
-                            setQIndex(i);
-                            setPhase("questions");
-                            scrollTop();
-                          }}
-                          className="rounded-xl bg-white px-3 py-2 text-[11px] font-semibold text-zinc-800 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
-                        >
-                          {q.emoji} {q.title.length > 24 ? q.title.slice(0, 22) + "…" : q.title}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid gap-4">
+            {reviewBlocks(d).map((block) => (
+              <ListingDetailSection
+                key={block.title}
+                title={block.title}
+                accent={block.accent}
+                iconSrc={block.iconSrc}
+              >
+                <ListingDetailDl rows={block.rows} />
+                {block.jumpId ? (
+                  <button
+                    type="button"
+                    onClick={() => jumpToQuestion(block.jumpId!)}
+                    className="mt-4 inline-flex h-9 items-center justify-center rounded-xl bg-white px-3 text-[12px] font-semibold text-zinc-800 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
+                  >
+                    Tahrirlash
+                  </button>
+                ) : null}
+              </ListingDetailSection>
+            ))}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <button type="button" onClick={goBack} className={btnSecondary}>
@@ -424,10 +521,15 @@ export default function ListingCreateWizard({
       {phase === "plan" ? (
         <div className="grid gap-4">
           <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
-            <div className="flex items-center gap-2">
-              <span className="text-xl" aria-hidden>
-                📋
-              </span>
+            <div className="flex items-center gap-2 text-zinc-800">
+              <Image
+                src="/section-icons/document-like.svg"
+                alt=""
+                width={28}
+                height={28}
+                className="h-7 w-7 object-contain"
+                unoptimized
+              />
               <div className="text-[14px] font-bold text-zinc-950">Tarifni tanlang</div>
             </div>
             <p className="mt-1 text-[13px] font-medium text-zinc-600">E’lon qancha vaqt ko‘rinsin?</p>
@@ -479,10 +581,8 @@ export default function ListingCreateWizard({
       {phase === "verify" ? (
         <div className="grid gap-4">
           <div className="rounded-3xl border border-violet-200/70 bg-violet-50/80 p-5 ring-1 ring-violet-100">
-            <div className="flex items-center gap-2">
-              <span className="text-xl" aria-hidden>
-                📷
-              </span>
+            <div className="flex items-center gap-2 text-violet-900">
+              <IconCamera className="h-6 w-6 shrink-0" />
               <div className="text-[14px] font-bold text-violet-950">Nega rasm kerak?</div>
             </div>
             <ul className="mt-3 grid gap-2 text-[13px] font-medium leading-relaxed text-violet-950/90">
@@ -508,9 +608,9 @@ export default function ListingCreateWizard({
           <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
             <div className="text-[13px] font-bold text-zinc-950">Yuzingiz ko‘rinadigan foto</div>
             <p className="mt-1 text-[12px] font-medium text-zinc-600">JPEG, PNG yoki WebP · maks. ~5 MB</p>
-            <label className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 px-4 py-8 transition hover:border-zinc-300 hover:bg-white">
-              <span className="text-3xl" aria-hidden>
-                {verificationFile ? "✓" : "📤"}
+            <label className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 px-4 py-8 text-zinc-700 transition hover:border-zinc-300 hover:bg-white">
+              <span className="inline-flex" aria-hidden>
+                {verificationFile ? <IconCheck /> : <IconUpload />}
               </span>
               <span className="mt-2 text-[13px] font-semibold text-zinc-900">
                 {verificationFile ? verificationFile.name : "Rasm tanlash"}
