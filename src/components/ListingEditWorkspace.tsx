@@ -142,7 +142,7 @@ export default function ListingEditWorkspace({
 }: {
   initial: ListingData;
   embedded?: boolean;
-  onSaved?: () => void;
+  onSaved?: (patch: Partial<ListingData>) => void;
 }) {
   const router = useRouter();
   const [saved, setSaved] = useState<ListingData>(initial);
@@ -152,6 +152,7 @@ export default function ListingEditWorkspace({
   const [pending, startTransition] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
+  const [panelSaved, setPanelSaved] = useState(false);
   const [sectionFilter, setSectionFilter] = useState<SectionFilter>("Barchasi");
 
   const activeDef = activeField ? FIELD_BY_KEY[activeField] : null;
@@ -166,7 +167,7 @@ export default function ListingEditWorkspace({
   useEffect(() => {
     setSaved(initial);
     setDraft(initial);
-  }, [initial]);
+  }, [initial.id]);
 
   function openField(key: string) {
     setSnapshot({ ...draft });
@@ -197,7 +198,7 @@ export default function ListingEditWorkspace({
         setDraft(next);
         setOk("Saqlandi.");
         onDone?.();
-        if (embedded) onSaved?.();
+        if (embedded) onSaved?.(part);
         else router.refresh();
       } catch (e) {
         setErr(e instanceof Error ? e.message : "Xatolik");
@@ -210,7 +211,11 @@ export default function ListingEditWorkspace({
     const patch = activeDef.getPatch(draft);
     save(patch, () => {
       setSnapshot(null);
-      setActiveField(null);
+      setPanelSaved(true);
+      window.setTimeout(() => {
+        setActiveField(null);
+        setPanelSaved(false);
+      }, 1100);
     });
   }
 
@@ -333,6 +338,7 @@ export default function ListingEditWorkspace({
         title={activeDef?.panelTitle ?? ""}
         subtitle={activeDef?.panelSubtitle}
         preview={panelPreview}
+        saved={panelSaved}
         onClose={closePanel}
         onSave={savePanel}
         pending={pending}

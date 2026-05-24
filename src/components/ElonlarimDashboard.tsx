@@ -171,11 +171,15 @@ export default function ElonlarimDashboard({
   const router = useRouter();
   const ignoreBackdropRef = useRef(false);
   const [hideProfileGaps, setHideProfileGaps] = useState(false);
-  const [, setDraftListingTick] = useState(0);
+  const [localListings, setLocalListings] = useState(listings);
+
+  useEffect(() => {
+    setLocalListings(listings);
+  }, [listings]);
 
   const ordered = useMemo(() => {
-    return [...listings].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }, [listings]);
+    return [...localListings].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [localListings]);
 
   const syntheticFromProfile = useMemo(() => {
     if (listings.length > 0 || !profile) return null;
@@ -222,8 +226,16 @@ export default function ElonlarimDashboard({
 
   const activeListing = useMemo(() => {
     if (!sel || sel.kind !== "listing") return null;
-    return listings.find((l) => l.id === sel.id) || null;
-  }, [sel, listings]);
+    return localListings.find((l) => l.id === sel.id) || null;
+  }, [sel, localListings]);
+
+  const patchLocalListing = useCallback((listingId: number, patch: Partial<ElonlarimListingPayload>) => {
+    setLocalListings((prev) =>
+      prev.map((l) =>
+        l.id === listingId ? { ...l, ...patch, updatedAt: new Date().toISOString() } : l,
+      ),
+    );
+  }, []);
 
   const loadStats = useCallback(
     (listingId: number) => {
@@ -492,9 +504,10 @@ export default function ElonlarimDashboard({
             {tab === "edit" ? (
               sel?.kind === "listing" && activeListing && activeListing.id !== 0 ? (
                 <ListingEditWorkspace
+                  key={activeListing.id}
                   initial={listingToEditInitial(activeListing)}
                   embedded
-                  onSaved={() => setDraftListingTick((t) => t + 1)}
+                  onSaved={(patch) => patchLocalListing(activeListing.id, patch)}
                 />
               ) : (
                 <EditPanel

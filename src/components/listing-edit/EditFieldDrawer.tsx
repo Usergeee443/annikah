@@ -7,6 +7,7 @@ export default function EditFieldDrawer({
   title,
   subtitle,
   preview,
+  saved,
   onClose,
   onSave,
   pending,
@@ -16,6 +17,7 @@ export default function EditFieldDrawer({
   title: string;
   subtitle?: string;
   preview?: string;
+  saved?: boolean;
   onClose: () => void;
   onSave: () => void;
   pending?: boolean;
@@ -95,6 +97,20 @@ export default function EditFieldDrawer({
           className="shrink-0 border-t border-zinc-100 bg-white px-5 py-3 md:px-6 md:py-4"
           style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
         >
+          {saved ? (
+            <div className="mb-3 flex items-center justify-center gap-2 rounded-2xl bg-emerald-50 px-4 py-2.5 text-[13px] font-semibold text-emerald-800 ring-1 ring-emerald-200">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+                <path
+                  d="m5 12 5 5L20 7"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Saqlandi
+            </div>
+          ) : null}
           <div className="flex gap-2">
             <button
               type="button"
