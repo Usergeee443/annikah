@@ -6,6 +6,7 @@ export default function EditFieldDrawer({
   open,
   title,
   subtitle,
+  preview,
   onClose,
   onSave,
   pending,
@@ -14,6 +15,7 @@ export default function EditFieldDrawer({
   open: boolean;
   title: string;
   subtitle?: string;
+  preview?: string;
   onClose: () => void;
   onSave: () => void;
   pending?: boolean;
@@ -79,7 +81,15 @@ export default function EditFieldDrawer({
           </div>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 md:px-6">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 md:px-6">
+          {preview ? (
+            <div className="mb-4 rounded-2xl bg-zinc-50 px-4 py-3 ring-1 ring-zinc-200">
+              <div className="text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Tanlangan</div>
+              <div className="mt-1 line-clamp-4 text-[15px] font-semibold leading-snug text-zinc-950">{preview}</div>
+            </div>
+          ) : null}
+          {children}
+        </div>
 
         <footer
           className="shrink-0 border-t border-zinc-100 bg-white px-5 py-3 md:px-6 md:py-4"

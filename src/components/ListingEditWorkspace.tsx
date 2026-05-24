@@ -145,15 +145,17 @@ export default function ListingEditWorkspace({
   onSaved?: () => void;
 }) {
   const router = useRouter();
+  const [saved, setSaved] = useState<ListingData>(initial);
   const [draft, setDraft] = useState<ListingData>(initial);
-  const [panelDraft, setPanelDraft] = useState<ListingData>(initial);
   const [activeField, setActiveField] = useState<string | null>(null);
+  const [snapshot, setSnapshot] = useState<ListingData | null>(null);
   const [pending, startTransition] = useTransition();
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
   const [sectionFilter, setSectionFilter] = useState<SectionFilter>("Barchasi");
 
   const activeDef = activeField ? FIELD_BY_KEY[activeField] : null;
+  const panelPreview = activeDef ? activeDef.getDisplay(draft) : "";
 
   const visibleFields = useMemo(
     () =>
@@ -162,19 +164,20 @@ export default function ListingEditWorkspace({
   );
 
   useEffect(() => {
+    setSaved(initial);
     setDraft(initial);
-    setPanelDraft(initial);
   }, [initial]);
 
   function openField(key: string) {
-    setPanelDraft({ ...draft });
+    setSnapshot({ ...draft });
     setActiveField(key);
     setErr(null);
   }
 
   function closePanel() {
+    if (snapshot) setDraft(snapshot);
+    setSnapshot(null);
     setActiveField(null);
-    setPanelDraft(draft);
   }
 
   function save(part: Partial<ListingData>, onDone?: () => void) {
@@ -189,7 +192,9 @@ export default function ListingEditWorkspace({
         });
         const data = await res.json().catch(() => null);
         if (!res.ok) throw new Error(data?.error || "Saqlab bo‘lmadi");
-        setDraft((prev) => ({ ...prev, ...part }));
+        const next = { ...draft, ...part };
+        setSaved(next);
+        setDraft(next);
         setOk("Saqlandi.");
         onDone?.();
         if (embedded) onSaved?.();
@@ -202,10 +207,15 @@ export default function ListingEditWorkspace({
 
   function savePanel() {
     if (!activeDef) return;
-    const patch = activeDef.getPatch(panelDraft);
+    const patch = activeDef.getPatch(draft);
     save(patch, () => {
+      setSnapshot(null);
       setActiveField(null);
     });
+  }
+
+  function fieldDirty(f: (typeof LISTING_EDIT_FIELDS)[number]) {
+    return f.getDisplay(draft) !== f.getDisplay(saved);
   }
 
   const sectionChipCls = (active: boolean, tone: string) =>
@@ -246,17 +256,23 @@ export default function ListingEditWorkspace({
   return (
     <div className={"grid gap-3 " + (embedded ? "" : "max-h-[min(85vh,900px)] overflow-y-auto pr-1 [-webkit-overflow-scrolling:touch]")}>
       {filterBar}
-      <div className="rounded-2xl border border-indigo-200/70 bg-indigo-50/60 p-4 text-[12px] font-medium text-indigo-950 ring-1 ring-indigo-100">
-        Har bir qator yonidagi qalamchadan tahrirlang — mobilida pastdan, kompyuterda o‘ngdan panel ochiladi.
-      </div>
 
       <div className="grid gap-3">
         {visibleFields.map((f) => {
           const tone = SECTION_STYLES[f.section] || "bg-zinc-100 text-zinc-900";
+          const dirty = fieldDirty(f);
+          const editing = activeField === f.key;
           return (
             <div
               key={f.key}
-              className="rounded-2xl border border-zinc-200/80 bg-white p-4 shadow-[0_4px_18px_rgba(15,23,42,.04)]"
+              className={
+                "rounded-2xl border bg-white p-4 shadow-[0_4px_18px_rgba(15,23,42,.04)] transition " +
+                (editing
+                  ? "border-zinc-950 ring-2 ring-zinc-950/10"
+                  : dirty
+                    ? "border-amber-300/80 ring-1 ring-amber-200/80"
+                    : "border-zinc-200/80")
+              }
             >
               <div className="flex items-start gap-3">
                 <div className="min-w-0 flex-1">
@@ -267,7 +283,14 @@ export default function ListingEditWorkspace({
                     <span className="text-[11px] font-semibold text-zinc-500">{f.label}</span>
                   </div>
                   {f.hint ? <p className="mt-0.5 text-[10px] font-medium text-zinc-400">{f.hint}</p> : null}
-                  <div className="mt-2 text-[14px] font-semibold text-zinc-950">{f.getDisplay(draft)}</div>
+                  <div
+                    className={
+                      "mt-2 text-[14px] font-semibold transition " +
+                      (dirty ? "text-zinc-950" : "text-zinc-900")
+                    }
+                  >
+                    {f.getDisplay(draft)}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -309,11 +332,12 @@ export default function ListingEditWorkspace({
         open={Boolean(activeDef)}
         title={activeDef?.panelTitle ?? ""}
         subtitle={activeDef?.panelSubtitle}
+        preview={panelPreview}
         onClose={closePanel}
         onSave={savePanel}
         pending={pending}
       >
-        {activeField ? <FieldEditor fieldKey={activeField} draft={panelDraft} setDraft={setPanelDraft} /> : null}
+        {activeField ? <FieldEditor fieldKey={activeField} draft={draft} setDraft={setDraft} /> : null}
       </EditFieldDrawer>
     </div>
   );
