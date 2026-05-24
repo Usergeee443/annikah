@@ -1,4 +1,5 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { randomToken, sha256 } from "@/lib/crypto";
@@ -82,11 +83,18 @@ export async function getCurrentUser() {
   return session.user;
 }
 
-export async function requireUser() {
+export async function requireUser(opts?: { api?: boolean }) {
   const user = await getCurrentUser();
-  if (!user) {
+  if (user) return user;
+
+  if (opts?.api) {
     throw new Error("AUTH_REQUIRED");
   }
-  return user;
+
+  const h = await headers();
+  const path = h.get("x-pathname") || "/";
+
+  const q = new URLSearchParams({ required: "1", next: path });
+  redirect(`/auth/login?${q.toString()}`);
 }
 

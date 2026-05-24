@@ -40,7 +40,7 @@ export async function PATCH(_req: Request) {
 }
 
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
-  const user = await requireUser();
+  const user = await requireUser({ api: true });
   const { id: idRaw } = await ctx.params;
   const id = parseListingIdParam(idRaw);
   if (id === null) return NextResponse.json({ error: "INVALID_ID" }, { status: 400 });

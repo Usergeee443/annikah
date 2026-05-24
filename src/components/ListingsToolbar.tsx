@@ -427,7 +427,7 @@ export default function ListingsToolbar({
             type="button"
             onClick={() => setOpen(true)}
             aria-expanded={open}
-            aria-label="Filter"
+            aria-label="Filter."
             className={cn(
               "relative inline-flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-2xl ring-1 transition md:w-auto md:px-3",
               hasActiveFilters

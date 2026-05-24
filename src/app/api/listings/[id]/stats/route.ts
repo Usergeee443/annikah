@@ -28,7 +28,7 @@ export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const user = await requireUser();
+  const user = await requireUser({ api: true });
   const { id: idRaw } = await params;
   const id = parseListingIdParam(idRaw);
   if (id === null) return NextResponse.json({ error: "Invalid id" }, { status: 400 });

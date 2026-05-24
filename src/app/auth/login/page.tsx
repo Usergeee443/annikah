@@ -8,6 +8,7 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams?.get("next") || "/";
+  const loginRequired = searchParams?.get("required") === "1";
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
@@ -36,6 +37,12 @@ function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="mt-6 grid gap-3">
+      {loginRequired ? (
+        <div className="rounded-2xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950 ring-1 ring-amber-200">
+          Bu sahifani ko‘rish uchun avval tizimga kiring.
+        </div>
+      ) : null}
+
       <label className="grid gap-1.5">
         <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Email yoki telefon</span>
         <input

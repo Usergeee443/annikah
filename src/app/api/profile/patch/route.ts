@@ -25,7 +25,7 @@ const PatchSchema = z
   .strict();
 
 export async function POST(req: Request) {
-  const user = await requireUser();
+  const user = await requireUser({ api: true });
   const json = await req.json().catch(() => null);
   const parsed = PatchSchema.safeParse(json);
   if (!parsed.success) {

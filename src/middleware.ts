@@ -15,9 +15,15 @@ const PROTECTED_PREFIXES = [
 ];
 
 export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const { pathname, search } = req.nextUrl;
+  const fullPath = pathname + search;
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-pathname", fullPath);
+
   const isProtected = PROTECTED_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
-  if (!isProtected) return NextResponse.next();
+  if (!isProtected) {
+    return NextResponse.next({ request: { headers: requestHeaders } });
+  }
 
   // Admin panel uses separate auth cookie
   if (pathname === "/adminpanel" || pathname.startsWith("/adminpanel/")) {
@@ -27,17 +33,18 @@ export function middleware(req: NextRequest) {
       url.pathname = "/adminpanel/login";
       return NextResponse.redirect(url);
     }
-    return NextResponse.next();
+    return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
   const hasSession = Boolean(req.cookies.get("annikah_session")?.value);
   if (!hasSession) {
     const url = req.nextUrl.clone();
     url.pathname = "/auth/login";
-    url.searchParams.set("next", pathname);
+    url.searchParams.set("next", fullPath);
+    url.searchParams.set("required", "1");
     return NextResponse.redirect(url);
   }
-  return NextResponse.next();
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {
