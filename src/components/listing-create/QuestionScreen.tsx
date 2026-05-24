@@ -5,15 +5,15 @@ import { CHIP, type ListingFormState } from "./constants";
 import type { QuestionDef } from "./questions";
 
 function inputCls() {
-  return "h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-center text-[14px] font-semibold text-zinc-950 outline-none transition focus:border-indigo-400 focus:shadow-[0_0_0_3px_rgba(99,102,241,.1)]";
+  return "h-11 w-full rounded-2xl border border-zinc-200 bg-white px-4 text-[14px] font-semibold text-zinc-950 outline-none transition focus:border-zinc-300 focus:shadow-[0_0_0_4px_rgba(24,24,27,.06)]";
 }
 
 function chipCls(active: boolean) {
   return (
-    "w-full rounded-xl px-3 py-2.5 text-left text-[14px] font-semibold ring-1 transition active:scale-[0.99] " +
+    "flex w-full items-center justify-between gap-3 rounded-2xl px-4 py-3.5 text-left text-[14px] font-semibold ring-1 transition active:scale-[0.99] " +
     (active
       ? "bg-zinc-950 text-white ring-zinc-950"
-      : "bg-white text-zinc-900 ring-zinc-200 hover:bg-zinc-50 hover:ring-zinc-300")
+      : "bg-white text-zinc-900 ring-zinc-200 hover:bg-zinc-50")
   );
 }
 
@@ -111,7 +111,7 @@ export default function QuestionScreen({
     case "country":
       return (
         <select
-          className={inputCls() + " text-left text-[14px] font-semibold"}
+          className={inputCls() + " text-left"}
           value={d.country}
           onChange={(e) => setD({ ...d, country: e.target.value })}
         >

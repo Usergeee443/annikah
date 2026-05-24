@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState, useTransition } from "react";
 import QuestionScreen from "./QuestionScreen";
 import type { ListingCategory, ListingFormState } from "./constants";
-import { profileToForm, visibleQuestions, type QuestionDef } from "./questions";
+import { FORM_STEPS, STEP_BADGE, STEP_UI, type FormStepId } from "./constants";
+import { profileToForm, questionStep, stepUiForQuestion, visibleQuestions, type QuestionDef } from "./questions";
 
 export type WizardPlan = {
   id: ListingFormState["plan"];
@@ -188,6 +189,15 @@ export default function ListingCreateWizard({
   const hint = currentQ?.hint(d) ?? null;
   const canNext = currentQ ? currentQ.optional || currentQ.isValid(d) : false;
 
+  const progressStep: FormStepId =
+    phase === "questions" && currentQ ? questionStep(currentQ) : phase === "review" ? "story" : "personal";
+  const progressBar = STEP_UI[progressStep].bar;
+
+  const btnPrimary =
+    "inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-5 text-[13px] font-semibold text-white ring-1 ring-black/10 transition hover:bg-zinc-900 disabled:opacity-50";
+  const btnSecondary =
+    "inline-flex h-11 items-center justify-center rounded-2xl bg-white px-5 text-[13px] font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:bg-zinc-50";
+
   return (
     <div ref={topRef} className="grid gap-4 pb-24 md:pb-8">
       <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur">
@@ -224,7 +234,7 @@ export default function ListingCreateWizard({
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-zinc-100">
             <div
-              className="h-full rounded-full bg-linear-to-r from-indigo-500 via-fuchsia-500 to-rose-500 transition-all duration-500"
+              className={`h-full rounded-full bg-linear-to-r ${progressBar} transition-all duration-500`}
               style={{ width: `${overallProgress()}%` }}
             />
           </div>
@@ -238,23 +248,41 @@ export default function ListingCreateWizard({
 
       {phase === "welcome" ? (
         <div className="grid gap-4">
-          <div className="rounded-3xl border border-indigo-100 bg-indigo-50/50 p-6 text-center ring-1 ring-indigo-100">
-            <div className="text-2xl">💍</div>
-            <p className="mt-4 text-[14px] font-semibold leading-relaxed text-indigo-950">
-              Bir vaqtning o‘zida bitta savol — chalkashmaslik uchun. Taxminan 3–5 daqiqa.
+          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
+            <p className="text-center text-[14px] font-semibold leading-relaxed text-zinc-700">
+              Har bir savol alohida — taxminan <span className="font-bold text-zinc-950">3–5 daqiqa</span>.
             </p>
-            <ul className="mx-auto mt-4 max-w-sm grid gap-2 text-left text-[13px] font-medium text-indigo-900/90">
-              <li>✓ Ism, yosh, manzil</li>
-              <li>✓ Din va oilaviy holat</li>
-              <li>✓ O‘zingiz haqingizda qisqa matn</li>
-              <li>✓ Tarif va tasdiq fotosi</li>
-            </ul>
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              {FORM_STEPS.map((step) => {
+                const ui = STEP_UI[step];
+                return (
+                  <div
+                    key={step}
+                    className={`flex items-start gap-3 rounded-2xl bg-zinc-50 p-4 ring-1 ${ui.ring}`}
+                  >
+                    <span className="text-2xl leading-none" aria-hidden>
+                      {ui.icon}
+                    </span>
+                    <div className="min-w-0">
+                      <div className={`inline-flex rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${STEP_BADGE[step]}`}>
+                        {ui.title}
+                      </div>
+                      <div className="mt-1 text-[13px] font-semibold text-zinc-950">{ui.sub}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-4 grid gap-2 rounded-2xl bg-zinc-50 p-4 ring-1 ring-zinc-200">
+              <div className="flex items-center gap-2 text-[13px] font-semibold text-zinc-800">
+                <span className="text-lg">📋</span> Tarif tanlash
+              </div>
+              <div className="flex items-center gap-2 text-[13px] font-semibold text-zinc-800">
+                <span className="text-lg">📷</span> Tasdiq fotosi (moderatsiya uchun)
+              </div>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={() => goQuestions(0)}
-            className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-zinc-950 text-[14px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
-          >
+          <button type="button" onClick={() => goQuestions(0)} className={btnPrimary + " w-full"}>
             Boshlash →
           </button>
         </div>
@@ -262,37 +290,44 @@ export default function ListingCreateWizard({
 
       {phase === "questions" && currentQ ? (
         <div className="grid gap-5">
-          <div className="rounded-2xl border border-zinc-200/70 bg-white p-4 shadow-sm sm:p-5">
-            <div className="mb-6 flex flex-col items-center text-center">
-              <span className="text-2xl" aria-hidden>
-                {currentQ.emoji}
-              </span>
-              {currentQ.optional ? (
-                <span className="mt-3 rounded-full bg-zinc-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-600">
-                  Ixtiyoriy
-                </span>
-              ) : null}
-            </div>
-            <QuestionScreen q={currentQ} d={d} setD={setD} onChipPick={onChipPick} />
-            {hint ? (
-              <p className="mt-4 text-center text-[12px] font-semibold text-rose-600">{hint}</p>
-            ) : null}
-          </div>
+          {(() => {
+            const step = questionStep(currentQ);
+            const ui = stepUiForQuestion(currentQ);
+            return (
+              <div className={`rounded-3xl border bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)] ring-1 ${ui.ring}`}>
+                <div className="mb-5 flex flex-col items-center text-center">
+                  <span
+                    className={`mb-3 inline-flex rounded-md px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${STEP_BADGE[step]}`}
+                  >
+                    {ui.title}
+                  </span>
+                  <span className="text-4xl leading-none" aria-hidden>
+                    {currentQ.emoji}
+                  </span>
+                  {currentQ.optional ? (
+                    <span className="mt-3 rounded-full bg-zinc-100 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-600">
+                      Ixtiyoriy
+                    </span>
+                  ) : null}
+                </div>
+                <QuestionScreen q={currentQ} d={d} setD={setD} onChipPick={onChipPick} />
+                {hint ? (
+                  <p className="mt-4 text-center text-[12px] font-semibold text-rose-600">{hint}</p>
+                ) : null}
+              </div>
+            );
+          })()}
 
           <div className="sticky bottom-0 z-10 -mx-1 grid gap-2 rounded-t-3xl border-t border-zinc-200/80 bg-white/95 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur md:static md:mx-0 md:rounded-none md:border-0 md:bg-transparent md:p-0">
             <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={questionBack}
-                className="inline-flex h-10 flex-1 items-center justify-center rounded-xl bg-white text-[13px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-              >
+              <button type="button" onClick={questionBack} className={btnSecondary + " flex-1"}>
                 ← Orqaga
               </button>
               {currentQ.optional ? (
                 <button
                   type="button"
                   onClick={() => questionNext(true)}
-                  className="inline-flex h-10 items-center justify-center rounded-2xl px-4 text-[12px] font-semibold text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900"
+                  className="inline-flex h-11 items-center justify-center rounded-2xl px-3 text-[12px] font-semibold text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-zinc-900"
                 >
                   O‘tkazib yuborish
                 </button>
@@ -301,7 +336,7 @@ export default function ListingCreateWizard({
                 type="button"
                 onClick={() => questionNext(false)}
                 disabled={!canNext}
-                className="inline-flex h-10 flex-[1.4] items-center justify-center rounded-xl bg-zinc-950 text-[13px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-50"
+                className={btnPrimary + " flex-[1.4]"}
               >
                 {qIndex >= totalQ - 1 ? "Ko‘rib chiqish →" : "Keyingi →"}
               </button>
@@ -312,12 +347,12 @@ export default function ListingCreateWizard({
 
       {phase === "review" ? (
         <div className="grid gap-4">
-          <div className="rounded-3xl border border-emerald-200/70 bg-emerald-50/60 p-4 text-[12px] font-medium text-emerald-950 ring-1 ring-emerald-100">
-            Hammasi to‘g‘rimi? Pastdan istalgan savolga qaytishingiz mumkin.
+          <div className="rounded-2xl border border-emerald-200/70 bg-emerald-50/60 p-4 text-[13px] font-semibold text-emerald-950 ring-1 ring-emerald-100">
+            Hammasi to‘g‘rimi? Pastdan istalgan bo‘limga qaytishingiz mumkin.
           </div>
-          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-sm">
+          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
             <div className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">E‘lon kartochkasi</div>
-            <div className="mt-3 overflow-hidden rounded-2xl bg-linear-to-br from-rose-400 via-fuchsia-600 to-rose-900 p-5 text-white shadow-md">
+            <div className="mt-3 overflow-hidden rounded-2xl bg-linear-to-br from-rose-400 via-fuchsia-600 to-rose-900 p-5 text-white shadow-[0_8px_28px_rgba(15,23,42,.12)]">
               <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold">
                 <span className="rounded-full bg-black/30 px-2 py-0.5">
                   {d.listingCategory === "kuyovlar" ? "Kuyov" : "Kelin"}
@@ -334,28 +369,41 @@ export default function ListingCreateWizard({
               <p className="mt-3 line-clamp-4 text-[12px] leading-relaxed text-white/90">{d.about}</p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {questions.map((q, i) => (
-              <button
-                key={q.id}
-                type="button"
-                onClick={() => {
-                  setQIndex(i);
-                  setPhase("questions");
-                  scrollTop();
-                }}
-                className="rounded-xl bg-zinc-100 px-3 py-2 text-[11px] font-semibold text-zinc-800 ring-1 ring-zinc-200 hover:bg-white"
-              >
-                {q.emoji} {q.title.length > 28 ? q.title.slice(0, 26) + "…" : q.title}
-              </button>
-            ))}
+          <div className="grid gap-3">
+            {FORM_STEPS.map((step) => {
+              const ui = STEP_UI[step];
+              const stepQuestions = questions.filter((q) => questionStep(q) === step);
+              if (stepQuestions.length === 0) return null;
+              return (
+                <div key={step} className={`rounded-2xl bg-zinc-50 p-3 ring-1 ${ui.ring}`}>
+                  <div className={`mb-2 inline-flex rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide ${STEP_BADGE[step]}`}>
+                    {ui.icon} {ui.title}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {stepQuestions.map((q) => {
+                      const i = questions.findIndex((x) => x.id === q.id);
+                      return (
+                        <button
+                          key={q.id}
+                          type="button"
+                          onClick={() => {
+                            setQIndex(i);
+                            setPhase("questions");
+                            scrollTop();
+                          }}
+                          className="rounded-xl bg-white px-3 py-2 text-[11px] font-semibold text-zinc-800 ring-1 ring-zinc-200 transition hover:bg-zinc-50"
+                        >
+                          {q.emoji} {q.title.length > 24 ? q.title.slice(0, 22) + "…" : q.title}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <button
-              type="button"
-              onClick={goBack}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-white px-5 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
+            <button type="button" onClick={goBack} className={btnSecondary}>
               ← Orqaga
             </button>
             <button
@@ -365,7 +413,7 @@ export default function ListingCreateWizard({
                 scrollTop();
               }}
               disabled={!validInfo}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
+              className={btnPrimary + " px-6 disabled:opacity-60"}
             >
               Tarif tanlash →
             </button>
@@ -375,52 +423,53 @@ export default function ListingCreateWizard({
 
       {phase === "plan" ? (
         <div className="grid gap-4">
-          <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur">
-            <div className="text-[12px] font-semibold tracking-normal text-zinc-950">Tarif</div>
-            <div className="mt-3 grid gap-3 md:grid-cols-3">
-              {PLANS.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => setD({ ...d, plan: p.id })}
-                  className={
-                    "relative rounded-2xl border bg-white p-4 text-left transition " +
-                    (d.plan === p.id
-                      ? "border-zinc-950 shadow-[inset_0_0_0_1px_rgba(0,0,0,1)]"
-                      : "border-zinc-200 hover:border-zinc-300")
-                  }
-                >
-                  {p.badge ? (
-                    <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-800 ring-1 ring-amber-200">
-                      {p.badge}
-                    </span>
-                  ) : null}
-                  <div className="text-[14px] font-semibold tracking-normal text-zinc-950">{p.title}</div>
-                  <div className="mt-1 text-[11px] font-bold text-zinc-600">{p.days} kun ko‘rinadi</div>
-                  {p.description ? (
-                    <div className="mt-1 text-[11px] font-semibold text-zinc-500">{p.description}</div>
-                  ) : null}
-                  <div className="mt-3 text-xl font-semibold tracking-normal text-zinc-950">
-                    {p.priceUzs.toLocaleString()}{" "}
-                    <span className="text-[12px] font-bold text-zinc-600">so‘m</span>
-                  </div>
-                </button>
-              ))}
+          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
+            <div className="flex items-center gap-2">
+              <span className="text-xl" aria-hidden>
+                📋
+              </span>
+              <div className="text-[14px] font-bold text-zinc-950">Tarifni tanlang</div>
+            </div>
+            <p className="mt-1 text-[13px] font-medium text-zinc-600">E’lon qancha vaqt ko‘rinsin?</p>
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              {PLANS.map((p) => {
+                const selected = d.plan === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setD({ ...d, plan: p.id })}
+                    className={
+                      "relative rounded-2xl border bg-white p-4 text-left transition ring-1 " +
+                      (selected
+                        ? "border-zinc-950 ring-zinc-950 shadow-[0_4px_18px_rgba(15,23,42,.08)]"
+                        : "border-zinc-200 ring-zinc-200 hover:border-zinc-300 hover:bg-zinc-50/50")
+                    }
+                  >
+                    {p.badge ? (
+                      <span className="absolute right-3 top-3 inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900 ring-1 ring-amber-200">
+                        {p.badge}
+                      </span>
+                    ) : null}
+                    <div className="text-[15px] font-bold text-zinc-950">{p.title}</div>
+                    <div className="mt-1 text-[12px] font-semibold text-zinc-600">{p.days} kun ko‘rinadi</div>
+                    {p.description ? (
+                      <div className="mt-1 text-[11px] font-medium text-zinc-500">{p.description}</div>
+                    ) : null}
+                    <div className="mt-3 text-xl font-bold tabular-nums text-zinc-950">
+                      {p.priceUzs.toLocaleString()}{" "}
+                      <span className="text-[12px] font-semibold text-zinc-600">so‘m</span>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <button
-              type="button"
-              onClick={goBack}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-white px-5 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
+            <button type="button" onClick={goBack} className={btnSecondary}>
               ← Orqaga
             </button>
-            <button
-              type="button"
-              onClick={goToVerify}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900"
-            >
+            <button type="button" onClick={goToVerify} className={btnPrimary + " px-6"}>
               Keyingi: tasdiq fotosi →
             </button>
           </div>
@@ -429,50 +478,64 @@ export default function ListingCreateWizard({
 
       {phase === "verify" ? (
         <div className="grid gap-4">
-          <div className="rounded-3xl border border-indigo-200/80 bg-indigo-50/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] ring-1 ring-indigo-100">
-            <div className="text-[12px] font-semibold tracking-normal text-indigo-950">Nega rasm kerak?</div>
-            <ul className="mt-2 grid list-disc gap-1 pl-4 text-[12.5px] font-medium leading-relaxed text-indigo-950/90">
-              <li>
-                Bu rasm saytda ko‘rsatilmaydi — faqat <span className="font-semibold">moderatsiya</span> uchun.
+          <div className="rounded-3xl border border-violet-200/70 bg-violet-50/80 p-5 ring-1 ring-violet-100">
+            <div className="flex items-center gap-2">
+              <span className="text-xl" aria-hidden>
+                📷
+              </span>
+              <div className="text-[14px] font-bold text-violet-950">Nega rasm kerak?</div>
+            </div>
+            <ul className="mt-3 grid gap-2 text-[13px] font-medium leading-relaxed text-violet-950/90">
+              <li className="flex gap-2">
+                <span className="text-violet-600">•</span>
+                <span>
+                  Bu rasm saytda ko‘rsatilmaydi — faqat <strong>moderatsiya</strong> uchun.
+                </span>
               </li>
-              <li>Soxta e’lonlarni kamaytirish uchun yuzingiz aniq ko‘rinishi kerak.</li>
-              <li>
-                <span className="font-semibold">Kelin</span> e’lonlarini ayol,{" "}
-                <span className="font-semibold">kuyov</span> e’lonlarini erkak moderatorlar tekshiradi.
+              <li className="flex gap-2">
+                <span className="text-violet-600">•</span>
+                <span>Soxta e’lonlarni kamaytirish uchun yuzingiz aniq ko‘rinishi kerak.</span>
+              </li>
+              <li className="flex gap-2">
+                <span className="text-violet-600">•</span>
+                <span>
+                  <strong>Kelin</strong> e’lonlarini ayol, <strong>kuyov</strong> e’lonlarini erkak moderatorlar
+                  tekshiradi.
+                </span>
               </li>
             </ul>
           </div>
-          <div className="rounded-3xl border border-zinc-200/70 bg-white/80 p-5 shadow-[0_8px_28px_rgba(15,23,42,.05)] backdrop-blur">
-            <div className="text-[12px] font-semibold tracking-normal text-zinc-950">Yuzingiz ko‘rinadigan foto</div>
-            <p className="mt-1 text-[11px] font-medium text-zinc-600">JPEG, PNG yoki WebP. Maks. ~5 MB.</p>
-            <label className="mt-3 grid gap-2">
-              <span className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">Fayl</span>
+          <div className="rounded-3xl border border-zinc-200/70 bg-white p-5 shadow-[0_4px_18px_rgba(15,23,42,.04)]">
+            <div className="text-[13px] font-bold text-zinc-950">Yuzingiz ko‘rinadigan foto</div>
+            <p className="mt-1 text-[12px] font-medium text-zinc-600">JPEG, PNG yoki WebP · maks. ~5 MB</p>
+            <label className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 px-4 py-8 transition hover:border-zinc-300 hover:bg-white">
+              <span className="text-3xl" aria-hidden>
+                {verificationFile ? "✓" : "📤"}
+              </span>
+              <span className="mt-2 text-[13px] font-semibold text-zinc-900">
+                {verificationFile ? verificationFile.name : "Rasm tanlash"}
+              </span>
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
-                className="text-[12px] font-semibold text-zinc-800 file:mr-3 file:rounded-xl file:border-0 file:bg-zinc-950 file:px-4 file:py-2 file:text-[12px] file:font-semibold file:text-white"
+                className="sr-only"
                 onChange={(e) => setVerificationFile(e.target.files?.[0] ?? null)}
               />
             </label>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <button
-              type="button"
-              onClick={goBack}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-white px-5 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
+            <button type="button" onClick={goBack} className={btnSecondary}>
               ← Orqaga
             </button>
-            <button
-              type="button"
-              onClick={submit}
-              disabled={pending || !validVerify}
-              className="inline-flex h-11 items-center justify-center rounded-2xl bg-zinc-950 px-6 text-[12px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
-            >
+            <button type="button" onClick={submit} disabled={pending || !validVerify} className={btnPrimary + " px-6 disabled:opacity-60"}>
               {pending ? "Joylanmoqda…" : "Moderatsiyaga yuborish"}
             </button>
           </div>
-          {error ? <div className="text-[12px] font-semibold text-rose-700">{error}</div> : null}
+          {error ? (
+            <div className="rounded-2xl bg-rose-50 p-3 text-[12px] font-semibold text-rose-800 ring-1 ring-rose-200">
+              {error}
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>

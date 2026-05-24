@@ -1,4 +1,5 @@
-import type { ListingCategory, ListingFormState } from "./constants";
+import type { FormStepId, ListingCategory, ListingFormState } from "./constants";
+import { STEP_UI } from "./constants";
 
 export type QuestionId =
   | "category"
@@ -246,6 +247,41 @@ export const ALL_QUESTIONS: QuestionDef[] = [
 
 export function visibleQuestions(d: ListingFormState): QuestionDef[] {
   return ALL_QUESTIONS.filter((q) => !q.show || q.show(d));
+}
+
+const QUESTION_STEP: Record<QuestionId, FormStepId> = {
+  category: "personal",
+  name: "personal",
+  age: "personal",
+  country: "personal",
+  region: "personal",
+  city: "personal",
+  nationality: "personal",
+  heightCm: "body",
+  weightKg: "body",
+  jobTitle: "body",
+  smokes: "body",
+  sportPerWeek: "body",
+  education: "body",
+  incomeMonthlyUsd: "body",
+  maritalStatus: "din",
+  children: "din",
+  polygamyAllowance: "din",
+  aqeeda: "din",
+  prayer: "din",
+  quran: "din",
+  madhab: "din",
+  about: "story",
+  partnerAge: "story",
+  partnerLocation: "story",
+};
+
+export function questionStep(q: QuestionDef): FormStepId {
+  return QUESTION_STEP[q.id] ?? "personal";
+}
+
+export function stepUiForQuestion(q: QuestionDef) {
+  return STEP_UI[questionStep(q)];
 }
 
 export function profileToForm(

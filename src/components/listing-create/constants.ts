@@ -80,6 +80,13 @@ export const STEP_UI: Record<
   },
 };
 
+export const STEP_BADGE: Record<FormStepId, string> = {
+  personal: "bg-rose-100 text-rose-950",
+  body: "bg-amber-100 text-amber-950",
+  din: "bg-violet-100 text-violet-950",
+  story: "bg-cyan-100 text-cyan-950",
+};
+
 export const CHIP = {
   aqeeda: [
     ["ahli_sunna", "Ahli sunna"],
