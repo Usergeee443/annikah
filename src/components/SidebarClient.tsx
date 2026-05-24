@@ -223,7 +223,7 @@ export default function SidebarClient({ user }: { user: SidebarUser | null }) {
   }, [collapsed]);
 
   async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
+    await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" }).catch(() => null);
     router.refresh();
   }
 

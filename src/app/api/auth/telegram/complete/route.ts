@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { createSession } from "@/lib/auth";
+import { issueSession } from "@/lib/auth";
+import { setSessionCookie } from "@/lib/sessionCookie";
 import { db } from "@/lib/db";
 import { appBaseUrl } from "@/lib/telegram";
 
@@ -21,7 +22,9 @@ export async function GET(req: Request) {
   }
 
   await db.telegramLoginCode.update({ where: { id: row.id }, data: { used: true } });
-  await createSession(row.userId);
+  const { signed, expiresAt } = await issueSession(row.userId);
 
-  return NextResponse.redirect(new URL("/profile", base));
+  const res = NextResponse.redirect(new URL("/profile", base));
+  setSessionCookie(res, signed, expiresAt);
+  return res;
 }

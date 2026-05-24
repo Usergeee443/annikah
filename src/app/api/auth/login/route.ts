@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { createSession, verifyPassword } from "@/lib/auth";
+import { issueSession, verifyPassword } from "@/lib/auth";
+import { setSessionCookie } from "@/lib/sessionCookie";
 import { normalizePhoneDigits } from "@/lib/telegram";
 
 const BodySchema = z.object({
@@ -45,7 +46,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Parol noto‘g‘ri." }, { status: 401 });
   }
 
-  await createSession(user.id);
-  return NextResponse.json({ ok: true });
+  const { signed, expiresAt } = await issueSession(user.id);
+  const res = NextResponse.json({ ok: true });
+  setSessionCookie(res, signed, expiresAt);
+  return res;
 }
 

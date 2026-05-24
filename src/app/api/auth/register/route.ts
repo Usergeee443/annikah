@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { createSession, hashPassword } from "@/lib/auth";
+import { issueSession, hashPassword } from "@/lib/auth";
+import { setSessionCookie } from "@/lib/sessionCookie";
 
 const BodySchema = z.object({
   email: z.string().email(),
@@ -26,7 +27,9 @@ export async function POST(req: Request) {
     data: { email, passwordHash, authProvider: "email" },
   });
 
-  await createSession(user.id);
-  return NextResponse.json({ ok: true });
+  const { signed, expiresAt } = await issueSession(user.id);
+  const res = NextResponse.json({ ok: true });
+  setSessionCookie(res, signed, expiresAt);
+  return res;
 }
 

@@ -7,7 +7,7 @@ export default function ProfileAccountActions() {
   const router = useRouter();
 
   async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
+    await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" }).catch(() => null);
     router.push("/auth/login");
     router.refresh();
   }

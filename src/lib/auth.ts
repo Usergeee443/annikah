@@ -4,7 +4,17 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { randomToken, sha256 } from "@/lib/crypto";
 
-const SESSION_COOKIE = "annikah_session";
+export const SESSION_COOKIE = "annikah_session";
+
+export function sessionCookieOptions(expiresAt: Date) {
+  return {
+    httpOnly: true,
+    sameSite: "lax" as const,
+    secure: process.env.NODE_ENV === "production",
+    expires: expiresAt,
+    path: "/",
+  };
+}
 
 function getSessionSecret() {
   return process.env.AUTH_SESSION_SECRET || "dev-secret-change-me";
@@ -16,8 +26,11 @@ function signToken(token: string) {
   return `${token}.${h}`;
 }
 
-function verifySignedToken(signed: string) {
-  const [token, mac] = signed.split(".");
+export function verifySignedToken(signed: string) {
+  const dot = signed.indexOf(".");
+  if (dot <= 0) return null;
+  const token = signed.slice(0, dot);
+  const mac = signed.slice(dot + 1);
   if (!token || !mac) return null;
   const expected = sha256(`${token}:${getSessionSecret()}`);
   if (expected !== mac) return null;
@@ -32,23 +45,21 @@ export async function verifyPassword(password: string, hash: string) {
   return bcrypt.compare(password, hash);
 }
 
-export async function createSession(userId: string) {
+/** DB sessiyasi + imzolangan cookie qiymati (Route Handler javobiga qo‘yiladi). */
+export async function issueSession(userId: string) {
   const token = randomToken(32);
   const tokenHash = sha256(token);
   const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30); // 30 days
   await db.session.create({
     data: { userId, tokenHash, expiresAt },
   });
+  return { signed: signToken(token), expiresAt };
+}
 
-  const signed = signToken(token);
+export async function createSession(userId: string) {
+  const { signed, expiresAt } = await issueSession(userId);
   const jar = await cookies();
-  jar.set(SESSION_COOKIE, signed, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    expires: expiresAt,
-    path: "/",
-  });
+  jar.set(SESSION_COOKIE, signed, sessionCookieOptions(expiresAt));
 }
 
 export async function destroySession() {
