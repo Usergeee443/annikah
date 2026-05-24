@@ -296,7 +296,6 @@ export default function ElonlarimDashboard({
     return {
       l: {
         id: l.id,
-        ownerId: undefined,
         name: l.name,
         age: l.age,
         heightCm: l.heightCm,

@@ -8,7 +8,6 @@ import ListingGenderWatermark from "@/components/ListingGenderWatermark";
 type ListingCardProps = {
   l: {
     id: number;
-    ownerId?: string;
     name: string;
     age: number;
     heightCm: number;
@@ -156,11 +155,6 @@ export default function ListingCard({
       <div className="absolute left-4 right-4 top-4 flex items-start justify-between gap-3">
         <div className="min-w-0 text-[clamp(17px,6.5cqw,24px)] font-bold leading-none tracking-normal text-white drop-shadow-[0_8px_24px_rgba(0,0,0,.5)]">
           <span className="truncate">{l.name}</span>
-          {l.ownerId ? (
-            <div className="mt-1 text-[10px] font-semibold tracking-wide text-white/85">
-              ID: {String(l.ownerId).slice(0, 8)}
-            </div>
-          ) : null}
         </div>
         {!hideFavorite ? (
           <div className="shrink-0">

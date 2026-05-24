@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import EditFieldDrawer from "@/components/listing-edit/EditFieldDrawer";
 import {
@@ -22,10 +22,8 @@ import {
   FIELD_BY_KEY,
   LISTING_EDIT_FIELDS,
   partnerLocationText,
-  SECTION_FILTERS,
   SECTION_STYLES,
   type ListingData,
-  type SectionFilter,
 } from "@/components/listing-edit/fieldConfig";
 
 const IconPencil = (
@@ -153,16 +151,8 @@ export default function ListingEditWorkspace({
   const [err, setErr] = useState<string | null>(null);
   const [ok, setOk] = useState<string | null>(null);
   const [panelSaved, setPanelSaved] = useState(false);
-  const [sectionFilter, setSectionFilter] = useState<SectionFilter>("Barchasi");
-
   const activeDef = activeField ? FIELD_BY_KEY[activeField] : null;
   const panelPreview = activeDef ? activeDef.getDisplay(draft) : "";
-
-  const visibleFields = useMemo(
-    () =>
-      LISTING_EDIT_FIELDS.filter((f) => sectionFilter === "Barchasi" || sectionFilter === f.section),
-    [sectionFilter],
-  );
 
   useEffect(() => {
     setSaved(initial);
@@ -223,47 +213,10 @@ export default function ListingEditWorkspace({
     return f.getDisplay(draft) !== f.getDisplay(saved);
   }
 
-  const sectionChipCls = (active: boolean, tone: string) =>
-    "rounded-xl px-3 py-2 text-[11px] font-semibold tracking-normal ring-1 transition " +
-    (active ? tone + " ring-transparent" : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-50");
-
-  const filterBar = (
-    <div className="sticky top-0 z-10 -mx-1 mb-1 border-b border-zinc-100 bg-white/95 pb-3 pt-1 backdrop-blur-sm">
-      <div className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-zinc-500">Bo‘limni tanlang</div>
-      <div className="flex flex-wrap gap-2">
-        {SECTION_FILTERS.map((s) => {
-          const tones: Record<string, string> = {
-            Barchasi: "bg-zinc-900 text-white",
-            Asosiy: "bg-rose-600 text-white",
-            Manzil: "bg-fuchsia-600 text-white",
-            Jismoniy: "bg-amber-600 text-white",
-            Shaxsiy: "bg-emerald-600 text-white",
-            "Ta’lim": "bg-teal-600 text-white",
-            Diniy: "bg-violet-600 text-white",
-            Juft: "bg-sky-600 text-white",
-            Haqida: "bg-cyan-600 text-white",
-          };
-          return (
-            <button
-              key={s}
-              type="button"
-              onClick={() => setSectionFilter(s)}
-              className={sectionChipCls(sectionFilter === s, tones[s] ?? "bg-zinc-900 text-white")}
-            >
-              {s === "Ta’lim" ? "Ta'lim" : s}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-
   return (
     <div className={"grid gap-3 " + (embedded ? "" : "max-h-[min(85vh,900px)] overflow-y-auto pr-1 [-webkit-overflow-scrolling:touch]")}>
-      {filterBar}
-
       <div className="grid gap-3">
-        {visibleFields.map((f) => {
+        {LISTING_EDIT_FIELDS.map((f) => {
           const tone = SECTION_STYLES[f.section] || "bg-zinc-100 text-zinc-900";
           const dirty = fieldDirty(f);
           const editing = activeField === f.key;

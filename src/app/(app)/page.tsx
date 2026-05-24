@@ -195,7 +195,6 @@ export default async function ListingsPage({
               key={l.id}
               l={{
                 id: l.id,
-                ownerId: l.ownerId,
                 name: l.name,
                 age: l.age,
                 heightCm: l.heightCm,

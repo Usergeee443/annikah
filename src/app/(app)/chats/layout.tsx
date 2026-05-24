@@ -29,6 +29,7 @@ export default async function ChatsLayout({ children }: { children: React.ReactN
     return {
       id: c.id,
       otherName,
+      listingId: c.request?.listing?.id ?? null,
       initial,
       category: c.request?.listing?.category || "kelinlar",
       lastMessage: lastMsg ? lastMsg.body : null,

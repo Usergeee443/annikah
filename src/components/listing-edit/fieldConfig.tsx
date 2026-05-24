@@ -336,20 +336,6 @@ export const SECTION_STYLES: Record<string, string> = {
   Haqida: "bg-cyan-100 text-cyan-950",
 };
 
-export const SECTION_FILTERS = [
-  "Barchasi",
-  "Asosiy",
-  "Manzil",
-  "Jismoniy",
-  "Shaxsiy",
-  "Ta’lim",
-  "Diniy",
-  "Juft",
-  "Haqida",
-] as const;
-
-export type SectionFilter = (typeof SECTION_FILTERS)[number];
-
 export function partnerLocationText(d: ListingData) {
   return [d.partnerCountries, d.partnerRegions, d.partnerCities].filter(Boolean).join(", ");
 }

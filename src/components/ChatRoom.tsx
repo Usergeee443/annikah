@@ -62,7 +62,7 @@ export default function ChatRoom({
   chatId,
   meId,
   otherName,
-  otherId,
+  listingId,
   category,
   initialMessages,
   endsAt,
@@ -71,7 +71,7 @@ export default function ChatRoom({
   chatId: string;
   meId: string;
   otherName: string;
-  otherId: string;
+  listingId?: number | null;
   category?: string;
   initialMessages: Msg[];
   endsAt: string;
@@ -245,9 +245,9 @@ export default function ChatRoom({
             <div className="truncate text-[14.5px] font-semibold tracking-normal text-zinc-950">
               {otherName}
             </div>
-            {otherId ? (
+            {listingId != null ? (
               <div className="mt-0.5 text-[10px] font-semibold tracking-wide text-zinc-400">
-                ID: {String(otherId).slice(0, 8)}
+                E’lon №{listingId}
               </div>
             ) : null}
             <div className="mt-0.5 flex items-center gap-1.5">

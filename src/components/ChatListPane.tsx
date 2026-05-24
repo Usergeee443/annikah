@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 export type ChatListItem = {
   id: string;
   otherName: string;
+  listingId: number | null;
   initial: string;
   category: "kelinlar" | "kuyovlar" | string;
   lastMessage: string | null;
@@ -210,8 +211,15 @@ export default function ChatListPane({ chats }: { chats: ChatListItem[] }) {
                     {/* Texts */}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-2">
-                        <div className="min-w-0 truncate text-[14px] font-semibold tracking-normal text-zinc-950">
-                          {c.otherName}
+                        <div className="min-w-0">
+                          <div className="truncate text-[14px] font-semibold tracking-normal text-zinc-950">
+                            {c.otherName}
+                          </div>
+                          {c.listingId != null ? (
+                            <div className="text-[10px] font-semibold tracking-wide text-zinc-400">
+                              E’lon №{c.listingId}
+                            </div>
+                          ) : null}
                         </div>
                         <div className="shrink-0 text-[10.5px] font-bold text-zinc-400">
                           {formatShortTime(c.lastAt || c.createdAt)}

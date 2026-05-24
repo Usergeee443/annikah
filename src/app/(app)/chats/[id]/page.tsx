@@ -22,14 +22,14 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
 
   const other = chat.userAId === user.id ? chat.userB : chat.userA;
   const otherName = other?.profile?.name || other?.email || "Foydalanuvchi";
-  const otherId = other?.id || "";
+  const listingId = chat.request?.listing?.id ?? null;
 
   return (
     <ChatRoom
       chatId={chat.id}
       meId={user.id}
       otherName={otherName}
-      otherId={otherId}
+      listingId={listingId}
       category={chat.request?.listing?.category}
       initialMessages={chat.messages.map((m) => ({
         id: m.id,
