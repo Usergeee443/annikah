@@ -33,6 +33,15 @@ export default function EditFieldDrawer({
   }, [open]);
 
   useEffect(() => {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    if (!isMobile) return;
+    window.dispatchEvent(new CustomEvent("annikah:bottomnav", { detail: { hidden: open } }));
+    return () => {
+      window.dispatchEvent(new CustomEvent("annikah:bottomnav", { detail: { hidden: false } }));
+    };
+  }, [open]);
+
+  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
