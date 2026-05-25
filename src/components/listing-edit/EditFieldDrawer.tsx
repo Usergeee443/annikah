@@ -41,6 +41,49 @@ export default function EditFieldDrawer({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
+  const actions = (
+    <div className="flex gap-2">
+      <button
+        type="button"
+        onClick={onClose}
+        className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-white text-[13px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+      >
+        <span className="md:hidden">Bekor qilish</span>
+        <span className="hidden md:inline">Bekor</span>
+      </button>
+      <button
+        type="button"
+        onClick={onSave}
+        disabled={pending}
+        className="inline-flex h-11 flex-[1.2] items-center justify-center rounded-2xl bg-zinc-950 text-[13px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
+      >
+        {pending ? (
+          "Saqlanmoqda…"
+        ) : (
+          <>
+            <span className="md:hidden">Tayyor</span>
+            <span className="hidden md:inline">Saqlash</span>
+          </>
+        )}
+      </button>
+    </div>
+  );
+
+  const savedBanner = saved ? (
+    <div className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-50 px-4 py-2.5 text-[13px] font-semibold text-emerald-800 ring-1 ring-emerald-200">
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
+        <path
+          d="m5 12 5 5L20 7"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+      Saqlandi
+    </div>
+  ) : null;
+
   return (
     <>
       <div
@@ -66,7 +109,12 @@ export default function EditFieldDrawer({
           <span className="h-1 w-10 rounded-full bg-zinc-300" />
         </div>
 
-        <header className="shrink-0 border-b border-zinc-100 px-5 pb-4 pt-2 md:px-6 md:pt-5">
+        <div className="shrink-0 space-y-3 border-b border-zinc-100 px-5 pb-4 pt-1 md:hidden">
+          {savedBanner}
+          {actions}
+        </div>
+
+        <header className="shrink-0 border-b border-zinc-100 px-5 pb-4 pt-2 md:border-t-0 md:px-6 md:pt-5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-zinc-500">Tahrirlash</div>
@@ -76,7 +124,7 @@ export default function EditFieldDrawer({
             <button
               type="button"
               onClick={onClose}
-              className="inline-flex h-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-50 px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-white"
+              className="hidden md:inline-flex h-10 shrink-0 items-center justify-center rounded-2xl bg-zinc-50 px-4 text-[12px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-white"
             >
               Yopish
             </button>
@@ -94,40 +142,11 @@ export default function EditFieldDrawer({
         </div>
 
         <footer
-          className="shrink-0 border-t border-zinc-100 bg-white px-5 py-3 md:px-6 md:py-4"
+          className="hidden shrink-0 border-t border-zinc-100 bg-white px-5 py-3 md:block md:px-6 md:py-4"
           style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
         >
-          {saved ? (
-            <div className="mb-3 flex items-center justify-center gap-2 rounded-2xl bg-emerald-50 px-4 py-2.5 text-[13px] font-semibold text-emerald-800 ring-1 ring-emerald-200">
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden>
-                <path
-                  d="m5 12 5 5L20 7"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Saqlandi
-            </div>
-          ) : null}
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-2xl bg-white text-[13px] font-semibold text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
-            >
-              Bekor
-            </button>
-            <button
-              type="button"
-              onClick={onSave}
-              disabled={pending}
-              className="inline-flex h-11 flex-[1.2] items-center justify-center rounded-2xl bg-zinc-950 text-[13px] font-semibold text-white ring-1 ring-black/10 hover:bg-zinc-900 disabled:opacity-60"
-            >
-              {pending ? "Saqlanmoqda…" : "Saqlash"}
-            </button>
-          </div>
+          {savedBanner ? <div className="mb-3">{savedBanner}</div> : null}
+          {actions}
         </footer>
       </aside>
     </>
